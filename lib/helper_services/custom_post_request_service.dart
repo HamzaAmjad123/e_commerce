@@ -11,7 +11,7 @@ class PostRequestService{
     print("post request url $url");
     try{
       var headers={
-        "Content-Type":"application/json"
+        "Content-Type":"application/json; charset=utf-8"
       };
       http.Response response=await http.post(Uri.parse(url),body: json.encode(body),headers: headers);
       print("post response status code ${response.statusCode}");

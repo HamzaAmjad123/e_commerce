@@ -10,6 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/images.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -73,12 +75,17 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding:
                     const EdgeInsets.only(right: 15.0, top: 17.0, bottom: 15.0),
-                child: Text(
-                  "Sign Up",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.w800),
+                child: InkWell(
+                  onTap: (){
+                    print("${Provider.of<UserDataProvider>(context,listen: false).user}");
+                  },
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w800),
+                  ),
                 ),
               ),
             ],
@@ -98,7 +105,8 @@ class SigInWidget extends StatefulWidget {
 
 class _SigInWidgetState extends State<SigInWidget> {
   TextEditingController _userCont = TextEditingController(text: "super.admin");
-  TextEditingController _passwordCont = TextEditingController(text: "SuperAdmin@123!");
+  TextEditingController _passwordCont =
+      TextEditingController(text: "SuperAdmin@123!");
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String selectedRadio = '';
@@ -112,9 +120,8 @@ class _SigInWidgetState extends State<SigInWidget> {
         password: _passwordCont.text);
     CustomLoader.hideLoader(context);
     if (res) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => HomeScreen(
-          )));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -190,6 +197,29 @@ class _SigInWidgetState extends State<SigInWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // Provider.of<UserDataProvider>(context, listen: false)
+                  //             .user!
+                  //             .imageUrl ==
+                  //         ""
+                  //     ? Container(
+                  //         height: 70,
+                  //         width: 70,
+                  //         child: Image.asset(Images.placeHolder),
+                  //       )
+                  //     : Provider.of<UserDataProvider>(context, listen: false)
+                  //                 .user!
+                  //                 .imageUrl ==
+                  //             null
+                  //         ? Image.asset("")
+                  //         : Image.network(
+                  //             Provider.of<UserDataProvider>(context,
+                  //                     listen: false)
+                  //                 .user!
+                  //                 .imageUrl!,
+                  //             height: 70.0,
+                  //             width: 70.0,
+                  //           ),
+
                   CustomTextField(
                     prefixIcon: Icons.person_outline_outlined,
                     hintText: "Username",
@@ -247,6 +277,7 @@ class _SigInWidgetState extends State<SigInWidget> {
                     onPressed: () {
                       if (_validateLogin()) {
                         _loginHandler();
+
                       }
                     },
                     child: Text(

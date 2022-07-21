@@ -12,12 +12,15 @@ class GetRequestService{
   Future httpGetRequest({required String url,required BuildContext context})async{
     print("get request url $url");
     try{
-      http.Response response=await http.get(Uri.parse(url));
+      var headers={
+        "Content-Type":"application/json"
+      };
+      http.Response response=await http.get(Uri.parse(url),headers: headers);
       print("get request status code ${response.statusCode}");
       log("get request body ${response.body}");
       var jsonDecoded=json.decode(response.body);
       if(response.statusCode !=200){
-        CustomSnackBar.failedSnackBar(context: context, message: jsonDecoded['Message']);
+        CustomSnackBar.failedSnackBar(context: context, message: jsonDecoded['title']);
         return null;
       }
       else

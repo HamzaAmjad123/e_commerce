@@ -1,5 +1,6 @@
+import 'package:e_commerce/provider/category_provider.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
-import 'package:e_commerce/provider/visits_provider.dart';
+
 import 'package:e_commerce/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context)=>UserDataProvider()),
-        ChangeNotifierProvider(create: (context)=>VisitsProvider())
+        ChangeNotifierProvider(create: (context)=>CategoriesProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
