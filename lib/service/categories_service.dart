@@ -1,6 +1,7 @@
 
 
 import 'package:e_commerce/helper_services/custom_get_request_service.dart';
+import 'package:e_commerce/helper_services/custom_post_request_service.dart';
 import 'package:e_commerce/model/categories_model.dart';
 import 'package:e_commerce/provider/category_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,9 +11,10 @@ import '../configs/api_urls.dart';
 
 
 class CategoriesService{
-  Future getCategory({required BuildContext context})async{
+  Future getCategory({required BuildContext context,required int tenatId,required int take,required int skip})async{
     try{
-      var res=await GetRequestService().httpGetRequest(url: getCatUrl, context: context);
+      Map? _body={"tenantId":tenatId,"take":take,"skip":skip};
+      var res=await PostRequestService().httpPostRequest(url: getCatUrl, body: _body, context: context);
       if(res !=null){
         CategoriesModel categories=CategoriesModel.fromJson(res);
         Provider.of<CategoriesProvider>(context,listen: false).updateCat(

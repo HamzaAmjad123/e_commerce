@@ -2,7 +2,9 @@ import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/provider/category_provider.dart';
+import 'package:e_commerce/provider/level_provider.dart';
 import 'package:e_commerce/service/categories_service.dart';
+import 'package:e_commerce/service/level_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,15 +21,27 @@ class _HomeScreenState extends State<HomeScreen> {
   late double width;
 
   int? selectedCat;
-  List<String> catList=["1","2","3"];
-  String selectClasses="select Class";
-  List<String> classesList=["class1","class2","class3"];
+  @override
+  void updateCat(int value){
+    setState(() {
+      selectedCat = value;
+    });
+  }
+  int? selectedLevel;
+  @override
+  void updateLevel(int value){
+    setState(() {
+      selectedLevel = value;
+    });
+  }
+
   String selectSeries="select Series";
   List<String> seriesList=["Series1","Series2","Series3"];
 
   _getServices()async{
     CustomLoader.showLoader(context: context);
-   await CategoriesService().getCategory(context: context);
+   await CategoriesService().getCategory(context: context, tenatId: 0,skip: 0,take: 6);
+   await LevelService().getLevel(context: context);
     CustomLoader.hideLoader(context);
   }
   @override
@@ -88,43 +102,62 @@ class _HomeScreenState extends State<HomeScreen> {
                child: DropdownButton(
                    isExpanded: true,
                    underline: SizedBox(),
-                   hint: Text("selectedCat"),
+                   hint: Text("Select Category"),
+                   value: selectedCat,
+                   onChanged: (int? newValue) {
+
+                     if(updateCat != null){
+                       updateCat(newValue!);
+                       setState(() {
+
+                       });
+                     }
+                     print("Selected Category $selectedCat");
+                   },
                    items: cat.myCat!.map((item){
                      return DropdownMenuItem(
                        value: item.itemTypeId,
                        child: Text(item.name!),
                      );
                    }).toList(),
-                   onChanged: (int? value){
-                 selectedCat !=null?selectedCat=value!:selectedCat;
-                 setState((){});
-               }),
+                 ),
              );
            }),
-           Container(
-             margin: EdgeInsets.symmetric(vertical: height*.020),
-             height: height*.065,
-             padding: EdgeInsets.symmetric(horizontal: 12.0),
-             decoration: BoxDecoration(
-                 border: Border.all(
-                   color: Colors.black,
-                 ),
-                 borderRadius: BorderRadius.circular(12.0)
-             ),
-             child: DropdownButton(
+           Consumer<LevelProvider>(builder: (context,level,_){
+             return Container(
+               height: height*.065,
+               padding: EdgeInsets.symmetric(horizontal: 12.0),
+               decoration: BoxDecoration(
+                   border: Border.all(
+                     color: Colors.black,
+                   ),
+                   borderRadius: BorderRadius.circular(12.0)
+               ),
+               child: DropdownButton(
                  isExpanded: true,
                  underline: SizedBox(),
-                 hint: Text(selectClasses),
-                 items: classesList.map((item){
+                 hint: Text("Select Level"),
+                 value: selectedLevel,
+                 onChanged: (int? newValue) {
+
+                   if(updateLevel != null){
+                     updateLevel(newValue!);
+                     setState(() {
+
+                     });
+                   }
+                   print("Selected Category $selectedCat");
+                 },
+                 items: level.myLevel!.map((item){
                    return DropdownMenuItem(
-                     value: item,
-                     child: Text(item),
+                     value: item.levelId,
+                     child: Text(item.name!),
                    );
-                 }).toList(), onChanged: (String? value){
-               selectClasses=value!;
-               setState((){});
-             }),
-           ),
+                 }).toList(),
+               ),
+             );
+           }),
+
            Container(
              margin: EdgeInsets.symmetric(vertical: height*.020),
              height: height*.065,

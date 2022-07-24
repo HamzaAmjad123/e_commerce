@@ -1,4 +1,5 @@
 import 'package:e_commerce/provider/category_provider.dart';
+import 'package:e_commerce/provider/level_provider.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
 
 import 'package:e_commerce/screens/login_screen.dart';
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context)=>UserDataProvider()),
-        ChangeNotifierProvider(create: (context)=>CategoriesProvider())
+        ChangeNotifierProvider(create: (context)=>CategoriesProvider()),
+        ChangeNotifierProvider(create: (context)=>LevelProvider())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

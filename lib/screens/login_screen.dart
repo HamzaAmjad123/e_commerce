@@ -104,9 +104,9 @@ class SigInWidget extends StatefulWidget {
 }
 
 class _SigInWidgetState extends State<SigInWidget> {
-  TextEditingController _userCont = TextEditingController(text: "super.admin");
+  TextEditingController _userCont = TextEditingController(text: "admin");
   TextEditingController _passwordCont =
-      TextEditingController(text: "SuperAdmin@123!");
+      TextEditingController(text: "admin");
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String selectedRadio = '';
