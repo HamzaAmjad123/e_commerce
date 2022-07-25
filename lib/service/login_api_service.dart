@@ -18,16 +18,17 @@ class LoginApiService {
     Map _body={"username":userName,"password":password};
     try{
       var res= await PostRequestService().httpPostRequest(url: loginUrl, body: _body, context: context);
-      if(res !=null){
-        UserResponseModel user=UserResponseModel.fromJson(res);
+
+
         if(res !=null){
+          UserResponseModel user=UserResponseModel.fromJson(res);
           Provider.of<UserDataProvider>(context,listen: false).updateUserData(
               newUser: user.user
           );
 
           print("Expiration ${user.token!}");
           LocalStorageServices().saveToken("${user.token}");
-          // print(LocalStorageServices().getToken());
+          print(LocalStorageServices().getToken());
           // LocalStorageServices().saveToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJqdGkiOiJlMjI2ZjBjZC1kZTI5LTRlOWYtOGY1NS0yMzRhMjE0OTMxNzUiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTY2MTA4OTYwOCwiaXNzIjoiaHR0cHM6Ly9hcGkuaW1wbGllc3NvbHV0aW9ucy5jb20vIiwiYXVkIjoiaHR0cHM6Ly9pbXBsaWVzc29sdXRpb25zLmNvbS8ifQ.4IiQy1lvheg4OjB5fgKsX8kUfA5ALDQLDklNiSQepOQ");
           return true;
         }
@@ -35,7 +36,7 @@ class LoginApiService {
           return false;
         }
       }
-    }
+
         catch(err){
       print("exception in loginApiService $err");
       return false;
