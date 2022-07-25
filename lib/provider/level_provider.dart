@@ -7,12 +7,6 @@ class LevelProvider extends ChangeNotifier {
 
   updateClassLevel({List<Level>? newLevel}) {
     myLevel = newLevel;
-
-    print("my level ${myLevel!.length}");
-
-    print(myLevel!.length);
-    print(myLevel);
-
     notifyListeners();
   }
 }

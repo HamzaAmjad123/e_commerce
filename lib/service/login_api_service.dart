@@ -24,7 +24,6 @@ class LoginApiService {
           Provider.of<UserDataProvider>(context,listen: false).updateUserData(
               newUser: user.user
           );
-
           print("Expiration ${user.token!}");
           LocalStorageServices().saveToken("${user.token}");
           // print(LocalStorageServices().getToken());

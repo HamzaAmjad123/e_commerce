@@ -112,12 +112,13 @@ class _SigInWidgetState extends State<SigInWidget> {
   String selectedRadio = '';
 
   _loginHandler() async {
-    CustomLoader.showLoader(context: context);
+    // CustomLoader.showLoader(context: context);
 
     bool res = await LoginApiService().getLogin(
         context: context,
         userName: _userCont.text,
         password: _passwordCont.text);
+    print("back");
     CustomLoader.hideLoader(context);
     if (res) {
       Navigator.push(

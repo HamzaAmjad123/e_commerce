@@ -3,8 +3,10 @@ import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/provider/category_provider.dart';
 import 'package:e_commerce/provider/level_provider.dart';
+import 'package:e_commerce/provider/series_provider.dart';
 import 'package:e_commerce/service/categories_service.dart';
 import 'package:e_commerce/service/level_services.dart';
+import 'package:e_commerce/service/series_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,13 +37,22 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  String selectSeries="select Series";
-  List<String> seriesList=["Series1","Series2","Series3"];
+  int? selectedSer;
+  @override
+  void updateSeries(int value){
+    setState(() {
+      selectedSer= value;
+    });
+  }
+
+
+
 
   _getServices()async{
     CustomLoader.showLoader(context: context);
    await CategoriesService().getCategory(context: context, tenatId: 0,skip: 0,take: 6);
    await LevelService().getLevel(context: context);
+   await SeriesServices().getSeries(context: context, tenantid: 0, skip: 0, take: 10000);
     CustomLoader.hideLoader(context);
   }
   @override
@@ -158,30 +169,41 @@ class _HomeScreenState extends State<HomeScreen> {
              );
            }),
 
-           Container(
-             margin: EdgeInsets.symmetric(vertical: height*.020),
-             height: height*.065,
-             padding: EdgeInsets.symmetric(horizontal: 12.0),
-             decoration: BoxDecoration(
-                 border: Border.all(
-                   color: Colors.black,
-                 ),
-                 borderRadius: BorderRadius.circular(12.0)
-             ),
-             child: DropdownButton(
+           Consumer<SeriesProvider>(builder: (context,Series,_){
+             return Container(
+               height: height*.065,
+               padding: EdgeInsets.symmetric(horizontal: 12.0),
+               decoration: BoxDecoration(
+                   border: Border.all(
+                     color: Colors.black,
+                   ),
+                   borderRadius: BorderRadius.circular(12.0)
+               ),
+               child: DropdownButton(
                  isExpanded: true,
                  underline: SizedBox(),
-                 hint: Text(selectSeries),
-                 items: seriesList.map((item){
+                 hint: Text("Select Series"),
+                 value: selectedSer,
+                 onChanged: (int? newValue) {
+
+                   if(updateSeries != null){
+                     updateSeries(newValue!);
+                     setState(() {
+
+                     });
+                   }
+                   print("Selected Category $selectedCat");
+                 },
+                 items: Series.series!.map((item){
                    return DropdownMenuItem(
-                     value: item,
-                     child: Text(item),
+                     value: item.seriesId,
+                     child: Text(item.name!),
                    );
-                 }).toList(), onChanged: (String? value){
-       selectSeries=value!;
-               setState((){});
-             }),
-           ),
+                 }).toList(),
+               ),
+             );
+           }),
+
          ],
        ),
      ),
