@@ -34,10 +34,14 @@ class PostRequestService{
       print("post response status code ${response.statusCode}");
       log("get post body ${response.body}");
       var jsonDecoded=json.decode(response.body);
-      if(jsonDecoded ==null || jsonDecoded['status'] ==401){
+
+      if(jsonDecoded ==null || jsonDecoded['status'] !=200){
         CustomSnackBar.failedSnackBar(context: context, message: jsonDecoded['title']);
         return null;
+
       }
+
+
       else{
         return jsonDecoded;
       }
