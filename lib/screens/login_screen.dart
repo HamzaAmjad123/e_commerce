@@ -2,6 +2,7 @@ import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
+import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
 import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
@@ -113,7 +114,7 @@ class _SigInWidgetState extends State<SigInWidget> {
   String selectedRadio = '';
 
   _loginHandler() async {
-    // CustomLoader.showLoader(context: context);
+    CustomLoader.showLoader(context: context);
 
     bool res = await LoginApiService().getLogin(
         context: context,
@@ -123,11 +124,13 @@ class _SigInWidgetState extends State<SigInWidget> {
     CustomLoader.hideLoader(context);
     if (res) {
       print("Tenat Id ${ Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!}");
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen(
-
-        tenatId: Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!,
-      )));
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => HomeScreen(
+      //   tenatId: Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!,
+      // )));
+      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeScreen(
+        tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.tenantId! ,
+      ));
     }
   }
 

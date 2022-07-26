@@ -1,14 +1,12 @@
-
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../model/series_model.dart';
 
-class SeriesProvider extends ChangeNotifier{
-  List<Series>? series=[];
-  updateSeries({List<Series>? newSeries}){
-    series=newSeries!;
-    print("Length of series ${series!.length}");
-  }
 
+class SeriesProvider extends ChangeNotifier{
+  List<Series>? mySeries=[];
+  updateSeries({List<Series>? newSeries}){
+    mySeries=newSeries;
+    notifyListeners();
+  }
 }

@@ -24,6 +24,8 @@ class PostRequestService{
       else{
         print("inside else");
         String token=await LocalStorageServices().getToken();
+        print("tokkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkeeeeeeeeeeeeeee");
+        print(token);
         headers={
           "Content-Type":"application/json; charset=utf-8",
           "authorization": "Bearer $token"
@@ -35,14 +37,24 @@ class PostRequestService{
       log("get post body ${response.body}");
       var jsonDecoded=json.decode(response.body);
 
-      if(jsonDecoded ==null || jsonDecoded['status'] !=200){
+      print("DSADSADASDAS");
+      print(jsonDecoded['status']);
+      print("DSADSADASDAS");
+
+
+      // if(jsonDecoded ==null || jsonDecoded['status'] != 200){
+      if(jsonDecoded ==null){
         CustomSnackBar.failedSnackBar(context: context, message: jsonDecoded['title']);
+        print("iffffff");
         return null;
+
 
       }
 
 
       else{
+        print("else");
+        print("ASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
         return jsonDecoded;
       }
     }

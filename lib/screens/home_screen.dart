@@ -7,6 +7,7 @@ import 'package:e_commerce/screens/drawer_screen.dart';
 import 'package:e_commerce/screens/generate_order_widget.dart';
 import 'package:e_commerce/service/categories_service.dart';
 import 'package:e_commerce/service/level_services.dart';
+import 'package:e_commerce/service/series_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _getServices()async{
     CustomLoader.showLoader(context: context);
-   await CategoriesService().getCategory(context: context, tenatId: widget.tenatId,skip: 0,take: 1000);
+    await CategoriesService().getCategory(context: context,tenantId: 1,skip: 0,take: 1000);
    await LevelService().getLevel(context: context);
+   await SeriesServices().getSeries(context: context, tenantid: widget.tenatId, skip: 0, take: 1000);
     CustomLoader.hideLoader(context);
   }
   @override
@@ -56,18 +58,27 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Builder(builder: (context)=>IconButton(onPressed: (){
           Scaffold.of(context).openDrawer();
 
-        }, icon: Icon(Icons.menu))),
+        },
+            icon: Icon(Icons.menu))),
         backgroundColor: bgColor,
 
+        title: Text("Generate Order",style: barStyle,),
+        centerTitle: true,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard),label: "Generate Order"),
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard,color: whiteColor,),label: "Generate Order",),
           BottomNavigationBarItem(icon: Icon(Icons.dashboard),label: "home"),
           BottomNavigationBarItem(icon: Icon(Icons.dashboard),label: "home"),
         ],
         onTap: onitemtapped,
         currentIndex: _selectedIndex!,
+        backgroundColor: bgColor,
+        selectedLabelStyle: TextStyle(color: whiteColor),
+        selectedItemColor: whiteColor,
+        unselectedItemColor: whiteColor,
+
+
       ),
      body: Padding(
        padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),

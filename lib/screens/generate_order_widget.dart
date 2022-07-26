@@ -1,4 +1,7 @@
 
+import 'package:e_commerce/helper_widgets/custom_button.dart';
+import 'package:e_commerce/helper_widgets/items_widget.dart';
+import 'package:e_commerce/provider/series_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,8 +35,13 @@ class _GenerateOrderWidgetState extends State<GenerateOrderWidget> {
     });
   }
 
-  String selectSeries="select Series";
-  List<String> seriesList=["Series1","Series2","Series3"];
+  int? selectSeries;
+  @override
+  void updateSeries(int value){
+    setState(() {
+      selectSeries = value;
+    });
+  }
 
 
   @override
@@ -116,82 +124,107 @@ class _GenerateOrderWidgetState extends State<GenerateOrderWidget> {
             ),
           );
         }),
-
-        Container(
-          margin: EdgeInsets.symmetric(vertical: height*.005),
-          height: height*.065,
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
-          decoration: BoxDecoration(
-              color: lightBlackColor,
-              // border: Border.all(
-              //   color: Colors.black,
-              // ),
-              borderRadius: BorderRadius.circular(12.0)
-          ),
-          child: DropdownButton(
+        Consumer<SeriesProvider>(builder: (context,series,_){
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: height*.020),
+            height: height*.065,
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            decoration: BoxDecoration(
+                color:lightBlackColor,
+                // border: Border.all(
+                //   color: Colors.black,
+                // ),
+                borderRadius: BorderRadius.circular(12.0)
+            ),
+            child: DropdownButton(
               isExpanded: true,
               underline: SizedBox(),
-              hint: Text(selectSeries),
-              items: seriesList.map((item){
+              hint: Text("Select Level"),
+              value:selectSeries,
+              onChanged: (int? newValue) {
+
+                if(updateSeries != null){
+                  updateSeries(newValue!);
+                  setState(() {
+
+                  });
+                }
+                print("Selected Category $selectedCat");
+              },
+              items: series.mySeries!.map((item){
                 return DropdownMenuItem(
-                  value: item,
-                  child: Text(item),
+                  value: item.seriesId,
+                  child: Text(item.name!),
                 );
-              }).toList(), onChanged: (String? value){
-            selectSeries=value!;
-            setState((){});
-          }),
-        ),
+              }).toList(),
+            ),
+          );
+        }),
+
         Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
           elevation: 3.0,
-          margin: EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 15.0,vertical: 12.0),
+            padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 12.0),
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                // Text("Sr#"),
-                // Text("1"),
-                // Text("Book Name"),
-                // Text("Consenten"),
-                // Text("Series Name"),
-                // Text("Ilmi Book Series"),
-                // Text("Discount"),
-                // Text("15%"),
-                // Text("Unit Price"),
-                // Text("${"150"}"),
-                // Text("Quantity"),
-                // Text("1"),
-                // Text("Total"),
-                // Text("150")
+
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: Text("Sr#")),
-                    Expanded(child: Text("Book Name")),
-                    Expanded(child: Text("Series Name")),
-                    Expanded(child: Text("Discount")),
-                    Expanded(child: Text("Unit Price")),
-                    Expanded(child: Text("Quantity")),
-                    Expanded(child: Text("Total")),
+                    // Text("Sr#"),
+                    // SizedBox(width: MediaQuery.of(context).size.width * 0.05,),
+                    // Text("Title"),
+                    // SizedBox(width: 10.0,),
+                    // Text("Disc"),
+                    // SizedBox(width: 10.0,),
+                    // Text("U-Price"),
+                    // SizedBox(width: 10.0,),
+                    // Text("Qty"),
+                    // SizedBox(width: 10.0,),
+                    // Text("Total"),
+                    ItemsWidget(
+                      itemText:"Sr#" ,
+                    ),
+                    ItemsWidget(
+                      itemText:"Title" ,
+                    ),
+                    ItemsWidget(
+                      itemText:"Disc" ,
+                    ),
+                    ItemsWidget(
+                      itemText:"U-Price" ,
+                    ),
+                    ItemsWidget(
+                      itemText:"Qty" ,
+                    ),
+                    ItemsWidget(
+                      itemText: "Total",
+                    ),
                   ],
                   ),
+                SizedBox(height: 5.0,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(child: Text("1")),
-                    Expanded(child: Text("Physics")),
-                    Expanded(child: Text("Series Name")),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.03,),
+                    Expanded(child: Text("Physics II")),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.00,),
                     Expanded(child: Text("15%")),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.03,),
                     Expanded(child: Text("150")),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.05,),
                     Expanded(child: Text("1")),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.06,),
                     Expanded(child: Text("150")),
+
                   ],
                 )
 

@@ -21,7 +21,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         children: [
           DrawerItemCard(
 
-          )
+          ),
         ],
       ),
     );

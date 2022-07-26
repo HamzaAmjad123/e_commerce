@@ -28,28 +28,28 @@ class Series {
   int? seriesId;
   String? name;
   int? tenantId;
-  Null? createdBy;
+  // Null? createdBy;
   String? createdDate;
-  Null? updatedBy;
-  Null? updatedDate;
+  // Null? updatedBy;
+  // Null? updatedDate;
 
   Series(
       {this.seriesId,
         this.name,
         this.tenantId,
-        this.createdBy,
+        // this.createdBy,
         this.createdDate,
-        this.updatedBy,
-        this.updatedDate});
+       /* this.updatedBy,
+        this.updatedDate*/});
 
   Series.fromJson(Map<String, dynamic> json) {
     seriesId = json['seriesId'];
     name = json['name'];
     tenantId = json['tenantId'];
-    createdBy = json['createdBy'];
+    // createdBy = json['createdBy'];
     createdDate = json['createdDate'];
-    updatedBy = json['updatedBy'];
-    updatedDate = json['updatedDate'];
+    // updatedBy = json['updatedBy'];
+    // updatedDate = json['updatedDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -57,10 +57,10 @@ class Series {
     data['seriesId'] = this.seriesId;
     data['name'] = this.name;
     data['tenantId'] = this.tenantId;
-    data['createdBy'] = this.createdBy;
+    // data['createdBy'] = this.createdBy;
     data['createdDate'] = this.createdDate;
-    data['updatedBy'] = this.updatedBy;
-    data['updatedDate'] = this.updatedDate;
+    // data['updatedBy'] = this.updatedBy;
+    // data['updatedDate'] = this.updatedDate;
     return data;
   }
 }

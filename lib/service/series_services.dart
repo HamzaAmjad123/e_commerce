@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class SeriesServices{
   Future getSeries({required BuildContext context,required int tenantid,required int skip,required int take})async{
     try{
-      Map? _body={"tenantid":tenantid,"skip":skip,"take":take};
+      Map _body={"tenantId":tenantid,"skip":skip,"take":take};
       var  res= await PostRequestService().httpPostRequest(url: getSereiesUrl, body: _body, context: context);
       if(res!=null){
         SeriesModel seriesModel=SeriesModel.fromJson(res);
