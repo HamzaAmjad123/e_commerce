@@ -8,8 +8,6 @@ class CategoriesProvider extends ChangeNotifier{
   List<Category>? myCat=[];
   updateCat({List<Category>? newCat}){
     myCat=newCat;
-    print("my Cat ${myCat!.length}");
-    print(myCat);
     notifyListeners();
   }
 }

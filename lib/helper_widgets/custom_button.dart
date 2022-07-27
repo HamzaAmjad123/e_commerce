@@ -10,8 +10,9 @@ class CustomButton extends StatefulWidget {
   final Color? buttonColor;
   final double? fontSize;
   final FontWeight? fontWeight;
-  final double? horizontalMargin;
-  final double? verticalMargin;
+  final double horizontalMargin;
+  final double verticalMargin;
+  final Function()? onTap;
 
   CustomButton(
       {this.height = 45.0,
@@ -22,7 +23,7 @@ class CustomButton extends StatefulWidget {
       this.fontSize=14.0,
       this.fontWeight=FontWeight.normal,
       this.horizontalMargin=0.0,
-      this.verticalMargin=0.0});
+      this.verticalMargin=0.0, this.onTap});
 
   @override
   State<CustomButton> createState() => _CustomButtonState();
@@ -35,15 +36,15 @@ class _CustomButtonState extends State<CustomButton> {
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(
-                vertical: 11.0,
+                vertical: widget.verticalMargin,
+                horizontal: widget.horizontalMargin
               ),
+              primary: widget.buttonColor,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      bottomLeft: Radius.circular(30.0)))),
-          onPressed: () {},
+                 borderRadius: BorderRadius.circular(12.0))),
+          onPressed: widget.onTap,
           child: Text(
-            "LOGIN",
+            widget.text!,
             style: TextStyle(
                 color: whiteColor, fontSize: 14.0, fontWeight: FontWeight.w600),
           )),

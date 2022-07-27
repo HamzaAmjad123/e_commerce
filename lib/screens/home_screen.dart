@@ -3,14 +3,17 @@ import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/provider/category_provider.dart';
 import 'package:e_commerce/provider/level_provider.dart';
-import 'package:e_commerce/screens/drawer_screen.dart';
-import 'package:e_commerce/screens/generate_order_widget.dart';
+
+import 'package:e_commerce/screens/generate_order_screen.dart';
+import 'package:e_commerce/screens/custom_drawer.dart';
 import 'package:e_commerce/service/categories_service.dart';
 import 'package:e_commerce/service/level_services.dart';
 import 'package:e_commerce/service/series_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'cashbook_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   int tenatId;
@@ -24,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _getServices()async{
     CustomLoader.showLoader(context: context);
-    await CategoriesService().getCategory(context: context,tenantId: 1,skip: 0,take: 1000);
+    await CategoriesService().getCategory(context: context,tenantId: widget.tenatId,skip: 0,take: 1000);
    await LevelService().getLevel(context: context);
    await SeriesServices().getSeries(context: context, tenantid: widget.tenatId, skip: 0, take: 1000);
     CustomLoader.hideLoader(context);
@@ -39,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
  static List<Widget> _widgetsList= [
-   GenerateOrderWidget(),
-   Text("ASAD"),
+  Text("Asad"),
+   CashbookWidget(),
    Text("ASAD"),
   ];
   int? _selectedIndex=0;
@@ -68,15 +71,16 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.dashboard,color: whiteColor,),label: "Generate Order",),
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard),label: "home"),
+          BottomNavigationBarItem(icon: Icon(CupertinoIcons.book),label: "Cashbook"),
           BottomNavigationBarItem(icon: Icon(Icons.dashboard),label: "home"),
         ],
         onTap: onitemtapped,
         currentIndex: _selectedIndex!,
         backgroundColor: bgColor,
-        selectedLabelStyle: TextStyle(color: whiteColor),
+        selectedLabelStyle: TextStyle(color: whiteColor,fontWeight: FontWeight.bold),
         selectedItemColor: whiteColor,
         unselectedItemColor: whiteColor,
+
 
 
       ),

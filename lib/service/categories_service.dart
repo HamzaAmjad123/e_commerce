@@ -14,9 +14,6 @@ class CategoriesService {
         {required BuildContext context, required int tenantId, required int take, required int skip}) async {
       try {
         Map? _body = {"tenantId": tenantId, "take": take, "skip": skip};
-        print("skip ${skip}");
-        print("take ${take}");
-        print("id ${tenantId}");
         var res = await PostRequestService().httpPostRequest(url: getCatUrl, body: _body, context: context);
 
         print(getCatUrl);

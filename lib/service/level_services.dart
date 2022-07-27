@@ -21,10 +21,7 @@ class LevelService{
         "authorization": "Bearer $token"
       };
       http.Response response=await http.post(Uri.parse(getLevelUrl),headers: headers);
-      print("response status code ${response.statusCode}");
-      print("get request body ${response.body}");
       LevelModel levelModel=LevelModel.fromJson(json.decode(response.body));
-      // List<Level> levelModel = (json.decode(response.body)).map<Level>((m )=> Level.fromJson(m)).toList();
       if(response.statusCode==200){
         Provider.of<LevelProvider>(context,listen: false).updateClassLevel(
             newLevel: levelModel.result);
