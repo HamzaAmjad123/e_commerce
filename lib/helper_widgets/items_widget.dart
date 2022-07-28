@@ -12,7 +12,7 @@ class ItemsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(itemText!,style: TextStyle(color: blackColor,fontSize: 15.0,fontWeight: FontWeight.w500),),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.05,),
+         SizedBox(width: MediaQuery.of(context).size.width * 0.05,),
       ],
     );
   }

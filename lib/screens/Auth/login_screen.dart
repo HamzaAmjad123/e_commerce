@@ -6,13 +6,13 @@ import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
 import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
-import 'package:e_commerce/screens/home_screen.dart';
+import 'package:e_commerce/screens/home/home_screen.dart';
 import 'package:e_commerce/service/login_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/images.dart';
+import '../../utils/images.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

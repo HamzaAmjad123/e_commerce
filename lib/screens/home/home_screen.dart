@@ -4,7 +4,7 @@ import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/provider/category_provider.dart';
 import 'package:e_commerce/provider/level_provider.dart';
 
-import 'package:e_commerce/screens/generate_order_screen.dart';
+import 'package:e_commerce/screens/generate_order/generate_order_screen.dart';
 import 'package:e_commerce/screens/custom_drawer.dart';
 import 'package:e_commerce/service/categories_service.dart';
 import 'package:e_commerce/service/level_services.dart';
@@ -13,7 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'cashbook_widget.dart';
+import '../cashbook_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   int tenatId;

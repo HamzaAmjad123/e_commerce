@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../helper_services/navigation_services.dart';
-import 'generate_order_screen.dart';
+import 'generate_order/generate_order_screen.dart';
 
 class CashbookWidget extends StatefulWidget {
   const CashbookWidget({Key? key}) : super(key: key);
