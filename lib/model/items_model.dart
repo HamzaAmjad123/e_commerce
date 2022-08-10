@@ -49,8 +49,9 @@ class ItemsList {
   String? createdDate;
   Null? updatedBy;
   Null? updatedDate;
+  int? qty=0;
 
-  ItemsList({this.itemId, this.name, this.slogan, this.code, this.unitPrice, this.unitDiscountPercentage, this.status, this.availableStock, this.isAvailable, this.address, this.cityId, this.rankId, this.rank, this.languageId, this.language, this.classId, /*this.class,*/ this.seriesId, this.series, this.itemTypeId, this.itemType, this.tenantId, this.createdBy, this.createdDate, this.updatedBy, this.updatedDate});
+  ItemsList({this.itemId, this.name, this.slogan, this.code, this.unitPrice, this.unitDiscountPercentage, this.status, this.availableStock, this.isAvailable, this.address, this.cityId, this.rankId, this.rank, this.languageId, this.language, this.classId, /*this.class,*/ this.seriesId, this.series, this.itemTypeId, this.itemType, this.tenantId, this.createdBy, this.createdDate, this.updatedBy, this.updatedDate,this.qty});
 
   ItemsList.fromJson(Map<String, dynamic> json) {
   itemId = json['itemId'];
@@ -111,6 +112,7 @@ class ItemsList {
   data['createdDate'] = this.createdDate;
   data['updatedBy'] = this.updatedBy;
   data['updatedDate'] = this.updatedDate;
+  data['qty'] = this.qty;
   return data;
   }
 }

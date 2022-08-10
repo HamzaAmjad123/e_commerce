@@ -106,9 +106,9 @@ class SigInWidget extends StatefulWidget {
 }
 
 class _SigInWidgetState extends State<SigInWidget> {
-  TextEditingController _userCont = TextEditingController(text: "admin");
+  TextEditingController _userCont = TextEditingController();
   TextEditingController _passwordCont =
-      TextEditingController(text: "admin");
+      TextEditingController();
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String selectedRadio = '';
@@ -121,15 +121,11 @@ class _SigInWidgetState extends State<SigInWidget> {
         userName: _userCont.text,
         password: _passwordCont.text);
     print("back");
-    CustomLoader.hideLoader(context);
+     CustomLoader.hideLoader(context);
     if (res) {
       print("Tenat Id ${ Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!}");
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => HomeScreen(
-      //   tenatId: Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!,
-      // )));
       NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeScreen(
-        tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.tenantId! ,
+        tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!,
       ));
     }
   }

@@ -7,13 +7,16 @@ class ItemsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(itemText!,style: TextStyle(color: blackColor,fontSize: 15.0,fontWeight: FontWeight.w500),),
-         SizedBox(width: MediaQuery.of(context).size.width * 0.05,),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 4.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(itemText!,style: TextStyle(color: blackColor,fontSize: 15.0,fontWeight: FontWeight.w500),),
+           SizedBox(width: MediaQuery.of(context).size.width * 0.05,),
+        ],
+      ),
     );
   }
 }

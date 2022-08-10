@@ -1,22 +1,23 @@
 import 'package:badges/badges.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
-import 'package:e_commerce/helper_widgets/custom_button.dart';
 import 'package:e_commerce/helper_widgets/items_widget.dart';
 import 'package:e_commerce/provider/items_provider.dart';
 import 'package:e_commerce/provider/series_provider.dart';
-import 'package:e_commerce/screens/custom_drawer.dart';
 import 'package:e_commerce/screens/generate_order/widget/item_row.dart';
+import 'package:e_commerce/service/save_order_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../configs/color.dart';
 import '../../helper_services/custom_loader.dart';
+import '../../helper_services/navigation_services.dart';
 import '../../model/items_cart_model.dart';
 import '../../model/items_model.dart';
 import '../../provider/category_provider.dart';
-import '../../provider/level_provider.dart';
+import '../../provider/save_order_provider.dart';
 import '../../service/get_items_service.dart';
+import 'book_success.dart';
 
 class GenerateOrderScreen extends StatefulWidget {
   const GenerateOrderScreen({Key? key}) : super(key: key);
@@ -29,15 +30,17 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   late double height;
   late double width;
 
-
   int sum = 0;
   GlobalKey<ScaffoldState> key = GlobalKey();
   final cart = CartModel.d1();
-  List<CartModel> temporary_list = [];
 
+  List<CartModel> temporary_list = [];
+  List<ItemsList> dt = [];
+  double cartTotal = 0.0;
 
   List<TextEditingController> cont = [];
   List<String> _totalPriceList = [];
+  String con_text = "";
 
   bool catSelected = false;
   bool seriesSelected = false;
@@ -91,7 +94,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-      drawer: drawer(context),
+      endDrawer: drawer(context),
       appBar: AppBar(
         backgroundColor: bgColor,
         centerTitle: true,
@@ -107,8 +110,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
               child: Builder(
                 builder: (context) => IconButton(
                     onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                      // key.currentState!.openEndDrawer();
+                      Scaffold.of(context).openEndDrawer();
                     },
                     icon: Icon(
                       Icons.add_shopping_cart_sharp,
@@ -122,21 +124,19 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Consumer<CategoriesProvider>(builder: (context, cat, _) {
               return Container(
-                margin: EdgeInsets.symmetric(vertical: height * .005),
+                margin: EdgeInsets.symmetric(
+                    vertical: height * .005, horizontal: 14.0),
                 height: height * .065,
                 padding: EdgeInsets.symmetric(horizontal: 12.0),
                 decoration: BoxDecoration(
                     color: lightBlackColor,
-                    // border: Border.all(
-                    //   color: Colors.black,
-                    // ),
                     borderRadius: BorderRadius.circular(12.0)),
                 child: DropdownButton(
                   isExpanded: true,
@@ -150,8 +150,10 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                       catSelected = true;
                       setState(() {});
                       if (catSelected == true && seriesSelected == true) {
-                        print("calling itemapi");
                         await _getAllItems();
+                        dt = dt =
+                            Provider.of<ItemsProvider>(context, listen: false)
+                                .itemsList!;
                       }
                     }
                     print("Selected Category $selectedCat");
@@ -203,7 +205,8 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
             // }),
             Consumer<SeriesProvider>(builder: (context, series, _) {
               return Container(
-                margin: EdgeInsets.symmetric(vertical: height * .020),
+                margin: EdgeInsets.symmetric(
+                    vertical: height * .020, horizontal: 14.0),
                 height: height * .065,
                 padding: EdgeInsets.symmetric(horizontal: 12.0),
                 decoration: BoxDecoration(
@@ -225,6 +228,8 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                       if (catSelected == true && seriesSelected == true) {
                         print("calling api");
                         await _getAllItems();
+                        dt = Provider.of<ItemsProvider>(context, listen: false)
+                            .itemsList!;
                       }
                     }
                     print("Selected Category $selectedCat");
@@ -251,12 +256,6 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                 ItemsWidget(
                   itemText: "U-Price",
                 ),
-                ItemsWidget(
-                  itemText: "Qty",
-                ),
-                ItemsWidget(
-                  itemText: "Total",
-                ),
               ],
             ),
             SizedBox(
@@ -277,55 +276,15 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                             physics: ScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             itemBuilder: (BuildContext, index) {
-                              // cont.add(cont[index]);
-                              if (cont.length < item.itemsList!.length) {
-                                cont.add(new TextEditingController());
-                              }
-                              if (_totalPriceList.length <
-                                  item.itemsList!.length) {
-                                _totalPriceList.add("0");
-                              }
                               return GenerateOrderWidget(
                                 item: item.itemsList![index],
-                                qtyController: cont[index],
-                                totalPrice: _totalPriceList[index],
                                 onTap: () async {
-                                  if (cont[index].text.isEmpty) {
-                                    CustomSnackBar.failedSnackBar(
-                                        context: context,
-                                        message: "add qty ist");
-                                    setState(() {});
-                                  } else {
-                                    await onTap(
-                                        index,
-                                        item.itemsList![index],
-                                        int.parse(cont[index].text),
-                                        double.parse(_totalPriceList[index]));
-                                    setState(() {});
-                                  }
-                                  //  print("else");
-                                  // total.value = getItemTotal(controller.cart)
-                                },
-                                onCange: (value) {
-                                  if (cont[index].value.text == "") {
-                                    _totalPriceList[index] = 0.0.toString();
-                                    setState(() {});
-                                  } else {
-                                    double price =
-                                        item.itemsList![index].unitPrice!;
-                                    double disc = (price *
-                                            item.itemsList![index]
-                                                .unitDiscountPercentage!) /
-                                        100;
-                                    double totalPrice = (int.parse(
-                                                cont[index].value.text) *
-                                            price) -
-                                        (disc *
-                                            int.parse(cont[index].value.text));
-                                    _totalPriceList[index] =
-                                        totalPrice.toString();
-                                    setState(() {});
-                                  }
+                                  await onTap(
+                                    index,
+                                    item.itemsList![index],
+                                  );
+                                  cartTotal = getItemTotal(cart);
+                                  setState(() {});
                                 },
                               );
                             }),
@@ -338,28 +297,41 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
     );
   }
 
-  onTap(int index, ItemsList items, int qty, double totalPrice) async {
-    CustomSnackBar.showSnackBar(context: context, message: "added to cart succesfully");
+  onTap(int index, ItemsList items) async {
+    CustomSnackBar.showSnackBar(
+        context: context, message: "added to cart succesfully");
     temporary_list.clear();
     if (cart.length > 0) {
       var last = cart.last.id;
       bool select = false;
       for (var element in cart) {
         if (element.id == items.itemId) {
-          element.qty = element.qty + qty;
-          element.totalprice = element.totalprice + totalPrice;
+          CustomSnackBar.showSnackBar(
+              context: context, message: "already in Cart");
+          element.qty++;
+          print("element.qty${element.qty}");
           select = true;
         } else if (last == element.id && !select) {
           sum = sum + 1;
-          temporary_list.add(new CartModel(items.unitDiscountPercentage!,
-              items.unitPrice!, totalPrice, items.name!, items.itemId!, qty));
+          temporary_list.add(new CartModel(
+              items.unitDiscountPercentage!,
+              items.unitPrice!,
+              dt[index].unitPrice!,
+              items.name!,
+              items.itemId!,
+              1));
         }
       }
       ;
     } else {
       sum = sum + 1;
-      temporary_list.add(new CartModel(items.unitDiscountPercentage!,
-          items.unitPrice!, totalPrice, items.name!, items.itemId!, qty));
+      temporary_list.add(new CartModel(
+          items.unitDiscountPercentage!,
+          items.unitPrice!,
+          dt[index].unitPrice!,
+          items.name!,
+          items.itemId!,
+          1));
     }
     cart.addAll(temporary_list);
     print(cart);
@@ -367,113 +339,307 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   }
 
   Widget drawer(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        width: double.infinity,
-        child: Drawer(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              cart.length == 0
-                  ? Center(
-                      child: Text("No Items Add into Cart"),
-                    )
-                  : Expanded(
-                      child: SingleChildScrollView(
-                      child: ListView.builder(
-                          itemCount: cart.length,
-                          shrinkWrap: true,
-                          primary: false,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text("${cart[index].name}"),
-                              subtitle: Text("${cart[index].unitprice}"),
-                              trailing: Column(
-                                children: [
-                                  Text("${cart[index].qty}"),
-                                  Text("${cart[index].totalprice}"),
-                                ],
-                              ),
-                            );
-                          }),
-                    )),
-              Row(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 10, left: 10, right: 5),
-                    child: Container(
-                      height: 60,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blueGrey),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      // ignore: deprecated_member_use
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            sum > 0
-                                ? Text(
-                                    '100,000',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : Text("0.0",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold)),
-                            Text(
-                              'Total Amount',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
+    return Container(
+      width: double.infinity,
+      child: Drawer(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(color: bgColor),
+                height: MediaQuery.of(context).size.height / 8.8,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: whiteColor,
+                          size: 25.0,
+                        )),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.1),
+                    Text(
+                      "Order Cart",
+                      style: barStyle,
+                    ),
+                  ],
+                )),
+            cart.length == 0
+                ? Text("No Items Add into Cart")
+                : Expanded(
+                    child: SingleChildScrollView(
+                    child: ListView.builder(
+                        itemCount: cart.length,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemBuilder: (context, index) {
+                          print("initial value  ${cart[index].qty}");
+                          cont.add(new TextEditingController());
+                          if (_totalPriceList.length < cart.length) {
+                            _totalPriceList.add("0");
+                          }
+                          return Container(
+                            height: 100,
+                            width: double.infinity,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            padding: EdgeInsets.all(5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 70,
+                                      width: 80,
+                                      child:
+                                          Image.asset("assets/images/book.jpg"),
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${cart[index].name}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${cart[index].unitprice}",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14),
+                                            ),
+                                            Text(
+                                              "${cart[index].discount}",
+                                              style: TextStyle(
+                                                  color: bgColor, fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 5),
+                                          height: 30,
+                                          width: 150,
+                                          child: TextFormField(
+                                            keyboardType: TextInputType.number,
+                                            textInputAction: TextInputAction.done,
+                                            controller: cont[index],
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              contentPadding: EdgeInsets.all(5),
+                                              hintText: "Enter Quantity",
+                                              label: Text("Enter Qty"),
+                                            ),
+                                            onChanged: (value){
+                                              if (cont[index].value.text == "") {
+                                                _totalPriceList[index] = 0.0.toString();
+                                                cart[index].qty=0;
+                                                setState(() {});
+                                              }else{
+                                                cart[index].qty=int.parse(value.toString());
+                                                cartTotal = getItemTotal(cart);
+                                                setState(() {});
+                                              }
+                                            },
+                                          )
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    InkResponse(
+                                        onTap: () {
+                                          //set stste need to change
+                                          cart.removeAt(index);
+                                          cartTotal = getItemTotal(cart);
+                                          setState((){});
+                                        },
+                                        child: Container(
+                                          height: 25,
+                                          width: 25,
+                                          margin:
+                                              EdgeInsets.only(top: 10, right: 5),
+                                          decoration: BoxDecoration(
+                                              color: bgColor,
+                                              shape: BoxShape.circle),
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                            size: 16,
+                                          ),
+                                        )),
+                                    Text(
+                                      "${cart[index].qty}",
+                                      style: TextStyle(
+                                        color: bgColor,
+                                          fontSize: 18,
+                                          fontWeight:
+                                          FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
+                          );
+                        }),
+                  )),
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 10),
+                  height: 60,
+                  width: MediaQuery.of(context).size.width*0.45,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  // ignore: deprecated_member_use
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        sum > 0
+                            ? Expanded(
+                                child: Text(
+                                  '${cartTotal}',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            : Text("0.0",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold)),
+                        Text(
+                          'Total Amount',
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                    child: Container(
-                        height: 60,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blueGrey),
-                          borderRadius: BorderRadius.circular(10),
-                          color: bgColor,
-                        ),
-                        // ignore: deprecated_member_use
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: MaterialButton(
-                            onPressed: () {
-                              print("need to call apio for upload cart");
-                            },
-                            child: Center(
-                              child: Text(
-                                'Finish Order',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 60,
+                    width: MediaQuery.of(context).size.width*0.45,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blueGrey),
+                      borderRadius: BorderRadius.circular(10),
+                      color: bgColor,
+                    ),
+                    // ignore: deprecated_member_use
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          _saveOrder();
+                        },
+                        child: Center(
+                          child: Text(
+                            'Finish Order',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
-                        )),
-                  ),
-                ],
-              )
-            ],
-          ),
+                        ),
+                      ),
+                    )),
+              ],
+            )
+          ],
         ),
       ),
     );
+  }
+
+  _saveOrder() async {
+    bool res =
+        await SaveOrderServices().SaveOrder(context: context, list: cart);
+    print("bool value $res");
+    if (res == true) {
+      NavigationServices.goNextAndDoNotKeepHistory(
+          context: context,
+          widget: BookSuccess(
+              message: Provider.of<SaveOrderProvider>(context, listen: false)
+                  .message,
+              orderId: Provider.of<SaveOrderProvider>(context, listen: false)
+                  .orderId));
+    }
+  }
+
+  //Functions for drwawer
+  //
+  // incrementCounterCart(int i) {
+  //   sum = sum + 1;
+  //   cart[i].qty++;
+  //   dt.forEach((element) {
+  //     if (element.itemId == cart[i].id) {
+  //       dt[i].qty = dt[i].qty! + 1;
+  //     }
+  //   });
+  //   cartTotal = getItemTotal(cart);
+  // }
+
+  getCartItemTotal(CartModel items) {
+    print("getCartItemTotal");
+    double sum = 0;
+    double dicount = (items.unitprice * items.discount / 100) * items.qty;
+    double total = (items.unitprice * items.qty);
+    sum = total - dicount;
+    return sum;
+  }
+
+  // decrementCounterCart(int i) {
+  //   sum = sum - 1;
+  //   if (cart[i].qty <= 1) {
+  //     cart.removeWhere((item) => item.id == cart[i].id);
+  //   } else {
+  //     cart[i].qty--;
+  //     dt.forEach((element) {
+  //       if (element.itemId == cart[i].id) {
+  //         dt[i].qty = dt[i].qty! - 1;
+  //       }
+  //     });
+  //   }
+  //   cartTotal = getItemTotal(cart);
+  // }
+
+  getItemTotal(List<CartModel> items) {
+    double sum = 0.0;
+    items.forEach((e) {
+      double dicount = (e.unitprice * e.discount / 100) * e.qty;
+      double total = (e.unitprice * e.qty);
+      sum += total - dicount;
+    });
+    return sum;
   }
 }

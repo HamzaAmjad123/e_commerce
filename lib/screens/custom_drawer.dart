@@ -11,6 +11,7 @@ import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
 import 'package:e_commerce/screens/home/home_screen.dart';
 import 'package:e_commerce/screens/Auth/login_screen.dart';
+import 'package:e_commerce/screens/order_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -267,6 +268,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
             //   return SizedBox(height: 0);
             // }
 
+            DrawerLinkWidget(
+              icon: Icons.logout,
+              text: "Order List",
+              onTap: ()  {
+                NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: OrderListScreen());
+
+
+              },
+            ),
             DrawerLinkWidget(
               icon: Icons.logout,
               text: "Logout",

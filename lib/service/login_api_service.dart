@@ -18,9 +18,8 @@ class LoginApiService {
     Map _body={"username":userName,"password":password};
     try{
       var res= await PostRequestService().httpPostRequest(url: loginUrl, body: _body, context: context);
-
-
-        if(res !=null){
+       print("here");
+      if(res !=null){
           UserResponseModel user=UserResponseModel.fromJson(res);
           Provider.of<UserDataProvider>(context,listen: false).updateUserData(
               newUser: user.user
