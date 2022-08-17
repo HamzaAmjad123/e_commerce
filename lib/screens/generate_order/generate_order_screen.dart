@@ -56,6 +56,8 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
 
   int? selectedLevel;
 
+
+
   @override
   void updateLevel(int value) {
     setState(() {
@@ -146,7 +148,6 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                   onChanged: (int? newValue) async {
                     if (updateCat != null) {
                       updateCat(newValue!);
-
                       catSelected = true;
                       setState(() {});
                       if (catSelected == true && seriesSelected == true) {
@@ -298,18 +299,15 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   }
 
   onTap(int index, ItemsList items) async {
-    CustomSnackBar.showSnackBar(
-        context: context, message: "added to cart succesfully");
     temporary_list.clear();
     if (cart.length > 0) {
       var last = cart.last.id;
       bool select = false;
       for (var element in cart) {
         if (element.id == items.itemId) {
-          CustomSnackBar.showSnackBar(
-              context: context, message: "already in Cart");
-          element.qty++;
-          print("element.qty${element.qty}");
+          // element.qty++;
+          // sum = sum + 1;
+          // print("element.qty${element.qty}");
           select = true;
         } else if (last == element.id && !select) {
           sum = sum + 1;
@@ -476,6 +474,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                                           //set stste need to change
                                           cart.removeAt(index);
                                           cartTotal = getItemTotal(cart);
+                                          sum=sum-1;
                                           setState((){});
                                         },
                                         child: Container(
@@ -582,10 +581,10 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   }
 
   _saveOrder() async {
-    bool res =
-        await SaveOrderServices().SaveOrder(context: context, list: cart);
-    print("bool value $res");
+    bool res = await SaveOrderServices().SaveOrder(context: context, list: cart);
     if (res == true) {
+      cart.clear();
+      sum=0;
       NavigationServices.goNextAndDoNotKeepHistory(
           context: context,
           widget: BookSuccess(

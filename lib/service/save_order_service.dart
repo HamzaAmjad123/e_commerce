@@ -18,14 +18,11 @@ class SaveOrderServices{
     try{
       Map _body={
         "orders": list,
-      };
-      var res=await PostRequestService2().httpPostRequest(url: saveOrderUrl, body: _body, context: context);
-      if(res!=null){
-        OrderSave orderSave=OrderSave.fromJson(res);
-        print(res);
-        print(orderSave.message);
-        print(orderSave.order);
 
+      };
+      var res=await PostRequestService().httpPostRequest(url: saveOrderUrl, body: _body, context: context);
+      if(res!=null){
+        OrderSaveModel orderSave=OrderSaveModel.fromJson(res);
         Provider.of<SaveOrderProvider>(context,listen: false).updateSaveOrder(
           newMessage: orderSave.message,
           newOrderId: orderSave.order,
@@ -38,6 +35,5 @@ class SaveOrderServices{
       print("error in save order Service  $e");
       return false;
     }
-
   }
 }

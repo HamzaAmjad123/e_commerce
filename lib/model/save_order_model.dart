@@ -1,10 +1,10 @@
-class OrderSave {
+class OrderSaveModel {
   String? message;
   String? order;
 
-  OrderSave({this.message, this.order});
+  OrderSaveModel({this.message, this.order});
 
-  OrderSave.fromJson(Map<String, dynamic> json) {
+  OrderSaveModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     order = json['order'];
   }

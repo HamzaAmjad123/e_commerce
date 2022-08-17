@@ -34,7 +34,7 @@ class OrderList {
   int? status;
   int? dealerId;
   Dealer? dealer;
-  Null? warehouseId;
+ int? warehouseId;
   Null? warehouse;
   int? tenantId;
   Null? orderLines;

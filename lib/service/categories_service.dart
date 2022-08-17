@@ -16,8 +16,6 @@ class CategoriesService {
         Map? _body = {"tenantId": tenantId, "take": take, "skip": skip};
         var res = await PostRequestService().httpPostRequest(url: getCatUrl, body: _body, context: context);
 
-        print(getCatUrl);
-        print(res);
         if (res != null) {
           CategoriesModel categories = CategoriesModel.fromJson(res);
           Provider.of<CategoriesProvider>(context, listen: false).updateCat(

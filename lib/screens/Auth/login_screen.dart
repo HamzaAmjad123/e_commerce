@@ -74,22 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ]),
               ),
               Spacer(),
-              Padding(
-                padding:
-                    const EdgeInsets.only(right: 15.0, top: 17.0, bottom: 15.0),
-                child: InkWell(
-                  onTap: (){
-                    print("${Provider.of<UserDataProvider>(context,listen: false).user}");
-                  },
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.w800),
-                  ),
-                ),
-              ),
             ],
           ),
         ],
@@ -107,8 +91,7 @@ class SigInWidget extends StatefulWidget {
 
 class _SigInWidgetState extends State<SigInWidget> {
   TextEditingController _userCont = TextEditingController();
-  TextEditingController _passwordCont =
-      TextEditingController();
+  TextEditingController _passwordCont = TextEditingController();
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String selectedRadio = '';

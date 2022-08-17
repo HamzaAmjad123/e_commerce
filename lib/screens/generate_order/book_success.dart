@@ -1,7 +1,5 @@
-import 'package:e_commerce/screens/generate_order/generate_order_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../../configs/color.dart';
+import '../order/order_list_screen.dart';
 
 class BookSuccess extends StatefulWidget {
   String? message;
@@ -16,14 +14,19 @@ class _BookSuccessState extends State<BookSuccess> {
   @override
   void initState() {
     super.initState();
-    new Future.delayed(const Duration(seconds: 5), () {
+    new Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute<void>(
-          builder: (BuildContext context) =>  GenerateOrderScreen(),
+          builder: (BuildContext context) =>  OrderListScreen(),
         ),
       );
     });
+  }
+  void dispose(){
+    //...
+    super.dispose();
+    //...
   }
 
   @override
@@ -74,25 +77,6 @@ class _BookSuccessState extends State<BookSuccess> {
                         ],
                       ),
                     ),
-                    // Container(
-                    //   height: width * 0.12,
-                    //   width: width * 0.27,
-                    //   margin: EdgeInsets.only(top: width * 0.06),
-                    //   child: Card(
-                    //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                    //     color: bgColor,
-                    //     child: Column(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //       children: [
-                    //         Container(
-                    //           child: Text("OrderId#  ${widget.orderId!}",
-                    //             style: TextStyle(fontSize: width * 0.03, color: Colors.white),
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
               ),
