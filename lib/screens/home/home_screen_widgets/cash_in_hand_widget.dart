@@ -3,11 +3,11 @@ import 'package:e_commerce/helper_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import '../../../configs/text_style.dart';
+import '../../../helper_services/navigation_services.dart';
+import '../../../provider/cash_book_provider.dart';
+import '../../generate_order/generate_order_screen.dart';
 
-import '../configs/text_style.dart';
-import '../helper_services/navigation_services.dart';
-import '../provider/cash_book_provider.dart';
-import '../screens/generate_order/generate_order_screen.dart';
 
 class CashInHandWidget extends StatefulWidget {
   const CashInHandWidget({Key? key}) : super(key: key);

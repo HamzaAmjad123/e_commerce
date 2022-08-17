@@ -2,16 +2,15 @@ import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/screens/home/custom_drawer.dart';
-import 'package:e_commerce/screens/second_screen.dart';
 import 'package:e_commerce/service/cash_book_service.dart';
 import 'package:e_commerce/service/categories_service.dart';
 import 'package:e_commerce/service/level_services.dart';
 import 'package:e_commerce/service/series_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../home_screen_widgets/cash_in_hand_widget.dart';
-import '../../home_screen_widgets/generate_order_widget.dart';
-import '../../home_screen_widgets/pending_orders_widget.dart';
+import 'home_screen_widgets/cash_in_hand_widget.dart';
+import 'home_screen_widgets/generate_order_widget.dart';
+import 'home_screen_widgets/pending_orders_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   int tenatId;
@@ -41,7 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
  static List<Widget> _widgetsList= [
-   GenerateOrderWidget(),
+   // GenerateOrderWidget(),
+   DashBoardWidget(),
    CashInHandWidget(),
    PendingOrderWidget(),
 

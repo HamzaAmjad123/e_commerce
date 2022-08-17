@@ -27,6 +27,47 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 70.0,
+            width: 40.0,
+            decoration: BoxDecoration(
+              // shape: BoxShape.circle,
+                color: bgColor,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(50.0),
+                    bottomRight: Radius.circular(50.0)),
+                boxShadow: [
+                  BoxShadow(
+                    color: bgColor.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 8,
+                    // offset: Offset(0, 0),
+                  )
+                ]),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 15.0, left: 13.0),
+            height: 35.0,
+            width: 35.0,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: bgColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: bgColor.withOpacity(0.5),
+                    spreadRadius: 4,
+                    blurRadius: 7,
+                    // offset: Offset(3, 3),
+                  )
+                ]),
+          ),
+          Spacer(),
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,47 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 50.0,
           ),
           Expanded(child: SigInWidget()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 70.0,
-                width: 40.0,
-                decoration: BoxDecoration(
-                    // shape: BoxShape.circle,
-                    color: bgColor,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(50.0),
-                        bottomRight: Radius.circular(50.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: bgColor.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 8,
-                        // offset: Offset(0, 0),
-                      )
-                    ]),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 15.0, left: 13.0),
-                height: 35.0,
-                width: 35.0,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: bgColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: bgColor.withOpacity(0.5),
-                        spreadRadius: 4,
-                        blurRadius: 7,
-                        // offset: Offset(3, 3),
-                      )
-                    ]),
-              ),
-              Spacer(),
-            ],
-          ),
         ],
       ),
     );
@@ -103,10 +103,8 @@ class _SigInWidgetState extends State<SigInWidget> {
         context: context,
         userName: _userCont.text,
         password: _passwordCont.text);
-    print("back");
      CustomLoader.hideLoader(context);
     if (res) {
-      print("Tenat Id ${ Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!}");
       NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeScreen(
         tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!,
       ));
