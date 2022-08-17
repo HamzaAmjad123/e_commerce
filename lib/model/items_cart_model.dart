@@ -1,17 +1,17 @@
 class CartModel {
   int discount;
-  double unitprice;
-  double totalprice;
+  double unitPrice;
+  double totalPrice;
   String name;
   int id;
   int qty = 0;
   CartModel(
-      this.discount, this.unitprice,this.totalprice, this.name, this.id, this.qty);
+      this.discount, this.unitPrice,this.totalPrice, this.name, this.id, this.qty);
   static List<CartModel> d1() => [];
 
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
-      json['image'],
+      json['discount'],
       json['price'],
       json['name'],
       json['id'],
@@ -22,10 +22,10 @@ class CartModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['image'] = this.discount;
-    data['price'] = this.unitprice;
+    data['price'] = this.unitPrice;
     data['name'] = this.name;
     data['id'] = this.id;
-    data['totalprice'] = this.totalprice;
+    data['totalprice'] = this.totalPrice;
     return data;
   }
 }

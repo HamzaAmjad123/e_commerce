@@ -4,8 +4,10 @@ import 'package:e_commerce/helper_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+
 import '../helper_services/navigation_services.dart';
 import 'generate_order/generate_order_screen.dart';
+
 
 class CashbookWidget extends StatefulWidget {
   const CashbookWidget({Key? key}) : super(key: key);
@@ -105,9 +107,7 @@ class _CashbookWidgetState extends State<CashbookWidget> {
               horizontalMargin: 12.0,
               verticalMargin: 5.0,
               onTap: (){
-                NavigationServices.goNextAndKeepHistory(context: context, widget: GenerateOrderScreen(
-
-                ));
+                NavigationServices.goNextAndKeepHistory(context: context, widget: GenerateOrderScreen());
                 setState((){});
               },
             ),
