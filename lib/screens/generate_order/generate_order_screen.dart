@@ -8,6 +8,7 @@ import 'package:e_commerce/provider/series_provider.dart';
 import 'package:e_commerce/screens/custom_drawer.dart';
 import 'package:e_commerce/screens/generate_order/widget/item_row.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../configs/color.dart';
@@ -29,12 +30,10 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   late double height;
   late double width;
 
-
   int sum = 0;
   GlobalKey<ScaffoldState> key = GlobalKey();
   final cart = CartModel.d1();
   List<CartModel> temporary_list = [];
-
 
   List<TextEditingController> cont = [];
   List<String> _totalPriceList = [];
@@ -311,8 +310,11 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                                     _totalPriceList[index] = 0.0.toString();
                                     setState(() {});
                                   } else {
-                                    double price =
-                                        item.itemsList![index].unitPrice!;
+                                    double price = item
+                                        .itemsList![index].unitPrice!;
+
+                                    // double d = 2.3456789;
+                                    // double d1 = d.toPrecision(1);
                                     double disc = (price *
                                             item.itemsList![index]
                                                 .unitDiscountPercentage!) /
@@ -323,7 +325,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                                         (disc *
                                             int.parse(cont[index].value.text));
                                     _totalPriceList[index] =
-                                        totalPrice.toString();
+                                        totalPrice.toPrecision(2).toString();
                                     setState(() {});
                                   }
                                 },
@@ -339,7 +341,8 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   }
 
   onTap(int index, ItemsList items, int qty, double totalPrice) async {
-    CustomSnackBar.showSnackBar(context: context, message: "added to cart succesfully");
+    CustomSnackBar.showSnackBar(
+        context: context, message: "added to cart succesfully");
     temporary_list.clear();
     if (cart.length > 0) {
       var last = cart.last.id;
@@ -347,7 +350,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
       for (var element in cart) {
         if (element.id == items.itemId) {
           element.qty = element.qty + qty;
-          element.totalprice = element.totalprice + totalPrice;
+          element.totalPrice = element.totalPrice + totalPrice;
           select = true;
         } else if (last == element.id && !select) {
           sum = sum + 1;
@@ -388,11 +391,11 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: Text("${cart[index].name}"),
-                              subtitle: Text("${cart[index].unitprice}"),
+                              subtitle: Text("${cart[index].unitPrice}"),
                               trailing: Column(
                                 children: [
                                   Text("${cart[index].qty}"),
-                                  Text("${cart[index].totalprice}"),
+                                  Text("${cart[index].totalPrice}"),
                                 ],
                               ),
                             );
