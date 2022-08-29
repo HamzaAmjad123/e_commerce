@@ -1,21 +1,21 @@
 import 'package:badges/badges.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_widgets/items_widget.dart';
+import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:e_commerce/provider/items_provider.dart';
 import 'package:e_commerce/provider/series_provider.dart';
-import 'package:e_commerce/screens/generate_order/widget/item_row.dart';
+import 'package:e_commerce/screens/Dealer/generate_order/widget/item_row.dart';
 import 'package:e_commerce/service/save_order_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../configs/color.dart';
-import '../../helper_services/custom_loader.dart';
-import '../../helper_services/navigation_services.dart';
-import '../../model/items_cart_model.dart';
-import '../../model/items_model.dart';
-import '../../provider/category_provider.dart';
-import '../../provider/save_order_provider.dart';
-import '../../service/get_items_service.dart';
+import '../../../configs/color.dart';
+import '../../../helper_services/custom_loader.dart';
+import '../../../helper_services/navigation_services.dart';
+import '../../../model/items_model.dart';
+import '../../../provider/category_provider.dart';
+import '../../../provider/save_order_provider.dart';
+import '../../../service/get_items_service.dart';
 import 'book_success.dart';
 
 class GenerateOrderScreen extends StatefulWidget {
@@ -93,14 +93,11 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return WillPopScope(
-      onWillPop: () async {
+      onWillPop: () async{
         sum = 0;
         cart.clear();
         dt.clear();
-        await Navigator.of(context);
-        // NavigationServices.goNextAndDoNotKeepHistory(
-        //   context: context,
-        //   widget:CashInHandWidget(),);
+         Navigator.pop(context);
         return true;
       },
       child: Scaffold(
@@ -117,7 +114,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
               sum = 0;
               cart.clear();
               dt.clear();
-              Navigator.of(context);
+              Navigator.pop(context);
             },
           ),
           actions: [
@@ -293,7 +290,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                               itemCount: item.itemsList!.length,
                               shrinkWrap: true,
                               primary: false,
-                              physics: ScrollPhysics(),
+                              physics: NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               itemBuilder: (BuildContext, index) {
                                 return GenerateOrderWidget(
@@ -321,10 +318,12 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   onTap(int index, ItemsList items) async {
     temporary_list.clear();
     if (cart.length > 0) {
+      print("herer");
       var last = cart.last.id;
       bool select = false;
       for (var element in cart) {
         if (element.id == items.itemId) {
+          print("herereeeeeeeeee");
           // element.qty++;
           // sum = sum + 1;
           // print("element.qty${element.qty}");
@@ -362,6 +361,15 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
         title: Text(
           "Cart",
           style: TextStyle(color: Colors.white),
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         backgroundColor: bgColor,
       ),
@@ -445,7 +453,6 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                   shrinkWrap: true,
                   primary: false,
                   itemBuilder: (context, index) {
-                    print("initial value  ${cart[index].qty}");
                     cont.add(new TextEditingController());
                     if (_totalPriceList.length < cart.length) {
                       _totalPriceList.add("0");
@@ -540,19 +547,16 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                               InkResponse(
                                   onTap: () {
                                     if (sum == 1) {
-                                      cart.removeAt(index);
-                                      cartTotal = getItemTotal(cart);
-                                      sum = sum-1;
                                       cart.clear();
                                       dt.clear();
+                                      cartTotal = 0.0;
                                       setState(() {});
                                     } else {
-                                      //set stste need to change
-                                      cart.removeAt(index);
+                                     cart.removeWhere((item) => item.id == cart[index].id);
                                       cartTotal = getItemTotal(cart);
-                                      sum = sum - 1;
                                       setState(() {});
                                     }
+                                    sum = sum-1;
                                   },
                                   child: Container(
                                     height: 25,

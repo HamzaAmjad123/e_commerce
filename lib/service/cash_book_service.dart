@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../configs/api_urls.dart';
 import '../helper_services/custom_post_request_service.dart';
-import '../model/cash_book.dart';
+import '../model/cash_book_model.dart';
 
 class CashBookService {
   Future getCashBook({required BuildContext context, required int skip,required int take, required int tenantId}) async {
@@ -17,7 +17,7 @@ class CashBookService {
 
       var res = await PostRequestService().httpPostRequest(url: cashBookUrl, body: _body, context: context);
       if (res != null) {
-        CashBook cashBook=CashBook.fromJson(res);
+        CashBookModel cashBook=CashBookModel.fromJson(res);
         Provider.of<CashBookProvider>(context,listen: false).updateCashBook(
           newCashBook: cashBook,
         );

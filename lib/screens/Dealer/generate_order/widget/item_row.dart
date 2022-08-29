@@ -1,9 +1,7 @@
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../../configs/color.dart';
-import '../../../model/items_model.dart';
+import '../../../../model/items_model.dart';
 
 class GenerateOrderWidget extends StatelessWidget {
   ItemsList item;

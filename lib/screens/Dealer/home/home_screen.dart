@@ -1,16 +1,17 @@
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
-import 'package:e_commerce/screens/home/custom_drawer.dart';
+import 'package:e_commerce/screens/Dealer/home/custom_drawer.dart';
 import 'package:e_commerce/service/cash_book_service.dart';
 import 'package:e_commerce/service/categories_service.dart';
 import 'package:e_commerce/service/level_services.dart';
 import 'package:e_commerce/service/series_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../dealer_statement.dart';
 import 'home_screen_widgets/cash_in_hand_widget.dart';
 import 'home_screen_widgets/generate_order_widget.dart';
-import 'home_screen_widgets/pending_orders_widget.dart';
+
 
 class HomeScreen extends StatefulWidget {
   int tenatId;
@@ -43,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
    // GenerateOrderWidget(),
    DashBoardWidget(),
    CashInHandWidget(),
-   PendingOrderWidget(),
+   // PendingOrderWidget(),
+   DealerStatement()
 
   ];
   int? _selectedIndex=0;
@@ -72,7 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.dashboard,color: whiteColor,),label: "Home",),
           BottomNavigationBarItem(icon: Icon(CupertinoIcons.book),label: "Cashbook"),
-          BottomNavigationBarItem(icon: Icon(Icons.pending),label: "Pending Order"),
+         // BottomNavigationBarItem(icon: Icon(Icons.pending),label: "Pending Order"),
+          BottomNavigationBarItem(icon: Icon(Icons.money),label: "Cash History"),
         ],
         onTap: onitemtapped,
         currentIndex: _selectedIndex!,

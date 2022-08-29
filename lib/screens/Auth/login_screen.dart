@@ -4,15 +4,13 @@ import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
-import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
-import 'package:e_commerce/screens/home/home_screen.dart';
 import 'package:e_commerce/service/login_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../utils/images.dart';
+import '../Dealer/home/home_screen.dart';
+import '../Rider/rider_home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -23,7 +21,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isChecked = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,8 +87,8 @@ class SigInWidget extends StatefulWidget {
 }
 
 class _SigInWidgetState extends State<SigInWidget> {
-  TextEditingController _userCont = TextEditingController();
-  TextEditingController _passwordCont = TextEditingController();
+  TextEditingController _userCont = TextEditingController(text: "rider");
+  TextEditingController _passwordCont = TextEditingController(text: "rider");
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String selectedRadio = '';
@@ -105,8 +102,10 @@ class _SigInWidgetState extends State<SigInWidget> {
         password: _passwordCont.text);
      CustomLoader.hideLoader(context);
     if (res) {
-      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeScreen(
-        tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!,
+      Provider.of<UserDataProvider>(context,listen: false).user!.userRoles![0] !="Dealer"?
+      NavigationServices.goNextAndKeepHistory(context: context, widget: RiderHome(
+      )):NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeScreen(
+        tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.user!.tenantId!,
       ));
     }
   }

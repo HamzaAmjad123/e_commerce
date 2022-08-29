@@ -1,7 +1,7 @@
 import 'package:e_commerce/configs/api_urls.dart';
 import 'package:e_commerce/helper_services/custom_post_request_service.dart';
-import 'package:e_commerce/model/order_deatils.dart';
-import 'package:e_commerce/model/order_log.dart';
+import 'package:e_commerce/model/order_deatils_model.dart';
+import 'package:e_commerce/model/order_log_model.dart';
 import 'package:e_commerce/provider/order_getDeatils_provider.dart';
 import 'package:e_commerce/provider/order_log_provider.dart';
 import 'package:flutter/cupertino.dart';
