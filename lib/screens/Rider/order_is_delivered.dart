@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:e_commerce/helper_widgets/custom_button.dart';
@@ -6,6 +8,7 @@ import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/service/rider_services/delivered_order_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:signature/signature.dart';
 
@@ -15,6 +18,7 @@ import '../../utils/functions.dart';
 class OrderIsDelivered extends StatefulWidget {
   final RiderOdersModel? order;
   final int orderId;
+
   OrderIsDelivered({this.order, required this.orderId});
 
   @override
@@ -27,22 +31,30 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   int? day;
   var time = "";
   UserModel? usermodels;
+  File? imageFile;
+  PickedFile? recipetImage;
+  bool _show = false;
+
   // GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey();
   // GlobalKey<SfSignaturePadState> _signaturePadKey2 = GlobalKey();
-  SignatureController _dealerSignCont=SignatureController();
-  SignatureController _riderSignCont=SignatureController();
+  SignatureController _dealerSignCont = SignatureController();
+  SignatureController _riderSignCont = SignatureController();
+
   @override
   void initState() {
-    usermodels= UserModel.fromJson(box.read('user'));
+    usermodels = UserModel.fromJson(box.read('user'));
     getFormatedDate(DateTime.now().toString());
     // TODO: implement initState
     super.initState();
   }
 
-
-  _deliveredOrderHandler()async{
+  _deliveredOrderHandler() async {
     CustomLoader.showLoader(context: context);
-    await  DeliveredOrderService().deliverOrder(context: context, orderId: widget.orderId, dealerSign: _dealerSignCont.toString(), riderSign: _riderSignCont.toString());
+    await DeliveredOrderService().deliverOrder(
+        context: context,
+        orderId: widget.orderId,
+        dealerSign: _dealerSignCont.toString(),
+        riderSign: _riderSignCont.toString());
     print("Daler ${_dealerSignCont.toString()}");
     print("Rider ${_riderSignCont.toString()}");
     print("Order Id ${widget.orderId}");
@@ -65,9 +77,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
       bottomNavigationBar: GestureDetector(
         onTap: () {
           _deliveredOrderHandler();
-          setState(() {
-
-          });
+          setState(() {});
           // CustomSnackBar.showSnackBar(context: context, message: "Order Deliver Succesfully");
         },
         child: Container(
@@ -80,114 +90,153 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
               )),
           child: Center(
               child: Text(
-            "Order Delivery Done",
-            style: TextStyle(
-                color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-          )),
+                "Order Delivery Done",
+                style: TextStyle(
+                    color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              )),
         ),
       ),
+      bottomSheet: _showBottomSheet(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             Row(children: [
-               Flexible(
-                 child: ListTile(
-                   leading: Container(
-                     height: 80,
-                     width: 60,
-                     child: usermodels!.imageUrl == ""
-                         ? Image.asset(
-                       "assets/images/place_holder.png",
-                       fit: BoxFit.fill,
-                     )
-                         : Image.network(
-                       usermodels!.imageUrl!,
-                       fit: BoxFit.cover,
-                     ),
-                   ),
-                   title: Text(
-                     usermodels!.name ?? "UserName",
-                     style: TextStyle(
-                         color: Colors.black,
-                         fontWeight: FontWeight.w600,
-                         fontSize: 14),
-                   ),
-                   subtitle: Text(usermodels!.name ?? "ebg:abc@gmail.com"),
-                 ),
-               ),
-               Expanded(
-                 child: ListTile(
-                   leading: Container(
-                       height: 80,
-                       width: 60,
-                       child: Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         crossAxisAlignment: CrossAxisAlignment.center,
-                         children: [
-                           Text("${day}"+" "+month!),
-                           Text(time),
-                         ],)
-                   ),
-                   title: Text("Order Id: ${widget.order!.orderId}",
-                     style: TextStyle(
-                         color: Colors.black,
-                         fontWeight: FontWeight.w600,
-                         fontSize: 14),
-                   ),
-                   subtitle: Text(
-                       "${Methods().getFormatedDate(widget.order!.date)}"),
-                 ),
-               ),
-             ],),
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Dealer Signature",
+              Row(
+                children: [
+                  Flexible(
+                    child: ListTile(
+                      leading: Container(
+                        height: 80,
+                        width: 60,
+                        child: usermodels!.imageUrl == ""
+                            ? Image.asset(
+                          "assets/images/place_holder.png",
+                          fit: BoxFit.fill,
+                        )
+                            : Image.network(
+                          usermodels!.imageUrl!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      title: Text(
+                        usermodels!.name ?? "UserName",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
                       ),
-                      SizedBox(height: 15.0,),
+                      subtitle: Text(usermodels!.name ?? "ebg:abc@gmail.com"),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      leading: Container(
+                          height: 80,
+                          width: 60,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("${day}" + " " + month!),
+                              Text(time),
+                            ],
+                          )),
+                      title: Text(
+                        "Order Id: ${widget.order!.orderId}",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                      ),
+                      subtitle: Text(
+                          "${Methods().getFormatedDate(widget.order!.date)}"),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Dealer Signature",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14),
+                          ),
+                          TextButton(
+                            child: Text(
+                              "Clear Signature",
+                              style: TextStyle(
+                                  color: bgColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14),
+                            ),
+                            onPressed: () {
+                              _dealerSignCont.clear();
+                            },
+                          ),
+
+                          // CustomButton(
+                          //   text: "Redo",
+                          //   onTap: () {
+                          //     _dealerSignCont.clear();
+                          //   },
+                          // ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
                       Signature(
-                        controller:_dealerSignCont,
+                        controller: _dealerSignCont,
                         height: 150.0,
                         backgroundColor: Colors.black12,
                       ),
                     ],
                   )),
-              Align(
-                alignment: Alignment.topRight,
-                child: CustomButton(
-
-                  text: "Redo",
-                  onTap: (){
-                    _dealerSignCont.clear();
-                  },
-                ),
-              ),
               Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Rider Signature",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Rider Signature",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.0),
+                          ),
+                          TextButton(
+                            child: Text(
+                              "Clear Signature",
+                              style: TextStyle(
+                                  color: bgColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14),
+                            ),
+                            onPressed: () {
+                              _riderSignCont.clear();
+                            },
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 15.0,),
+                      SizedBox(
+                        height: 5.0,
+                      ),
                       Signature(
                         controller: _riderSignCont,
                         height: 150,
@@ -195,28 +244,116 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                       ),
                     ],
                   )),
-              Align(
-                alignment: Alignment.topRight,
-                child: CustomButton(
-
-                  text: "Redo",
-                  onTap: (){
-                    _riderSignCont.clear();
-                  },
-                ),
-              ),
+              Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        height: 90,
+                        width: 130,
+                        child: recipetImage != null
+                            ? Image.file(
+                          File(recipetImage!.path),
+                          fit: BoxFit.cover,
+                        )
+                            : Icon(
+                          Icons.camera_alt_sharp,
+                          size: 80,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            _show = true;
+                            setState(() {});
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.grey,
+                          ),
+                          child: Text("Take Picture"))
+                    ],
+                  )),
             ],
           ),
         ),
       ),
     );
   }
+
   getFormatedDate(_date) {
     DateTime dates = DateTime.parse(_date);
     print("hsadhdsa");
     print(dates);
-    month = DateFormat('MMMM').format(dates).substring(0,3);
-     day = dates.day;
-     time = DateFormat('hh:mm a').format(dates);
+    month = DateFormat('MMMM').format(dates).substring(0, 3);
+    day = dates.day;
+    time = DateFormat('hh:mm a').format(dates);
+  }
+
+  getRecipetImage(ImageSource source) async {
+    recipetImage = await ImagePicker().getImage(source: source);
+    if (recipetImage != null) {
+      setState(() {
+        imageFile = File(recipetImage!.path);
+      });
+    }
+  }
+
+  Widget _showBottomSheet() {
+    if (_show) {
+      return BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return Container(
+              height: 120,
+              width: double.infinity,
+              color: Colors.grey.shade200,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () {
+                        _show = false;
+                        setState(() {});
+                        getRecipetImage(ImageSource.gallery);
+                        // setState(() {});
+                      },
+                      label: Text(
+                        "Choose From Gallery",
+                        style: TextStyle(color: bgColor),
+                      ),
+                      icon: Icon(
+                        Icons.photo,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Divider(
+                      thickness: 1,
+                      color: Colors.black,
+                    ),
+                    TextButton.icon(
+                      onPressed: () {
+                        _show = false;
+                        setState(() {});
+                        getRecipetImage(ImageSource.camera);
+                        // setState(() {});
+                      },
+                      label:
+                      Text("Open Camera", style: TextStyle(color: bgColor)),
+                      icon: Icon(Icons.camera_alt_sharp, color: Colors.black),
+                    ),
+                  ],
+                ),
+              ));
+        },
+      );
+    } else {
+      print(_show);
+      return Text("");
+    }
   }
 }
+

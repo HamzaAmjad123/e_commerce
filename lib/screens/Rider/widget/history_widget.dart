@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 
 import '../../../configs/color.dart';
 import '../../../configs/text_style.dart';
+import '../../../helper_services/navigation_services.dart';
 import '../../../model/rider_models/rider_order_model.dart';
 import '../../../utils/functions.dart';
+import '../../Dealer/order/order_details_screen.dart';
 
 class RiderHistory extends StatefulWidget {
   const RiderHistory({Key? key}) : super(key: key);
@@ -115,23 +117,15 @@ class RiderHistoryWidget extends StatelessWidget {
                           ),
                           primary: bgColor),
                       onPressed: () {
-
+                        NavigationServices.goNextAndKeepHistory(
+                            context: context,
+                            widget: OrderDetailsScreen(id: orderHistory.orderId!));
                       },
                       icon: Icon(
                         Icons.remove_red_eye,
                         size: 20.0,
                       ),
                       label: Text("View")),
-                  // ElevatedButton.icon(
-                  //     style: ElevatedButton.styleFrom(
-                  //         shape: RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.circular(12.0),
-                  //         ),
-                  //         primary: bgColor
-                  //     ),
-                  //     onPressed: (){
-                  //       NavigationServices.goNextAndKeepHistory(context: context, widget: OrderLogScreen(id: order.orderId!));
-                  //     }, icon: Icon(Icons.check_circle_rounded,size: 20.0,), label: Text("Status"))
                 ]),
           ],
         ),

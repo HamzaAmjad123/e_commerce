@@ -1,6 +1,5 @@
 import 'package:badges/badges.dart';
 import 'package:e_commerce/configs/text_style.dart';
-import 'package:e_commerce/helper_widgets/items_widget.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:e_commerce/provider/items_provider.dart';
 import 'package:e_commerce/provider/series_provider.dart';
@@ -260,24 +259,24 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                   ),
                 );
               }),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ItemsWidget(
-                    itemText: "Title",
-                  ),
-                  ItemsWidget(
-                    itemText: "Disc",
-                  ),
-                  ItemsWidget(
-                    itemText: "U-Price",
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     ItemsWidget(
+              //       itemText: "Title",
+              //     ),
+              //     ItemsWidget(
+              //       itemText: "Disc",
+              //     ),
+              //     ItemsWidget(
+              //       itemText: "U-Price",
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(
+              //   height: 5.0,
+              // ),
 
               Consumer<ItemsProvider>(builder: (context, item, _) {
                 return item.itemsList!.length == 0
@@ -286,25 +285,51 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                       )
                     : Expanded(
                         child: SingleChildScrollView(
-                          child: ListView.builder(
-                              itemCount: item.itemsList!.length,
-                              shrinkWrap: true,
-                              primary: false,
-                              physics: NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (BuildContext, index) {
-                                return GenerateOrderWidget(
-                                  item: item.itemsList![index],
-                                  onTap: () async {
-                                    await onTap(
-                                      index,
-                                      item.itemsList![index],
+                          child: SizedBox(
+                            width:MediaQuery.of(context).size.width/2.3,
+                            child: GridView.builder(
+                                gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10,
+                                    childAspectRatio: 0.9),
+                                itemCount: item.itemsList!.length,
+                                itemBuilder:(context,index){
+                                  return
+                                    GenerateOrderWidget(
+                                      item: item.itemsList![index],
+                                      onTap: () async {
+                                        await onTap(
+                                          index,
+                                          item.itemsList![index],
+                                        );
+                                        cartTotal = getItemTotal(cart);
+                                        setState(() {});
+                                      },
                                     );
-                                    cartTotal = getItemTotal(cart);
-                                    setState(() {});
-                                  },
-                                );
-                              }),
+                                })
+
+
+                            /*ListView.builder(
+                                itemCount: item.itemsList!.length,
+                                shrinkWrap: true,
+                                primary: false,
+                                physics: ScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (BuildContext, index) {
+                                  return GenerateOrderWidget(
+                                    item: item.itemsList![index],
+                                    onTap: () async {
+                                      await onTap(
+                                        index,
+                                        item.itemsList![index],
+                                      );
+                                      cartTotal = getItemTotal(cart);
+                                      setState(() {});
+                                    },
+                                  );
+                                }),*/
+                          ),
                         ),
                       );
               })
