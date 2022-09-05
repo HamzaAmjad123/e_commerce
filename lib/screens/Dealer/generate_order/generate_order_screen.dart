@@ -284,40 +284,18 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                         child: Text("No Item Found"),
                       )
                     : Expanded(
-                        child: SingleChildScrollView(
-                          child: SizedBox(
-                            width:MediaQuery.of(context).size.width/2.3,
-                            child: GridView.builder(
-                                gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 10,
-                                    crossAxisSpacing: 10,
-                                    childAspectRatio: 0.9),
-                                itemCount: item.itemsList!.length,
-                                itemBuilder:(context,index){
-                                  return
-                                    GenerateOrderWidget(
-                                      item: item.itemsList![index],
-                                      onTap: () async {
-                                        await onTap(
-                                          index,
-                                          item.itemsList![index],
-                                        );
-                                        cartTotal = getItemTotal(cart);
-                                        setState(() {});
-                                      },
-                                    );
-                                })
-
-
-                            /*ListView.builder(
-                                itemCount: item.itemsList!.length,
-                                shrinkWrap: true,
-                                primary: false,
-                                physics: ScrollPhysics(),
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (BuildContext, index) {
-                                  return GenerateOrderWidget(
+                        child: SizedBox(
+                          //width:MediaQuery.of(context).size.width/2.3,
+                          child: GridView.builder(
+                              gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: 0.84),
+                              itemCount: item.itemsList!.length,
+                              itemBuilder:(context,index){
+                                return
+                                  GenerateOrderWidget(
                                     item: item.itemsList![index],
                                     onTap: () async {
                                       await onTap(
@@ -328,8 +306,28 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                                       setState(() {});
                                     },
                                   );
-                                }),*/
-                          ),
+                              })
+
+
+                          /*ListView.builder(
+                              itemCount: item.itemsList!.length,
+                              shrinkWrap: true,
+                              primary: false,
+                              physics: ScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (BuildContext, index) {
+                                return GenerateOrderWidget(
+                                  item: item.itemsList![index],
+                                  onTap: () async {
+                                    await onTap(
+                                      index,
+                                      item.itemsList![index],
+                                    );
+                                    cartTotal = getItemTotal(cart);
+                                    setState(() {});
+                                  },
+                                );
+                              }),*/
                         ),
                       );
               })

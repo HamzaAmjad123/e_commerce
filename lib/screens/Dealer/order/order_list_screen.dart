@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../model/order_list_model.dart';
 import '../../../service/order_list_service.dart';
+import '../home/custom_drawer.dart';
 import 'order_details_screen.dart';
 import 'order_log_screen.dart';
 
@@ -49,7 +50,12 @@ class _OrderListScreenState extends State<OrderListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: CustomDrawer(),
       appBar: AppBar(
+        leading: Builder(builder: (context)=>IconButton(onPressed: (){
+          Scaffold.of(context).openDrawer();
+        },
+            icon: Icon(Icons.menu))),
         title: Text(
           "Order List",
           style: barStyle,
@@ -57,22 +63,29 @@ class _OrderListScreenState extends State<OrderListScreen> {
         backgroundColor: bgColor,
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Consumer<OrderListProvider>(builder: (context, orders, _) {
-              return ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: orders.orderList!.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext, index) {
-                    return OrderListWidget(
-                      order: orders.orderList![index],
-                    );
-                  });
-            }),
-          ],
+      body: RefreshIndicator(
+        onRefresh: () {
+          print("hdsafdasghdfsaghd");
+          setState(() {});
+      return    _getOrderList();
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Consumer<OrderListProvider>(builder: (context, orders, _) {
+                return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: orders.orderList!.length,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext, index) {
+                      return OrderListWidget(
+                        order: orders.orderList![index],
+                      );
+                    });
+              }),
+            ],
+          ),
         ),
       ),
     );
@@ -127,8 +140,9 @@ class OrderListWidget extends StatelessWidget {
                                   ? "On Way"
                                   : order.status == 5
                                       ? "Deliver"
-                                      : "")),
-            ),
+                                      : order.status==6
+                  ?"Cancelled":"Unknown"),
+            )),
             Text(
               "Amount ${order.totalAmount}",
               style: orderStyle,
@@ -176,7 +190,7 @@ class OrderListWidget extends StatelessWidget {
                       onPressed: () {
                         NavigationServices.goNextAndKeepHistory(
                             context: context,
-                            widget: OrderLogScreen(id: order.orderId!));
+                            widget: OrderLogScreen(id: order.orderId!,status: order.status!,totalAmount: order.totalAmount!,));
                       },
                       icon: Icon(
                         Icons.check_circle_rounded,

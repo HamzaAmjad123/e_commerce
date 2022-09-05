@@ -46,6 +46,7 @@ dependencies:
   signature: ^5.2.1
   file_picker: ^5.0.1
   image_picker: ^0.8.5+3
+  flutter_image_compress: ^1.1.2
 #  syncfusion_flutter_signaturepad: ^20.2.45
 
 dev_dependencies:

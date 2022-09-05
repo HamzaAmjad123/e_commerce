@@ -22,7 +22,6 @@ class GenerateOrderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-
         Card(
           elevation: 10.0,
           margin: EdgeInsets.symmetric(horizontal: 9.0,vertical: 4.0),

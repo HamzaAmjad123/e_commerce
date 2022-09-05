@@ -126,23 +126,23 @@ class RiderOrderWidget extends StatelessWidget {
                             context: context,
                             widget: OrderDetailsScreen(id: order.orderId!));
                       }, icon: Icon(Icons.remove_red_eye,size: 20.0,), label: Text("View")),
-                  ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          primary: bgColor),
-                      onPressed: () {
-                        NavigationServices.goNextAndKeepHistory(context: context, widget: OrderIsDelivered(
-                            order:order,
-                          orderId: order.orderId!,
-                        ));
-                      },
-                      icon: Icon(
-                        Icons.check_circle_rounded,
-                        size: 20.0,
-                      ),
-                      label: Text("Delivry"))
+                 order.isVerifiedByGatePassUser==false?Text("Not Approved"): ElevatedButton.icon(
+                     style: ElevatedButton.styleFrom(
+                         shape: RoundedRectangleBorder(
+                           borderRadius: BorderRadius.circular(12.0),
+                         ),
+                         primary: bgColor),
+                     onPressed: () {
+                       NavigationServices.goNextAndKeepHistory(context: context, widget: OrderIsDelivered(
+                         order:order,
+                         orderId: order.orderId!,
+                       ));
+                     },
+                     icon: Icon(
+                       Icons.check_circle_rounded,
+                       size: 20.0,
+                     ),
+                     label: Text("Delivry"))
                 ]),
           ],
         ),

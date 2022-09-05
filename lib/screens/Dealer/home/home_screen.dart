@@ -62,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         leading: Builder(builder: (context)=>IconButton(onPressed: (){
           Scaffold.of(context).openDrawer();
-
         },
             icon: Icon(Icons.menu))),
         backgroundColor: bgColor,

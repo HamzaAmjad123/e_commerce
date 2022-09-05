@@ -87,7 +87,7 @@ class SigInWidget extends StatefulWidget {
 }
 
 class _SigInWidgetState extends State<SigInWidget> {
-  TextEditingController _userCont = TextEditingController(text: "rider");
+  TextEditingController _userCont = TextEditingController(text: "is_rider");
   TextEditingController _passwordCont = TextEditingController(text: "rider");
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();

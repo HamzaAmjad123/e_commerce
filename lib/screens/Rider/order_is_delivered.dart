@@ -1,8 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
-import 'package:e_commerce/helper_widgets/custom_button.dart';
 import 'package:e_commerce/model/rider_models/rider_order_model.dart';
 import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/service/rider_services/delivered_order_service.dart';
@@ -11,7 +10,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:signature/signature.dart';
-
 import '../../configs/color.dart';
 import '../../utils/functions.dart';
 
@@ -34,9 +32,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   File? imageFile;
   PickedFile? recipetImage;
   bool _show = false;
-
-  // GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey();
-  // GlobalKey<SfSignaturePadState> _signaturePadKey2 = GlobalKey();
+  String? convertImage;
   SignatureController _dealerSignCont = SignatureController();
   SignatureController _riderSignCont = SignatureController();
 
@@ -55,6 +51,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
         orderId: widget.orderId,
         dealerSign: _dealerSignCont.toString(),
         riderSign: _riderSignCont.toString());
+
     print("Daler ${_dealerSignCont.toString()}");
     print("Rider ${_riderSignCont.toString()}");
     print("Order Id ${widget.orderId}");
@@ -78,7 +75,8 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
         onTap: () {
           _deliveredOrderHandler();
           setState(() {});
-          // CustomSnackBar.showSnackBar(context: context, message: "Order Deliver Succesfully");
+          CustomSnackBar.showSnackBar(
+              context: context, message: "Order Deliver Succesfully");
         },
         child: Container(
           height: 50,
@@ -90,10 +88,10 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
               )),
           child: Center(
               child: Text(
-                "Order Delivery Done",
-                style: TextStyle(
-                    color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-              )),
+            "Order Delivery Done",
+            style: TextStyle(
+                color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+          )),
         ),
       ),
       bottomSheet: _showBottomSheet(),
@@ -113,13 +111,13 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                         width: 60,
                         child: usermodels!.imageUrl == ""
                             ? Image.asset(
-                          "assets/images/place_holder.png",
-                          fit: BoxFit.fill,
-                        )
+                                "assets/images/place_holder.png",
+                                fit: BoxFit.fill,
+                              )
                             : Image.network(
-                          usermodels!.imageUrl!,
-                          fit: BoxFit.cover,
-                        ),
+                                usermodels!.imageUrl!,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       title: Text(
                         usermodels!.name ?? "UserName",
@@ -157,53 +155,53 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                   ),
                 ],
               ),
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Dealer Signature",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14),
-                          ),
-                          TextButton(
-                            child: Text(
-                              "Clear Signature",
-                              style: TextStyle(
-                                  color: bgColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14),
-                            ),
-                            onPressed: () {
-                              _dealerSignCont.clear();
-                            },
-                          ),
-
-                          // CustomButton(
-                          //   text: "Redo",
-                          //   onTap: () {
-                          //     _dealerSignCont.clear();
-                          //   },
-                          // ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Signature(
-                        controller: _dealerSignCont,
-                        height: 150.0,
-                        backgroundColor: Colors.black12,
-                      ),
-                    ],
-                  )),
+              // Container(
+              //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.start,
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             Text(
+              //               "Dealer Signature",
+              //               style: TextStyle(
+              //                   color: Colors.black,
+              //                   fontWeight: FontWeight.w600,
+              //                   fontSize: 14),
+              //             ),
+              //             TextButton(
+              //               child: Text(
+              //                 "Clear Signature",
+              //                 style: TextStyle(
+              //                     color: bgColor,
+              //                     fontWeight: FontWeight.w600,
+              //                     fontSize: 14),
+              //               ),
+              //               onPressed: () {
+              //                 _dealerSignCont.clear();
+              //               },
+              //             ),
+              //
+              //             // CustomButton(
+              //             //   text: "Redo",
+              //             //   onTap: () {
+              //             //     _dealerSignCont.clear();
+              //             //   },
+              //             // ),
+              //           ],
+              //         ),
+              //         SizedBox(
+              //           height: 5.0,
+              //         ),
+              //         Signature(
+              //           controller: _dealerSignCont,
+              //           height: 150.0,
+              //           backgroundColor: Colors.black12,
+              //         ),
+              //       ],
+              //     )),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -245,6 +243,11 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                     ],
                   )),
               Container(
+                height: 100,
+                width: 100,
+                child: convertImage==null?Text("No Image"):Image.memory(base64Decode(convertImage!),height: 100,width: 100,),
+              ),
+              Container(
                   margin: EdgeInsets.only(top: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -254,24 +257,52 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                         width: 130,
                         child: recipetImage != null
                             ? Image.file(
-                          File(recipetImage!.path),
-                          fit: BoxFit.cover,
-                        )
+                                File(recipetImage!.path),
+                                fit: BoxFit.cover,
+                              )
                             : Icon(
-                          Icons.camera_alt_sharp,
-                          size: 80,
-                          color: Colors.grey,
-                        ),
+                                Icons.camera_alt_sharp,
+                                size: 80,
+                                color: Colors.grey,
+                              ),
                       ),
-                      ElevatedButton(
-                          onPressed: () {
-                            _show = true;
-                            setState(() {});
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.grey,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                _show = true;
+                                setState(() {});
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.grey,
+                              ),
+                              child: Text("Take Picture")),
+                          SizedBox(
+                            height: 5,
                           ),
-                          child: Text("Take Picture"))
+                          ElevatedButton(
+                              onPressed: () async {
+                                print(recipetImage!.path);
+                                print(_riderSignCont.toString());
+                                final bytes = File(recipetImage!.path).readAsBytesSync();
+                                // String base64Image =  "data:image/png;base64,"+base64Encode(bytes);
+
+                               // String photoBase64 = base64Encode( File(recipetImage!.path).readAsBytesSync());
+                                String photoBase64 = base64Encode(bytes);
+                                print(photoBase64);
+                                convertImage=photoBase64;
+                                setState(() {
+
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.grey,
+                              ),
+                              child: Text("show path")),
+                        ],
+                      )
                     ],
                   )),
             ],
@@ -291,7 +322,11 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   }
 
   getRecipetImage(ImageSource source) async {
-    recipetImage = await ImagePicker().getImage(source: source);
+    recipetImage =
+        await ImagePicker().getImage(
+          source: source, imageQuality: 50, maxHeight: 150.0,
+          maxWidth: 150.0,
+        );
     if (recipetImage != null) {
       setState(() {
         imageFile = File(recipetImage!.path);
@@ -342,7 +377,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                         // setState(() {});
                       },
                       label:
-                      Text("Open Camera", style: TextStyle(color: bgColor)),
+                          Text("Open Camera", style: TextStyle(color: bgColor)),
                       icon: Icon(Icons.camera_alt_sharp, color: Colors.black),
                     ),
                   ],
@@ -356,4 +391,3 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
     }
   }
 }
-

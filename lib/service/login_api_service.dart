@@ -26,6 +26,7 @@ class LoginApiService {
             .updateUserData(newUser: user);
         LocalStorageServices().saveToken("${user.token}");
         final box = GetStorage();
+
         box.write('user', user.user!.toJson());
         return true;
       } else {

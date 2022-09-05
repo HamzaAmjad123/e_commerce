@@ -81,7 +81,7 @@ class _OrderDetailsState extends State<OrderDetailsScreen> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                "OrderId:" + "${order.orderDetails!.orderId}",
+                                "OrderNo:" + "${order.orderDetails!.orderNo}",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
@@ -127,7 +127,7 @@ class _OrderDetailsState extends State<OrderDetailsScreen> {
                                                 .orderLines![index].item!.name!,
                                           ),
                                           Text(
-                                              "${order.orderDetails!.orderLines![index].unitPrice!}"),
+                                              "${order.orderDetails!.orderLines![index].item!.unitPrice}"),
                                           Text(
                                               "${order.orderDetails!.orderLines![index].descountPrice}"),
                                           Text(

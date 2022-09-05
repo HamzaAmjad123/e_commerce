@@ -6,14 +6,17 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../configs/color.dart';
+import '../../../configs/color.dart';
 import '../../../configs/text_style.dart';
 import '../../../helper_services/custom_loader.dart';
 import '../../../model/order_log_model.dart';
 
 class OrderLogScreen extends StatefulWidget {
+  final int status;
   final int id;
+  final double totalAmount;
 
-  OrderLogScreen({required this.id});
+  OrderLogScreen({required this.id,required this.status,required  this.totalAmount});
 
   @override
   State<OrderLogScreen> createState() => _OrderLogScreenState();
@@ -60,7 +63,55 @@ class _OrderLogScreenState extends State<OrderLogScreen> {
             children: [
               Consumer<OrderLogProvider>(builder: (context, order, _) {
                 return order.orderLog != null
-                    ? ListView.builder(
+                    ? Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.check_circle_rounded,size: 30.0,color: getColor(1)),
+                        Expanded(
+                          child: Container(
+                            height: 1.0,
+                            color: blackColor,
+                            margin: EdgeInsets.only(top: 12.0),
+                          ),
+                        ),
+                        Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(3)),
+                        Expanded(
+                          child: Container(
+                            height: 1.0,
+                            margin: EdgeInsets.only(top: 12.0),
+                            color: blackColor,
+                          ),
+                        ),
+                        Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(4)),
+                        Expanded(
+                          child: Container(
+                            height: 1.5,
+                            margin: EdgeInsets.only(top: 12.0),
+                            color: blackColor,
+                          ),
+                        ),
+                        Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(5)),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Approved",style: statusStyle),
+                          Text("Processing",style: statusStyle,),
+                          Text("Shipment",style: statusStyle,),
+                          Text("Delivered",style: statusStyle,)
+                        ],
+                      ),
+                    ),
+                    ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: order.orderLog!.length,
                         scrollDirection: Axis.vertical,
@@ -68,20 +119,38 @@ class _OrderLogScreenState extends State<OrderLogScreen> {
                         itemBuilder: (BuildContext, index) {
                           return OrderLogWidget(
                             orderlog: order.orderLog![index],
+                            totalAmount: widget.totalAmount.toString(),
                           );
-                        })
+                        }),
+                  ],
+                )
                     : Container();
               }),
             ],
           ),
         ));
   }
+
+  getColor(int x) {
+    if(widget.status==x)
+      {
+        return Colors.red;
+      }
+    else if(x<widget.status){
+      return Color(0xFF1cbcb3);
+    }
+    else{
+      return Colors.black12;
+    }
+  }
+
 }
 
 class OrderLogWidget extends StatelessWidget {
   OrderLogModel orderlog;
+  String? totalAmount;
 
-  OrderLogWidget({required this.orderlog});
+  OrderLogWidget({required this.orderlog,this.totalAmount});
 
   @override
   Widget build(BuildContext context) {
@@ -91,70 +160,6 @@ class OrderLogWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Container(
-            //   margin: EdgeInsets.symmetric(horizontal: 12.0,),
-            //   alignment: Alignment.bottomCenter,
-            //   height: 30.0,
-            //   width: 30.0,
-            //   decoration: BoxDecoration(
-            //     shape: BoxShape.circle,
-            //     color: orderlog.status == 1 ? Colors.red : Colors.black,
-            //   ),
-            //   child: Icon(Icons.ch,color:orderlog.status == 1 ? Colors.white : Colors.black ,),
-            // ),
-            // Icon(Icons.check_circle_rounded,size: 30.0,color: orderlog.status == 1 ? Colors.red : Colors.black38,),
-            // Expanded(
-            //   child: Container(
-            //     height: 1.0,
-            //     width: double.infinity,
-            //     margin: EdgeInsets.only(top: 12.0),
-            //     color: blackColor,
-            //   ),
-            // ),
-            Icon(Icons.check_circle_rounded,size: 30.0,color: orderlog.status == 1 ?bgColor : Colors.black38,),
-            Expanded(
-              child: Container(
-                height: 1.0,
-                color: blackColor,
-                margin: EdgeInsets.only(top: 12.0),
-              ),
-            ),
-            Icon(Icons.check_circle_rounded,size: 30.0,color: orderlog.status == 3 ? Colors.red : Colors.black38,),
-            Expanded(
-              child: Container(
-                height: 1.0,
-                margin: EdgeInsets.only(top: 12.0),
-                color: blackColor,
-              ),
-            ),
-            Icon(Icons.check_circle_rounded,size: 30.0,color: orderlog.status == 4 ? Colors.red : Colors.black38,),
-            Expanded(
-              child: Container(
-                height: 1.5,
-                margin: EdgeInsets.only(top: 12.0),
-                color: blackColor,
-              ),
-            ),
-            Icon(Icons.check_circle_rounded,size: 30.0,color: orderlog.status == 5 ? Colors.red : Colors.black38,),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Approved",style: statusStyle),
-              Text("Processing",style: statusStyle,),
-              Text("Shipment",style: statusStyle,),
-              Text("Delivered",style: statusStyle,)
-            ],
-          ),
-        ),
         Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             padding: EdgeInsets.only(bottom: 10, left: 15, right: 15, top: 10),
@@ -181,15 +186,13 @@ class OrderLogWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "OrderNO:" + "  " + "0013",
+                      "OrderNO:" + "  " + "${orderlog.orderId}",
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
                           fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      // "OrderDate:" + order.orderDetails!.date!,
-                      "Total Amount:" + "  " + "872.0",
+                    Text(totalAmount!,
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
