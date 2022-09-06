@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:signature/signature.dart';
 import '../../configs/color.dart';
 import '../../utils/functions.dart';
+import '../../utils/images.dart';
 
 class OrderIsDelivered extends StatefulWidget {
   final RiderOdersModel? order;
@@ -245,7 +246,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
               Container(
                 height: 100,
                 width: 100,
-                child: convertImage==null?Text("No Image"):Image.memory(base64Decode(convertImage!),height: 100,width: 100,),
+                child: /*convertImage==null?Text("No Image"):*/Image.memory(base64Decode(Images.image64),height: 100,width: 100,),
               ),
               Container(
                   margin: EdgeInsets.only(top: 10),
@@ -286,9 +287,8 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                               onPressed: () async {
                                 print(recipetImage!.path);
                                 print(_riderSignCont.toString());
-                                final bytes = File(recipetImage!.path).readAsBytesSync();
+                                final bytes = await File(recipetImage!.path).readAsBytesSync();
                                 // String base64Image =  "data:image/png;base64,"+base64Encode(bytes);
-
                                // String photoBase64 = base64Encode( File(recipetImage!.path).readAsBytesSync());
                                 String photoBase64 = base64Encode(bytes);
                                 print(photoBase64);
