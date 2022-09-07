@@ -1,11 +1,9 @@
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/provider/order_getDeatils_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../helper_services/custom_loader.dart';
-import '../../model/order_deatils.dart';
-import '../../service/order_view_service.dart';
+import '../../../helper_services/custom_loader.dart';
+import '../../../service/order_view_service.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final int id;
@@ -83,7 +81,7 @@ class _OrderDetailsState extends State<OrderDetailsScreen> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                "OrderId:" + "${order.orderDetails!.orderId}",
+                                "OrderNo:" + "${order.orderDetails!.orderNo}",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
@@ -129,7 +127,7 @@ class _OrderDetailsState extends State<OrderDetailsScreen> {
                                                 .orderLines![index].item!.name!,
                                           ),
                                           Text(
-                                              "${order.orderDetails!.orderLines![index].unitPrice!}"),
+                                              "${order.orderDetails!.orderLines![index].item!.unitPrice}"),
                                           Text(
                                               "${order.orderDetails!.orderLines![index].descountPrice}"),
                                           Text(

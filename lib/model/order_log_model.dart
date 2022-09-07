@@ -1,4 +1,4 @@
-class OrderLog {
+class OrderLogModel {
   int? deliveryLogId;
   int? status;
   String? description;
@@ -15,12 +15,12 @@ class OrderLog {
   int? orderId;
   Null? order;
   int? tenantId;
-  Null? createdBy;
+  String? createdBy;
   String? createdDate;
   Null? updatedBy;
   Null? updatedDate;
 
-  OrderLog(
+  OrderLogModel(
       {this.deliveryLogId,
         this.status,
         this.description,
@@ -42,7 +42,7 @@ class OrderLog {
         this.updatedBy,
         this.updatedDate});
 
-  OrderLog.fromJson(Map<String, dynamic> json) {
+  OrderLogModel.fromJson(Map<String, dynamic> json) {
     deliveryLogId = json['deliveryLogId'];
     status = json['status'];
     description = json['description'];

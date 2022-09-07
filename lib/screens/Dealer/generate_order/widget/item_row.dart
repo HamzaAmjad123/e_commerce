@@ -1,9 +1,9 @@
+import 'package:e_commerce/configs/color.dart';
+import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../../configs/color.dart';
-import '../../../model/items_model.dart';
+import '../../../../model/items_model.dart';
 
 class GenerateOrderWidget extends StatelessWidget {
   ItemsList item;
@@ -21,16 +21,20 @@ class GenerateOrderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
+    return
         Card(
           elevation: 10.0,
-          margin: EdgeInsets.symmetric(horizontal: 9.0,vertical: 7.0),
+          margin: EdgeInsets.symmetric(horizontal: 9.0,vertical: 4.0),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0)
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0)
+              )
           ),
+          shadowColor: bgColor,
           child: Column(
             children: [
+
               Container(
                 decoration: BoxDecoration(
                   boxShadow: const <BoxShadow>[
@@ -46,64 +50,58 @@ class GenerateOrderWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                padding: EdgeInsets.symmetric(vertical: 18.0,horizontal: 6.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: EdgeInsets.only(top: 10.0,left: 18.0,right: 10.0),
+                child: Column(
                   children: [
-                    Text(item.name!),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.01,
+                    Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/5,fit: BoxFit.cover,),
+                    Divider(
+                      thickness: 2.0,
                     ),
-                    Text("${item.unitDiscountPercentage}"),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.02,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text("Title",style: titleStyle,),
+                        Text(item.name!,style: titleStyle,),
+                      ],
                     ),
-                    Text("${item.unitPrice}"),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.04,
-                    ),
-                    // Container(
-                    //   height: 15,
-                    //   width: 30,
-                    //   child: TextField(
-                    //     onChanged: onCange,
-                    //     controller: qtyController,
-                    //     keyboardType: TextInputType.numberWithOptions(),
-                    //
-                    //     // maxLines: 1,
-                    //     // maxLength: 4,
-                    //     textInputAction: TextInputAction.done,
-                    //     obscureText: false,
-                    //     // controller: qtyController[index],
-                    //     decoration: InputDecoration(hintText: "0",
-                    //       border: InputBorder.none,),
-                    //   ),
+                    SizedBox(height: 1.0,),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     // Text("Discount",style: titleStyle,),
+                    //     Text("${item.unitDiscountPercentage}%"),
+                    //   ],
                     // ),
-                    // SizedBox(
-                    //   width: MediaQuery.of(context).size.width * 0.02,
-                    // ),
-                    // Text(totalPrice!),
-                    // Expanded(child: Text("12")),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text("U-Price",style: titleStyle,),
+                        Text("${item.unitPrice}PKR"),
+                        InkWell(
+                            onTap: onTap,
+                            child: Icon(Icons.add_shopping_cart,color: Colors.green,))
+                      ],
+                    ),
                   ],
                 ),
               ),
 
 
-            ],
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 33.0,),
-            child: IconButton(
-              icon: Icon(CupertinoIcons.cart_fill_badge_plus,color: Colors.green,),
-              onPressed: onTap,
-            ),
-          ),
-        ),
-
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 3.0),
+              //   child: Align(
+              //     alignment: Alignment.bottomRight,
+              //     child: InkWell(
+              //         onTap: onTap,
+              //         child: Icon(Icons.add_shopping_cart,color: Colors.green,)),
+              //
+              //
+              //   ),
+              // ),
+        ]),
 
         // Positioned( //<-- SEE HERE
         //   right: 0,
@@ -114,7 +112,7 @@ class GenerateOrderWidget extends StatelessWidget {
         //     icon: Icon(Icons.shopping_cart,color: bgColor,),
         //     onPressed: onTap,
         //   ),),
-      ],
+
     );
 
   }
@@ -212,9 +210,6 @@ class CreateOrderWidget extends StatelessWidget {
             ],
           ),
         ),
-
-
-
         // Positioned( //<-- SEE HERE
         //   right: 0,
         //   left: 330.0,

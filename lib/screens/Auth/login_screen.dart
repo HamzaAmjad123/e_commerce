@@ -4,15 +4,13 @@ import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
-import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
-import 'package:e_commerce/screens/home/home_screen.dart';
 import 'package:e_commerce/service/login_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../utils/images.dart';
+import '../Dealer/home/home_screen.dart';
+import '../Rider/rider_home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -23,10 +21,50 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isChecked = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 70.0,
+            width: 40.0,
+            decoration: BoxDecoration(
+              // shape: BoxShape.circle,
+                color: bgColor,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(50.0),
+                    bottomRight: Radius.circular(50.0)),
+                boxShadow: [
+                  BoxShadow(
+                    color: bgColor.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 8,
+                    // offset: Offset(0, 0),
+                  )
+                ]),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 15.0, left: 13.0),
+            height: 35.0,
+            width: 35.0,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: bgColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: bgColor.withOpacity(0.5),
+                    spreadRadius: 4,
+                    blurRadius: 7,
+                    // offset: Offset(3, 3),
+                  )
+                ]),
+          ),
+          Spacer(),
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,47 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 50.0,
           ),
           Expanded(child: SigInWidget()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 70.0,
-                width: 40.0,
-                decoration: BoxDecoration(
-                    // shape: BoxShape.circle,
-                    color: bgColor,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(50.0),
-                        bottomRight: Radius.circular(50.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: bgColor.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 8,
-                        // offset: Offset(0, 0),
-                      )
-                    ]),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 15.0, left: 13.0),
-                height: 35.0,
-                width: 35.0,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: bgColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: bgColor.withOpacity(0.5),
-                        spreadRadius: 4,
-                        blurRadius: 7,
-                        // offset: Offset(3, 3),
-                      )
-                    ]),
-              ),
-              Spacer(),
-            ],
-          ),
         ],
       ),
     );
@@ -90,25 +87,24 @@ class SigInWidget extends StatefulWidget {
 }
 
 class _SigInWidgetState extends State<SigInWidget> {
-  TextEditingController _userCont = TextEditingController();
-  TextEditingController _passwordCont = TextEditingController();
+  TextEditingController _userCont = TextEditingController(text: "is_rider");
+  TextEditingController _passwordCont = TextEditingController(text: "rider");
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String selectedRadio = '';
 
   _loginHandler() async {
     CustomLoader.showLoader(context: context);
-
     bool res = await LoginApiService().getLogin(
         context: context,
         userName: _userCont.text,
         password: _passwordCont.text);
-    print("back");
      CustomLoader.hideLoader(context);
     if (res) {
-      print("Tenat Id ${ Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!}");
-      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeScreen(
-        tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.tenantId!,
+      Provider.of<UserDataProvider>(context,listen: false).user!.userRoles![0] !="Dealer"?
+      NavigationServices.goNextAndKeepHistory(context: context, widget: RiderHome(
+      )):NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeScreen(
+        tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.user!.tenantId!,
       ));
     }
   }

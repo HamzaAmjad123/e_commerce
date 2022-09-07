@@ -3,11 +3,12 @@ import 'package:e_commerce/helper_widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import '../../../../configs/text_style.dart';
+import '../../../../helper_services/navigation_services.dart';
+import '../../../../provider/cash_book_provider.dart';
+import '../../generate_order/generate_order_screen.dart';
+import '../../order/dealer_history_screen.dart';
 
-import '../configs/text_style.dart';
-import '../helper_services/navigation_services.dart';
-import '../provider/cash_book_provider.dart';
-import '../screens/generate_order/generate_order_screen.dart';
 
 class CashInHandWidget extends StatefulWidget {
   const CashInHandWidget({Key? key}) : super(key: key);
@@ -89,6 +90,7 @@ class _CashInHandWidgetState extends State<CashInHandWidget> {
                  primary:  Colors.grey[200],
                ),
                onPressed: (){
+                 NavigationServices.goNextAndKeepHistory(context: context, widget: ApprovedOrdersScreen());
 
                }, icon: Icon(Icons.calendar_today,color: blackColor,), label: Text("Previous Order",style: TextStyle(color: blackColor,fontSize: 14.0,fontWeight: FontWeight.w500),)),
          ),
@@ -158,7 +160,6 @@ class _CashInHandWidgetState extends State<CashInHandWidget> {
           height: 300.0,
           width: 400.0,
           color: Colors.red,
-
         );
      });
   }

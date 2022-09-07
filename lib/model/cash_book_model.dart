@@ -1,12 +1,12 @@
-class CashBook {
-  Result? result;
+class CashBookModel {
+  CashBook? result;
   String? message;
 
-  CashBook({this.result, this.message});
+  CashBookModel({this.result, this.message});
 
-  CashBook.fromJson(Map<String, dynamic> json) {
+  CashBookModel.fromJson(Map<String, dynamic> json) {
     result =
-    json['result'] != null ? new Result.fromJson(json['result']) : null;
+    json['result'] != null ? new CashBook.fromJson(json['result']) : null;
     message = json['message'];
   }
 
@@ -20,7 +20,7 @@ class CashBook {
   }
 }
 
-class Result {
+class CashBook {
   int? voucherId;
   double? totalReceived;
   double? totalAmount;
@@ -30,7 +30,7 @@ class Result {
   List<VoucherLines>? voucherLines;
   int? totalCount;
 
-  Result(
+  CashBook(
       {this.voucherId,
         this.totalReceived,
         this.totalAmount,
@@ -40,7 +40,7 @@ class Result {
         this.voucherLines,
         this.totalCount});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  CashBook.fromJson(Map<String, dynamic> json) {
     voucherId = json['voucherId'];
     totalReceived = json['totalReceived'];
     totalAmount = json['totalAmount'];
