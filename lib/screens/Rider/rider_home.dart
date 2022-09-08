@@ -4,6 +4,7 @@ import 'package:e_commerce/screens/Rider/widget/approved_widget.dart';
 import 'package:e_commerce/screens/Rider/widget/history_widget.dart';
 import 'package:e_commerce/service/rider_services/rider_history_service.dart';
 import 'package:e_commerce/service/rider_services/rider_order_service.dart';
+import 'package:e_commerce/utils/handlers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,18 +21,13 @@ class RiderHome extends StatefulWidget {
 }
 
 class _RiderHomeState extends State<RiderHome> {
-  _approvedHandler() async {
-    CustomLoader.showLoader(context: context);
-    await RiderOrdersService().getRiderOrderList(skip: 0, take: 1000, context: context);
-    await RiderHistoryService().getRiderHistoryList(skip: 0, take: 1000, context: context);
-    CustomLoader.hideLoader(context);
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _approvedHandler();
+    approvedHandler(context);
+    historyHandler(context);
     });
     super.initState();
   }
@@ -87,6 +83,7 @@ class _RiderHomeState extends State<RiderHome> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
           child: SingleChildScrollView(
+
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

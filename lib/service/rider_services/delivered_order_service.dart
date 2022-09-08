@@ -6,10 +6,10 @@ import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 
 class DeliveredOrderService{
-  Future deliverOrder({required BuildContext context,required int orderId,required dealerSign,required riderSign})async{
+  Future deliverOrder({required BuildContext context,required int orderId,required dealerSign,required riderSign,required deliveredImage})async{
 
     try{
-      Map _body={"orderId":orderId,"dealerSign":dealerSign,"deliveredBySign":riderSign};
+      Map _body={"orderId":orderId,"dealerSign":dealerSign,"deliveredBySign":riderSign,"deliveredImage":deliveredImage};
       var  res=await PostRequestService().httpPostRequest(url: deliveredOrderUrl, body: _body, context: context);
       if(res!=null){
         print("Order Is Delivered Successfully");

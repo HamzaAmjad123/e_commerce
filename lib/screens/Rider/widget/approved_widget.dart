@@ -1,5 +1,6 @@
 import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/utils/functions.dart';
+import 'package:e_commerce/utils/handlers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,23 +21,28 @@ class RiderApprovedOrder extends StatefulWidget {
 class _RiderApprovedOrderState extends State<RiderApprovedOrder> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<RiderApprovesOrdersProvider>(
-        builder: (context, approvedOrders, _) {
-          return approvedOrders.riderApprovedorders!=null
-              ? ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: approvedOrders.riderApprovedorders!.length,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext, index) {
-                return RiderOrderWidget(
-                    order:approvedOrders.riderApprovedorders![index]
-                );
-              })
-              : Container(
-            child: Text("No Order Available"),
-          );
-        });
+    return RefreshIndicator(
+      onRefresh: () {
+      return  approvedHandler(context);
+      },
+      child: Consumer<RiderApprovesOrdersProvider>(
+          builder: (context, approvedOrders, _) {
+            return approvedOrders.riderApprovedorders!=null
+                ? ListView.builder(
+                physics:AlwaysScrollableScrollPhysics(),
+                itemCount: approvedOrders.riderApprovedorders!.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext, index) {
+                  return RiderOrderWidget(
+                      order:approvedOrders.riderApprovedorders![index]
+                  );
+                })
+                : Container(
+              child: Text("No Order Available"),
+            );
+          }),
+    );
   }
 }
 
