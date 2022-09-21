@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../model/order_list_model.dart';
 import '../../../service/order_list_service.dart';
+import '../../../utils/functions.dart';
 import '../home/custom_drawer.dart';
 import 'order_details_screen.dart';
 import 'order_log_screen.dart';
@@ -35,6 +36,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
     print(
         "Teanat Id ${Provider.of<UserDataProvider>(context, listen: false).user!.user!.tenantId!}");
     CustomLoader.hideLoader(context);
+    setState(() {});
   }
 
   @override
@@ -65,16 +67,15 @@ class _OrderListScreenState extends State<OrderListScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () {
-          print("hdsafdasghdfsaghd");
-          setState(() {});
       return    _getOrderList();
         },
         child: SingleChildScrollView(
+          physics:AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               Consumer<OrderListProvider>(builder: (context, orders, _) {
                 return ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics:NeverScrollableScrollPhysics(),
                     itemCount: orders.orderList!.length,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
@@ -120,7 +121,7 @@ class OrderListWidget extends StatelessWidget {
             ),
             ListTile(
               leading: Text(
-                "Date: ${getFormatedDate(date)}",
+                "Date: ${Methods().getFormatedDate(date)}",
                 style: TextStyle(height: 1.4),
               ),
               trailing: Container(
@@ -204,10 +205,4 @@ class OrderListWidget extends StatelessWidget {
     );
   }
 
-  getFormatedDate(_date) {
-    var inputFormat = DateFormat('yyyy-MM-dd');
-    var inputDate = inputFormat.parse(_date);
-    var outputFormat = DateFormat('dd/MM/yyyy');
-    return outputFormat.format(inputDate);
-  }
 }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:e_commerce/helper_services/custom_loader.dart';
@@ -7,16 +6,11 @@ import 'package:e_commerce/model/rider_models/rider_order_model.dart';
 import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/service/rider_services/delivered_order_service.dart';
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import '../../configs/color.dart';
-import '../../helper_widgets/custom_button.dart';
-import '../../utils/functions.dart';
-import '../../utils/images.dart';
 import 'dart:ui' as ui;
 
 class OrderIsDelivered extends StatefulWidget {
@@ -39,7 +33,6 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   PickedFile? recipetImage;
   bool _show = false;
   String? convertImage;
-
   List<int> recepitBytes=[];
   List<int> riderBytes=[];
   List<int> dealerBytes=[];
@@ -50,7 +43,6 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   @override
   void initState() {
     usermodels = UserModel.fromJson(box.read('user'));
-    getFormatedDate(DateTime.now().toString());
     // TODO: implement initState
     super.initState();
   }
@@ -83,7 +75,6 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
       ),
       bottomNavigationBar: GestureDetector(
         onTap: ()async {
-
           setState(() {});
           if(_validateSignatures()){
            await _convertDealerImage();
@@ -91,15 +82,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
            await _convertRcepitIntoBytes();
           await _deliveredOrderHandler();
           }
-          // if(bytes==[]){
-          //   CustomSnackBar.failedSnackBar(context: context, message:"Data is required");
-          // }else{
-          //   _deliveredOrderHandler(bytes);
             setState(() {});
-          //   CustomSnackBar.showSnackBar(
-          //       context: context, message: "Order Deliver Succesfully");
-          // }
-
         },
         child: Container(
           height: 50,
@@ -124,59 +107,6 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Row(
-            //   children: [
-            //     Flexible(
-            //       child: ListTile(
-            //         leading: Container(
-            //           height: 80,
-            //           width: 60,
-            //           child: usermodels!.imageUrl == ""
-            //               ? Image.asset(
-            //                   "assets/images/place_holder.png",
-            //                   fit: BoxFit.fill,
-            //                 )
-            //               : Image.network(
-            //                   usermodels!.imageUrl!,
-            //                   fit: BoxFit.cover,
-            //                 ),
-            //         ),
-            //         title: Text(
-            //           usermodels!.name ?? "UserName",
-            //           style: TextStyle(
-            //               color: Colors.black,
-            //               fontWeight: FontWeight.w600,
-            //               fontSize: 14),
-            //         ),
-            //         subtitle: Text(usermodels!.name ?? "ebg:abc@gmail.com"),
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: ListTile(
-            //         leading: Container(
-            //             height: 80,
-            //             width: 60,
-            //             child: Column(
-            //               mainAxisAlignment: MainAxisAlignment.center,
-            //               crossAxisAlignment: CrossAxisAlignment.center,
-            //               children: [
-            //                 Text("${day}" + " " + month!),
-            //                 Text(time),
-            //               ],
-            //             )),
-            //         title: Text(
-            //           "Order Id: ${widget.order!.orderId}",
-            //           style: TextStyle(
-            //               color: Colors.black,
-            //               fontWeight: FontWeight.w600,
-            //               fontSize: 14),
-            //         ),
-            //         subtitle: Text(
-            //             "${Methods().getFormatedDate(widget.order!.date)}"),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
@@ -320,14 +250,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
     );
   }
 
-  getFormatedDate(_date) {
-    DateTime dates = DateTime.parse(_date);
-    print("hsadhdsa");
-    print(dates);
-    month = DateFormat('MMMM').format(dates).substring(0, 3);
-    day = dates.day;
-    time = DateFormat('hh:mm a').format(dates);
-  }
+
 
   getRecipetImage(ImageSource source) async {
     recipetImage =
@@ -340,7 +263,6 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
       });
     }
   }
-
   Widget _showBottomSheet() {
     if (_show) {
       return BottomSheet(
@@ -353,40 +275,89 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextButton.icon(
-                      onPressed: () {
-                        _show = false;
+                    InkWell(
+                      onTap: (){
+                        _show=false;
                         setState(() {});
-                        getRecipetImage(ImageSource.gallery);
-                        // setState(() {});
                       },
-                      label: Text(
-                        "Choose From Gallery",
-                        style: TextStyle(color: bgColor),
-                      ),
-                      icon: Icon(
-                        Icons.photo,
-                        color: Colors.black,
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                            color: Colors.red,
+                            child: Icon(Icons.clear,color: Colors.white,)),
                       ),
                     ),
-                    Divider(
-                      thickness: 1,
-                      color: Colors.black,
-                    ),
-                    TextButton.icon(
-                      onPressed: () {
-                        _show = false;
-                        setState(() {});
-                        getRecipetImage(ImageSource.camera);
-                        // setState(() {});
-                      },
-                      label:
-                          Text("Open Camera", style: TextStyle(color: bgColor)),
-                      icon: Icon(Icons.camera_alt_sharp, color: Colors.black),
-                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              _show = false;
+                              setState(() {});
+                              getRecipetImage(ImageSource.gallery);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10,
+                                  vertical: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 20,
+                                  vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: bgColor,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.image, color: Colors.white,
+                                    size: 40,),
+                                  Text("Gallery",
+                                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),)
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 10,bottom: 10),
+                          height: 70,
+                          width: 2,
+                          color: Colors.black54,
+                        ),
+                        Expanded(child:   InkWell(
+                          onTap: () {
+                            _show = false;
+                            setState(() {});
+                            getRecipetImage(ImageSource.camera);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 10,
+                                vertical: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 20,
+                                vertical: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: bgColor,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.camera_alt_sharp, color: Colors.white,
+                                  size: 40,),
+                                Text("Camera",
+                                  style: TextStyle(color: Colors.white),)
+                              ],
+                            ),
+                          ),
+                        ),)
+                      ],)
                   ],
                 ),
               ));
@@ -398,25 +369,16 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
     }
   }
   _validateSignatures(){
-    print('Asad1111');
-    print(_isDealer);
-
     if(_isDealer==null){
-      print('Asad');
      CustomSnackBar.failedSnackBar(context: context, message: "Dealer Signature can't be empty");
-     print('Asad');
       return false;
     }
     else if(_isRider==null){
-      print('Asad');
      CustomSnackBar.failedSnackBar(context: context, message: "Rider Signature can't be empty");
-     print('Asad');
       return false;
     }
     else if(recipetImage==null){
-      print('Asad');
       CustomSnackBar.failedSnackBar(context: context, message: "Please Add Recipet Picture");
-      print('Asad');
       return false;
     }
     else{
@@ -449,4 +411,11 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
 
    });
   }
+  // getFormatedDate(_date) {
+  //   DateTime dates = DateTime.parse(_date);
+  //   print(dates);
+  //   month = DateFormat('MMMM').format(dates).substring(0, 3);
+  //   day = dates.day;
+  //   time = DateFormat('hh:mm a').format(dates);
+  // }
 }

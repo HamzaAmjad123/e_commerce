@@ -1,3 +1,4 @@
+import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,6 +34,7 @@ class _PendingOrderWidgetState extends State<PendingOrderWidget> {
     print(
         "Teanat Id ${Provider.of<UserDataProvider>(context, listen: false).user!.user!.tenantId!}");
     CustomLoader.hideLoader(context);
+    setState(() {});
   }
 
   @override
@@ -47,21 +49,26 @@ class _PendingOrderWidgetState extends State<PendingOrderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Consumer<OrderListProvider>(builder: (context, orders, _) {
-          return ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: orders.orderList!.length,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext, index) {
-                return OrderListWidget(
-                  order: orders.orderList![index],
-                );
-              });
-        }),
-      ],
+    return RefreshIndicator(
+      onRefresh: () {
+        return  _getOrderList();
+      },
+      child: Column(
+        children: [
+          Consumer<OrderListProvider>(builder: (context, orders, _) {
+            return ListView.builder(
+                physics:AlwaysScrollableScrollPhysics(),
+                itemCount: orders.orderList!.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext, index) {
+                  return OrderListWidget(
+                    order: orders.orderList![index],
+                  );
+                });
+          }),
+        ],
+      ),
     );
   }
 }
@@ -94,7 +101,7 @@ class OrderListWidget extends StatelessWidget {
             ),
             ListTile(
               leading: Text(
-                "Date: ${getFormatedDate(date)}",
+                "Date: ${Methods().getFormatedDate(date)}",
                 style: TextStyle(height: 1.4),
               ),
               trailing: Container(
@@ -159,12 +166,5 @@ class OrderListWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  getFormatedDate(_date) {
-    var inputFormat = DateFormat('yyyy-MM-dd');
-    var inputDate = inputFormat.parse(_date);
-    var outputFormat = DateFormat('dd/MM/yyyy');
-    return outputFormat.format(inputDate);
   }
 }

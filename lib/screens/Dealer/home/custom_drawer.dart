@@ -10,6 +10,7 @@ import 'package:e_commerce/provider/user_data_provider.dart';
 import 'package:e_commerce/screens/Dealer/home/home_screen.dart';
 import 'package:e_commerce/screens/Dealer/order/order_list_screen.dart';
 import 'package:e_commerce/screens/Auth/login_screen.dart';
+import 'package:e_commerce/screens/Dealer/payment/send_amount_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -226,7 +227,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
         DrawerLinkWidget(
           icon: Icons.account_balance_wallet_outlined,
           text: "Payment History",
-          onTap: () {},
+          onTap: () {
+            role=="Dealer"?
+                NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen()):
+                print("noithing");
+
+          },
         ),
         // DrawerLinkWidget(
         //   icon: Icons.person_outline,

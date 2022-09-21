@@ -6,6 +6,7 @@ import 'package:e_commerce/service/cash_book_service.dart';
 import 'package:e_commerce/service/categories_service.dart';
 import 'package:e_commerce/service/level_services.dart';
 import 'package:e_commerce/service/series_services.dart';
+import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../dealer_statement.dart';
@@ -57,48 +58,92 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      drawer: CustomDrawer(),
-      appBar: AppBar(
-        leading: Builder(builder: (context)=>IconButton(onPressed: (){
-          Scaffold.of(context).openDrawer();
-        },
-            icon: Icon(Icons.menu))),
-        backgroundColor: bgColor,
+    return WillPopScope(
+      onWillPop: ()async{
+        return await showCupertinoModalPopup(
+            context: context,
+            builder: (context) => Padding(
+              padding:
+              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Do you want to close your application?',
+                      style:
+                      TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                    ),
+                    Divider(),
+                    Row(
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('No')),
+                        Spacer(),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                            child: Text('Yes')),
+                      ],
+                    )
+                  ]),
+                ),
+              ),
+            ));
+      },
+      child: Scaffold(
+        drawer: CustomDrawer(),
+        appBar: AppBar(
+          leading: Builder(builder: (context)=>IconButton(onPressed: (){
+            Scaffold.of(context).openDrawer();
+          },
+              icon: Icon(Icons.menu))),
+          backgroundColor: bgColor,
 
-        title: Text("Dashboard",style: barStyle,),
-        centerTitle: true,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard,color: whiteColor,),label: "Home",),
-          BottomNavigationBarItem(icon: Icon(CupertinoIcons.book),label: "Cashbook"),
-         // BottomNavigationBarItem(icon: Icon(Icons.pending),label: "Pending Order"),
-          BottomNavigationBarItem(icon: Icon(Icons.money),label: "Cash History"),
-        ],
-        onTap: onitemtapped,
-        currentIndex: _selectedIndex!,
-        backgroundColor: bgColor,
-        selectedLabelStyle: TextStyle(color: whiteColor,fontWeight: FontWeight.bold),
-        selectedItemColor: whiteColor,
-        unselectedItemColor: whiteColor,
+          title: Text("Dashboard",style: barStyle,),
+          centerTitle: true,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.dashboard,color: whiteColor,),label: "Home",),
+            BottomNavigationBarItem(icon: Icon(CupertinoIcons.book),label: "Cashbook"),
+           // BottomNavigationBarItem(icon: Icon(Icons.pending),label: "Pending Order"),
+            BottomNavigationBarItem(icon: Icon(Icons.money),label: "Cash History"),
+          ],
+          onTap: onitemtapped,
+          currentIndex: _selectedIndex!,
+          backgroundColor: bgColor,
+          selectedLabelStyle: TextStyle(color: whiteColor,fontWeight: FontWeight.bold),
+          selectedItemColor: whiteColor,
+          unselectedItemColor: whiteColor,
 
 
 
-      ),
-     body: Padding(
-       padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
-       child: SingleChildScrollView(
-         child: Column(
-           mainAxisAlignment: MainAxisAlignment.start,
-           crossAxisAlignment: CrossAxisAlignment.start,
-           children: [
-             _widgetsList.elementAt(_selectedIndex!),
-           ],
+        ),
+       body: Padding(
+         padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
+         child: SingleChildScrollView(
+           child: Column(
+             mainAxisAlignment: MainAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               _widgetsList.elementAt(_selectedIndex!),
+             ],
+           ),
          ),
        ),
-     ),
 
+      ),
     );
   }
+
 }

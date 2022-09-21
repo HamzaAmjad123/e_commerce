@@ -11,6 +11,7 @@ const String getDealerHistoryUrl=baseUrl + "Order/getDealerOrderList";
 const String orderLogUrl=baseUrl + "Order/getOrderLogs";
 const String orderGetDetails=baseUrl + "Order/get";
 const String cashBookUrl=baseUrl + "Voucher/getDealerStatement";
+const String sendPaymentUrl=baseUrl + "Voucher/createVoucherLineByDealer";
 
 // Urls For Rider
 

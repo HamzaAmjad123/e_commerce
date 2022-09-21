@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onChange;
   final Function(String)? onSubmit;
   final bool obScureText;
+  final bool shape;
   final String? hintText;
   final String? labelText;
   final IconData? suffixIcon;
@@ -26,6 +27,7 @@ class CustomTextField extends StatelessWidget {
       this.onChange,
       this.onSubmit,
       this.obScureText = false,
+      this.shape = false,
       this.hintText,
       this.labelText,
       this.suffixIcon,
@@ -51,20 +53,40 @@ class CustomTextField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hintText,
               labelText: labelText,
-              enabledBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                  borderSide: BorderSide(color: bgColor,width:3.0)),
-              focusedBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                  borderSide: BorderSide(color: bgColor,width: 3.0)),
-              prefixIcon: prefixIcon==null? null:Icon(prefixIcon,color: bgColor,),
-              suffixIcon: suffixIcon==null? null:Icon(suffixIcon,color: bgColor,),
-
+              enabledBorder: shape
+                  ? OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide:
+                          BorderSide(color: lightBlackColor, width: 1.8),
+                    )
+                  : UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: BorderSide(color: bgColor, width: 3.0)),
+              focusedBorder: shape
+                  ? OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(color: bgColor, width: 1.8))
+                  : UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: BorderSide(color: bgColor, width: 3.0)),
+              prefixIcon: prefixIcon == null
+                  ? null
+                  : Icon(
+                      prefixIcon,
+                      color: bgColor,
+                    ),
+              suffixIcon: suffixIcon == null
+                  ? null
+                  : Icon(
+                      suffixIcon,
+                      color: bgColor,
+                    ),
             ),
-
           ),
         ),
-        SizedBox(height: 5.0,)
+        SizedBox(
+          height: 5.0,
+        )
       ],
     );
   }

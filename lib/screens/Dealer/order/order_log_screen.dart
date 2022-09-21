@@ -10,6 +10,7 @@ import '../../../configs/color.dart';
 import '../../../configs/text_style.dart';
 import '../../../helper_services/custom_loader.dart';
 import '../../../model/order_log_model.dart';
+import '../../../utils/functions.dart';
 
 class OrderLogScreen extends StatefulWidget {
   final int status;
@@ -27,6 +28,7 @@ class _OrderLogScreenState extends State<OrderLogScreen> {
     CustomLoader.showLoader(context: context);
     await OrderLogService().getOrderLog(context: context, id: widget.id);
     CustomLoader.hideLoader(context);
+    setState(() {});
   }
 
   @override
@@ -35,7 +37,6 @@ class _OrderLogScreenState extends State<OrderLogScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getOrderLog();
     });
-    setState(() {});
     super.initState();
   }
 
@@ -58,75 +59,82 @@ class _OrderLogScreenState extends State<OrderLogScreen> {
             },
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Consumer<OrderLogProvider>(builder: (context, order, _) {
-                return order.orderLog != null
-                    ? Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(Icons.check_circle_rounded,size: 30.0,color: getColor(1)),
-                        Expanded(
-                          child: Container(
-                            height: 1.0,
-                            color: blackColor,
-                            margin: EdgeInsets.only(top: 12.0),
-                          ),
-                        ),
-                        Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(3)),
-                        Expanded(
-                          child: Container(
-                            height: 1.0,
-                            margin: EdgeInsets.only(top: 12.0),
-                            color: blackColor,
-                          ),
-                        ),
-                        Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(4)),
-                        Expanded(
-                          child: Container(
-                            height: 1.5,
-                            margin: EdgeInsets.only(top: 12.0),
-                            color: blackColor,
-                          ),
-                        ),
-                        Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(5)),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Row(
+        body: RefreshIndicator(
+
+          onRefresh: () {
+            return getOrderLog();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Consumer<OrderLogProvider>(builder: (context, order, _) {
+                  return order.orderLog != null
+                      ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Approved",style: statusStyle),
-                          Text("Processing",style: statusStyle,),
-                          Text("Shipment",style: statusStyle,),
-                          Text("Delivered",style: statusStyle,)
+                          Icon(Icons.check_circle_rounded,size: 30.0,color: getColor(1)),
+                          Expanded(
+                            child: Container(
+                              height: 1.0,
+                              color: blackColor,
+                              margin: EdgeInsets.only(top: 12.0),
+                            ),
+                          ),
+                          Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(3)),
+                          Expanded(
+                            child: Container(
+                              height: 1.0,
+                              margin: EdgeInsets.only(top: 12.0),
+                              color: blackColor,
+                            ),
+                          ),
+                          Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(4)),
+                          Expanded(
+                            child: Container(
+                              height: 1.5,
+                              margin: EdgeInsets.only(top: 12.0),
+                              color: blackColor,
+                            ),
+                          ),
+                          Icon(Icons.check_circle_rounded,size: 30.0,color:  getColor(5)),
                         ],
                       ),
-                    ),
-                    ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: order.orderLog!.length,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext, index) {
-                          return OrderLogWidget(
-                            orderlog: order.orderLog![index],
-                            totalAmount: widget.totalAmount.toString(),
-                          );
-                        }),
-                  ],
-                )
-                    : Container();
-              }),
-            ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Approved",style: statusStyle),
+                            Text("Processing",style: statusStyle,),
+                            Text("Shipment",style: statusStyle,),
+                            Text("Delivered",style: statusStyle,)
+                          ],
+                        ),
+                      ),
+                      ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: order.orderLog!.length,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext, index) {
+                            return OrderLogWidget(
+                              orderlog: order.orderLog![index],
+                              totalAmount: widget.totalAmount.toString(),
+                            );
+                          }),
+                    ],
+                  )
+                      : Container();
+                }),
+              ],
+            ),
           ),
         ));
   }
@@ -220,7 +228,7 @@ class OrderLogWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Date: ${getFormatedDate(date)}",
+                      "Date: ${Methods().getFormatedDate(date)}",
                       style: TextStyle(height: 1.4),
                     ),
                     Container(
@@ -242,19 +250,13 @@ class OrderLogWidget extends StatelessWidget {
                                         ? "On Way"
                                         : orderlog.status == 5
                                             ? "Deliver"
-                                            : "")),
+                                            : orderlog.status == 6?"Cancelled":"unknown"
+                        )),
                   ],
                 ),
               ],
             )),
       ],
     );
-  }
-
-  getFormatedDate(_date) {
-    var inputFormat = DateFormat('yyyy-MM-dd');
-    var inputDate = inputFormat.parse(_date);
-    var outputFormat = DateFormat('dd/MM/yyyy');
-    return outputFormat.format(inputDate);
   }
 }

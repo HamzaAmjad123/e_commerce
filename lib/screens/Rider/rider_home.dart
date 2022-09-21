@@ -47,51 +47,94 @@ class _RiderHomeState extends State<RiderHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        drawer: CustomDrawer(),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fastfood_rounded),
-              label: "Approved Order",
+    return WillPopScope(
+      onWillPop: ()async{
+      return await showCupertinoModalPopup(
+          context: context,
+          builder: (context) => Padding(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Do you want to close your application?',
+                    style:
+                    TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                  ),
+                  Divider(),
+                  Row(
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('No')),
+                      Spacer(),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Text('Yes')),
+                    ],
+                  )
+                ]),
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              label: "Order History",
-            ),
-          ],
-          onTap: onItemTapped,
-          currentIndex: selectedIndex,
-          backgroundColor: bgColor,
-          selectedLabelStyle:
-              TextStyle(color: whiteColor, fontWeight: FontWeight.bold),
-          selectedItemColor: whiteColor,
-          unselectedItemColor: whiteColor,
-        ),
-        appBar: AppBar(
-          backgroundColor: bgColor,
-          title: Text(
-            "Rider screen",
-            style: TextStyle(color: Colors.white),
+          ));
+    },
+      child: Scaffold(
+          drawer: CustomDrawer(),
+          bottomNavigationBar: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.fastfood_rounded),
+                label: "Approved Order",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.history),
+                label: "Order History",
+              ),
+            ],
+            onTap: onItemTapped,
+            currentIndex: selectedIndex,
+            backgroundColor: bgColor,
+            selectedLabelStyle:
+                TextStyle(color: whiteColor, fontWeight: FontWeight.bold),
+            selectedItemColor: whiteColor,
+            unselectedItemColor: whiteColor,
           ),
-          leading: Builder(builder: (context)=>IconButton(onPressed: (){
-            Scaffold.of(context).openDrawer();
-
-          },
-              icon: Icon(Icons.menu))),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-          child: SingleChildScrollView(
-
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _widgetsList.elementAt(selectedIndex),
-              ],
+          appBar: AppBar(
+            backgroundColor: bgColor,
+            title: Text(
+              "Rider screen",
+              style: TextStyle(color: Colors.white),
             ),
+            leading: Builder(builder: (context)=>IconButton(onPressed: (){
+              Scaffold.of(context).openDrawer();
+
+            },
+                icon: Icon(Icons.menu))),
           ),
-        ));
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+            child: SingleChildScrollView(
+
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _widgetsList.elementAt(selectedIndex),
+                ],
+              ),
+            ),
+          )),
+    );
   }
 }

@@ -5,6 +5,7 @@ import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
 import 'package:e_commerce/provider/dealer_history_provider.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
+import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,6 +34,7 @@ class _ApprovedOrdersScreenState extends State<ApprovedOrdersScreen> {
             .tenantId!,
         context: context);
     CustomLoader.hideLoader(context);
+    setState(() {});
   }
 
   @override
@@ -56,44 +58,50 @@ class _ApprovedOrdersScreenState extends State<ApprovedOrdersScreen> {
         backgroundColor: bgColor,
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: 40.0,
-              margin: EdgeInsets.symmetric(vertical: 15.0),
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    hintText: "Search",
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(color: bgColor, width: 1.3)),
-                    suffixIcon: Icon(
-                      Icons.search,
-                      color: blackColor,
-                    )),
+      body: RefreshIndicator(
+        onRefresh: () {
+          return   _getApprovedOrder();
+        },
+        child: SingleChildScrollView(
+          physics:AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              Container(
+                height: 40.0,
+                margin: EdgeInsets.symmetric(vertical: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                      hintText: "Search",
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide(color: bgColor, width: 1.3)),
+                      suffixIcon: Icon(
+                        Icons.search,
+                        color: blackColor,
+                      )),
+                ),
               ),
-            ),
-            Consumer<DealerHistoryProvider>(builder: (context, orders, _) {
-              return orders.results != null
-                  ? ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: orders.results!.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext, index) {
-                        return ApprovedOrderWidget(
-                          order: orders.results![index],
-                        );
-                      })
-                  : Container();
-            }),
-          ],
+              Consumer<DealerHistoryProvider>(builder: (context, orders, _) {
+                return orders.results != null
+                    ? ListView.builder(
+                    physics:NeverScrollableScrollPhysics(),
+                        itemCount: orders.results!.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext, index) {
+                          return ApprovedOrderWidget(
+                            order: orders.results![index],
+                          );
+                        })
+                    : Container();
+              }),
+            ],
+          ),
         ),
       ),
     );
@@ -128,7 +136,7 @@ class ApprovedOrderWidget extends StatelessWidget {
             ),
             ListTile(
               leading: Text(
-                "Date: ${getFormatedDate(date)}",
+                "Date: ${Methods().getFormatedDate(date)}",
                 style: TextStyle(height: 1.4),
               ),
               trailing: Container(
@@ -205,10 +213,4 @@ class ApprovedOrderWidget extends StatelessWidget {
     );
   }
 
-  getFormatedDate(_date) {
-    var inputFormat = DateFormat('yyyy-MM-dd');
-    var inputDate = inputFormat.parse(_date);
-    var outputFormat = DateFormat('dd/MM/yyyy');
-    return outputFormat.format(inputDate);
-  }
 }

@@ -33,6 +33,9 @@ class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: widget.height,
+      width: widget.width,
+      margin: EdgeInsets.symmetric(horizontal: widget.horizontalMargin,vertical: widget.verticalMargin),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(
