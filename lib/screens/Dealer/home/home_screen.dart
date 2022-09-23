@@ -9,7 +9,7 @@ import 'package:e_commerce/service/series_services.dart';
 import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../dealer_statement.dart';
+import '../payment/dealer_statement.dart';
 import 'home_screen_widgets/cash_in_hand_widget.dart';
 import 'home_screen_widgets/generate_order_widget.dart';
 
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await CategoriesService().getCategory(context: context,tenantId: widget.tenatId,skip: 0,take: 1000);
    await LevelService().getLevel(context: context);
    await SeriesServices().getSeries(context: context, tenantid: widget.tenatId, skip: 0, take: 1000);
-   await CashBookService().getCashBook(context: context, skip: 0, take: 1000, tenantId: widget.tenatId);
+   // await CashBookService().getCashBook(context: context, skip: 0, take: 1000, tenantId: widget.tenatId);
     CustomLoader.hideLoader(context);
   }
   @override

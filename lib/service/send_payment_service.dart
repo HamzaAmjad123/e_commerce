@@ -1,4 +1,6 @@
+import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_post_request_service.dart';
+import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../configs/api_urls.dart';
@@ -18,6 +20,7 @@ class SendPaymentService {
           var res=await PostRequestService().httpPostRequest(url: sendPaymentUrl, body: _body, context: context);
           if(res !=null){
               print("Payment send successfully");
+              CustomSnackBar.showSnackBar(context: context, message: "Payment send successfully");
               return true;
           }
           else{
