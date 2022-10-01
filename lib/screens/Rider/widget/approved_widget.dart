@@ -48,7 +48,7 @@ class _RiderApprovedOrderState extends State<RiderApprovedOrder> {
 
 
 class RiderOrderWidget extends StatelessWidget {
-  RiderOdersModel order;
+  RiderOrdersModel order;
 
   RiderOrderWidget({required this.order});
 
@@ -97,7 +97,7 @@ class RiderOrderWidget extends StatelessWidget {
                       ? "Delivered":
                       order.status == 6
                           ?"Cancel"
-                      : "")),
+                      : order.status==7?"Ready To Shippment":"")),
             ),
             Text(
               "Amount ${order.totalAmount}",
@@ -142,6 +142,8 @@ class RiderOrderWidget extends StatelessWidget {
                        NavigationServices.goNextAndKeepHistory(context: context, widget: OrderIsDelivered(
                          order:order,
                          orderId: order.orderId!,
+                         orderNo: order.orderNo!,
+                         noOfBags: order.numberOfBags!,
                        ));
                      },
                      icon: Icon(

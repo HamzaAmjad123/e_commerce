@@ -14,7 +14,7 @@ class RiderOrdersService{
       if(res !=null){
         print("respppoonnnseeeeeee");
         print(res);
-        List<RiderOdersModel> approvedOrders=(res).map<RiderOdersModel>((m )=> RiderOdersModel.fromJson(m)).toList();
+        List<RiderOrdersModel> approvedOrders=(res).map<RiderOrdersModel>((m )=> RiderOrdersModel.fromJson(m)).toList();
         Provider.of<RiderApprovesOrdersProvider>(context,listen: false).updateRiderApprovedOrders(
           newList: approvedOrders,
         );

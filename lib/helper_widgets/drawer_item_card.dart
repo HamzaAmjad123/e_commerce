@@ -12,10 +12,12 @@ import 'package:get/get.dart';
 class DrawerLinkWidget extends StatelessWidget {
   final IconData? icon;
   final String? text;
+  bool isLogout;
   final Function()? onTap;
 
-  const DrawerLinkWidget({
+   DrawerLinkWidget({
     this.icon,
+    this.isLogout=false,
     this.text,
     this.onTap,
   });
@@ -24,23 +26,33 @@ class DrawerLinkWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap:onTap,
-      child: Padding(
+      child: Container(
+
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: bgColor,
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(
+                    icon,
+                    color: isLogout?Colors.red:bgColor,
+                  ),
+                  SizedBox(width: 10,),
+                  Expanded(
+                    child: Text(text!, style: isLogout?TextStyle(color: Colors.red) :Get.textTheme.bodyText2!.merge(TextStyle(fontSize: 14))),
+                  ),
+                ],
+              ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 12),
-              width: 1,
-              height: 24,
-              color: Get.theme.focusColor.withOpacity(0.2),
-            ),
-            Expanded(
-              child: Text(text!, style: Get.textTheme.bodyText2!.merge(TextStyle(fontSize: 14))),
-            ),
+              width: 30,
+
+              child: isLogout?SizedBox():IconButton(
+                onPressed: onTap,
+                icon:Icon( Icons.arrow_forward_ios_outlined,color: Colors.grey,size: 14,),
+              ),
+            )
           ],
         ),
       ),

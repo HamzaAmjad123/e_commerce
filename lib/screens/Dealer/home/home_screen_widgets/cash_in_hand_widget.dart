@@ -7,7 +7,7 @@ import '../../../../configs/text_style.dart';
 import '../../../../helper_services/navigation_services.dart';
 import '../../../../provider/cash_book_provider.dart';
 import '../../generate_order/generate_order_screen.dart';
-import '../../order/dealer_history_screen.dart';
+import '../../order/dealer_statement.dart';
 
 
 class CashInHandWidget extends StatefulWidget {

@@ -22,99 +22,100 @@ class GenerateOrderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-        Card(
-          elevation: 10.0,
-          margin: EdgeInsets.symmetric(horizontal: 9.0,vertical: 4.0),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0)
-              )
-          ),
-          shadowColor: bgColor,
-          child: Column(
-            children: [
-
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: const <BoxShadow>[
-                    BoxShadow(
-                      color: Color.fromRGBO(217, 210, 200, 0.51),
-                      offset: Offset(6, 6),
-                      blurRadius: 16,
-                    ),
-                    BoxShadow(
-                      color: Color.fromRGBO(255, 255, 255, 0.83),
-                      offset: Offset(-6, -6),
-                      blurRadius: 16,
-                    ),
-                  ],
+        Container(
+          height: MediaQuery.of(context).size.height*0.03,
+          child: Card(
+            elevation: 10.0,
+            margin: EdgeInsets.symmetric(horizontal: 9.0,vertical: 4.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  bottomRight: Radius.circular(10.0)
+                )
+            ),
+            shadowColor: bgColor,
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: const <BoxShadow>[
+                      BoxShadow(
+                        color: Color.fromRGBO(217, 210, 200, 0.51),
+                        offset: Offset(6, 6),
+                        blurRadius: 16,
+                      ),
+                      BoxShadow(
+                        color: Color.fromRGBO(255, 255, 255, 0.83),
+                        offset: Offset(-6, -6),
+                        blurRadius: 16,
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.only(top: 10.0,left: 18.0,right: 10.0),
+                  child: Column(
+                    children: [
+                      Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/7,fit: BoxFit.cover,),
+                      Divider(
+                        thickness: 2.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text("Title",style: titleStyle,),
+                          Text(item.name!,style: titleStyle,),
+                        ],
+                      ),
+                      SizedBox(height: 1.0,),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     // Text("Discount",style: titleStyle,),
+                      //     Text("${item.unitDiscountPercentage}%"),
+                      //   ],
+                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text("U-Price",style: titleStyle,),
+                          Text("${item.unitPrice}PKR"),
+                          InkWell(
+                              onTap: onTap,
+                              child: Icon(Icons.add_shopping_cart,color: Colors.green,))
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                padding: EdgeInsets.only(top: 10.0,left: 18.0,right: 10.0),
-                child: Column(
-                  children: [
-                    Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/5,fit: BoxFit.cover,),
-                    Divider(
-                      thickness: 2.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Text("Title",style: titleStyle,),
-                        Text(item.name!,style: titleStyle,),
-                      ],
-                    ),
-                    SizedBox(height: 1.0,),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [
-                    //     // Text("Discount",style: titleStyle,),
-                    //     Text("${item.unitDiscountPercentage}%"),
-                    //   ],
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Text("U-Price",style: titleStyle,),
-                        Text("${item.unitPrice}PKR"),
-                        InkWell(
-                            onTap: onTap,
-                            child: Icon(Icons.add_shopping_cart,color: Colors.green,))
-                      ],
-                    ),
-                  ],
-                ),
-              ),
 
 
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 3.0),
-              //   child: Align(
-              //     alignment: Alignment.bottomRight,
-              //     child: InkWell(
-              //         onTap: onTap,
-              //         child: Icon(Icons.add_shopping_cart,color: Colors.green,)),
-              //
-              //
-              //   ),
-              // ),
-        ]),
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 3.0),
+                //   child: Align(
+                //     alignment: Alignment.bottomRight,
+                //     child: InkWell(
+                //         onTap: onTap,
+                //         child: Icon(Icons.add_shopping_cart,color: Colors.green,)),
+                //
+                //
+                //   ),
+                // ),
+          ]),
 
-        // Positioned( //<-- SEE HERE
-        //   right: 0,
-        //   left: 330.0,
-        //   top: 0,
-        //   bottom:170.0 ,
-        //   child: IconButton(
-        //     icon: Icon(Icons.shopping_cart,color: bgColor,),
-        //     onPressed: onTap,
-        //   ),),
+          // Positioned( //<-- SEE HERE
+          //   right: 0,
+          //   left: 330.0,
+          //   top: 0,
+          //   bottom:170.0 ,
+          //   child: IconButton(
+          //     icon: Icon(Icons.shopping_cart,color: bgColor,),
+          //     onPressed: onTap,
+          //   ),),
 
-    );
-
+    ),
+        );
   }
 }
 

@@ -1,5 +1,5 @@
 import 'package:e_commerce/helper_services/custom_loader.dart';
-import 'package:e_commerce/screens/Dealer/order/dealer_history_screen.dart';
+import 'package:e_commerce/screens/Dealer/order/dealer_statement.dart';
 import 'package:e_commerce/screens/Rider/widget/approved_widget.dart';
 import 'package:e_commerce/screens/Rider/widget/history_widget.dart';
 import 'package:e_commerce/service/rider_services/rider_history_service.dart';

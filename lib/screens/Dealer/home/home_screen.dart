@@ -9,7 +9,7 @@ import 'package:e_commerce/service/series_services.dart';
 import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../payment/dealer_statement.dart';
+import '../payment/dealer_history_view.dart';
 import 'home_screen_widgets/cash_in_hand_widget.dart';
 import 'home_screen_widgets/generate_order_widget.dart';
 
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await CategoriesService().getCategory(context: context,tenantId: widget.tenatId,skip: 0,take: 1000);
    await LevelService().getLevel(context: context);
    await SeriesServices().getSeries(context: context, tenantid: widget.tenatId, skip: 0, take: 1000);
-   // await CashBookService().getCashBook(context: context, skip: 0, take: 1000, tenantId: widget.tenatId);
+    await CashBookService().getCashBook(context: context, skip: 0, take: 1000, tenantId: widget.tenatId);
     CustomLoader.hideLoader(context);
   }
   @override
@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
    DashBoardWidget(),
    CashInHandWidget(),
    // PendingOrderWidget(),
-   DealerStatement()
+   DealerStatmentScreen()
 
   ];
   int? _selectedIndex=0;
@@ -101,8 +101,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ));
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         drawer: CustomDrawer(),
-        appBar: AppBar(
+        appBar:_selectedIndex==0? AppBar(
+          elevation: 0,
           leading: Builder(builder: (context)=>IconButton(onPressed: (){
             Scaffold.of(context).openDrawer();
           },
@@ -111,7 +113,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
           title: Text("Dashboard",style: barStyle,),
           centerTitle: true,
-        ),
+        ):_selectedIndex==1? AppBar(
+          leading: Builder(builder: (context)=>IconButton(onPressed: (){
+            Scaffold.of(context).openDrawer();
+          },
+              icon: Icon(Icons.menu))),
+          backgroundColor: bgColor,
+
+          title: Text("Dashboard",style: barStyle,),
+          centerTitle: true,
+        ):AppBar(),
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.dashboard,color: whiteColor,),label: "Home",),
@@ -129,16 +140,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
         ),
-       body: Padding(
-         padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
-         child: SingleChildScrollView(
-           child: Column(
-             mainAxisAlignment: MainAxisAlignment.start,
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               _widgetsList.elementAt(_selectedIndex!),
-             ],
-           ),
+       body: SingleChildScrollView(
+         child: Column(
+           mainAxisAlignment: MainAxisAlignment.start,
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: [
+             _widgetsList.elementAt(_selectedIndex!),
+           ],
          ),
        ),
 

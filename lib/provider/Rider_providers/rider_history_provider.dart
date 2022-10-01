@@ -2,9 +2,9 @@ import 'package:e_commerce/model/rider_models/rider_order_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class RiderHistoryProvider extends ChangeNotifier {
-  List<RiderOdersModel>? historyList;
+  List<RiderOrdersModel>? historyList;
 
-  updateRiderHistory({List<RiderOdersModel>? newList}) {
+  updateRiderHistory({List<RiderOrdersModel>? newList}) {
     historyList = newList;
     notifyListeners();
   }

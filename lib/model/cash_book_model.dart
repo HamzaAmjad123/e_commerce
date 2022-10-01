@@ -1,127 +1,3 @@
-// class CashBookModel {
-//   CashBook? result;
-//   String? message;
-//
-//   CashBookModel({this.result, this.message});
-//
-//   CashBookModel.fromJson(Map<String, dynamic> json) {
-//     result =
-//     json['result'] != null ? new CashBook.fromJson(json['result']) : null;
-//     message = json['message'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     if (this.result != null) {
-//       data['result'] = this.result!.toJson();
-//     }
-//     data['message'] = this.message;
-//     return data;
-//   }
-// }
-//
-// class CashBook {
-//   int? voucherId;
-//   double? totalReceived;
-//   double? totalAmount;
-//   int? dealerId;
-//   Null? dealer;
-//   int? tenantId;
-//   List<VoucherLines>? voucherLines;
-//   int? totalCount;
-//
-//   CashBook(
-//       {this.voucherId,
-//         this.totalReceived,
-//         this.totalAmount,
-//         this.dealerId,
-//         this.dealer,
-//         this.tenantId,
-//         this.voucherLines,
-//         this.totalCount});
-//
-//   CashBook.fromJson(Map<String, dynamic> json) {
-//     voucherId = json['voucherId'];
-//     totalReceived = json['totalReceived'];
-//     totalAmount = json['totalAmount'];
-//     dealerId = json['dealerId'];
-//     dealer = json['dealer'];
-//     tenantId = json['tenantId'];
-//     if (json['voucherLines'] != null) {
-//       voucherLines = <VoucherLines>[];
-//       json['voucherLines'].forEach((v) {
-//         voucherLines!.add(new VoucherLines.fromJson(v));
-//       });
-//     }
-//     totalCount = json['totalCount'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['voucherId'] = this.voucherId;
-//     data['totalReceived'] = this.totalReceived;
-//     data['totalAmount'] = this.totalAmount;
-//     data['dealerId'] = this.dealerId;
-//     data['dealer'] = this.dealer;
-//     data['tenantId'] = this.tenantId;
-//     if (this.voucherLines != null) {
-//       data['voucherLines'] = this.voucherLines!.map((v) => v.toJson()).toList();
-//     }
-//     data['totalCount'] = this.totalCount;
-//     return data;
-//   }
-// }
-//
-// class VoucherLines {
-//   int? voucherLineId;
-//   double? total;
-//   int? type;
-//   String? receivedDate;
-//   int? receivedType;
-//   String? amountReceivedDetail;
-//   int? receivedById;
-//   int? voucherId;
-//   int? tenantId;
-//
-//   VoucherLines(
-//       {this.voucherLineId,
-//         this.total,
-//         this.type,
-//         this.receivedDate,
-//         this.receivedType,
-//         this.amountReceivedDetail,
-//         this.receivedById,
-//         this.voucherId,
-//         this.tenantId});
-//
-//   VoucherLines.fromJson(Map<String, dynamic> json) {
-//     voucherLineId = json['voucherLineId'];
-//     total = json['total'];
-//     type = json['type'];
-//     receivedDate = json['receivedDate'];
-//     receivedType = json['receivedType'];
-//     amountReceivedDetail = json['amountReceivedDetail'];
-//     receivedById = json['receivedById'];
-//     voucherId = json['voucherId'];
-//     tenantId = json['tenantId'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['voucherLineId'] = this.voucherLineId;
-//     data['total'] = this.total;
-//     data['type'] = this.type;
-//     data['receivedDate'] = this.receivedDate;
-//     data['receivedType'] = this.receivedType;
-//     data['amountReceivedDetail'] = this.amountReceivedDetail;
-//     data['receivedById'] = this.receivedById;
-//     data['voucherId'] = this.voucherId;
-//     data['tenantId'] = this.tenantId;
-//     return data;
-//   }
-// }
-
-
 class CashBookModel {
   Result? result;
   String? message;
@@ -145,118 +21,91 @@ class CashBookModel {
 }
 
 class Result {
-  int? voucherId;
-  double? totalReceived;
-  double? totalAmount;
+  List<LedgerDetails>? ledgerDetails;
   int? dealerId;
-  Null? dealer;
+  int? voucherId;
   int? tenantId;
-  List<VoucherLines>? voucherLines;
-  int? totalCount;
-  int? pendingVoucherLines;
+  double? totalAmount;
+  double? totalReceived;
 
   Result(
-      {this.voucherId,
-        this.totalReceived,
-        this.totalAmount,
+      {this.ledgerDetails,
         this.dealerId,
-        this.dealer,
+        this.voucherId,
         this.tenantId,
-        this.voucherLines,
-        this.totalCount,
-        this.pendingVoucherLines});
+        this.totalAmount,
+        this.totalReceived});
 
   Result.fromJson(Map<String, dynamic> json) {
-    voucherId = json['voucherId'];
-    totalReceived = json['totalReceived'];
-    totalAmount = json['totalAmount'];
-    dealerId = json['dealerId'];
-    dealer = json['dealer'];
-    tenantId = json['tenantId'];
-    if (json['voucherLines'] != null) {
-      voucherLines = <VoucherLines>[];
-      json['voucherLines'].forEach((v) {
-        voucherLines!.add(new VoucherLines.fromJson(v));
+    if (json['ledgerDetails'] != null) {
+      ledgerDetails = <LedgerDetails>[];
+      json['ledgerDetails'].forEach((v) {
+        ledgerDetails!.add(new LedgerDetails.fromJson(v));
       });
     }
-    totalCount = json['totalCount'];
-    pendingVoucherLines = json['pendingVoucherLines'];
+    dealerId = json['dealerId'];
+    voucherId = json['voucherId'];
+    tenantId = json['tenantId'];
+    totalAmount = json['totalAmount'];
+    totalReceived = json['totalReceived'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['voucherId'] = this.voucherId;
-    data['totalReceived'] = this.totalReceived;
-    data['totalAmount'] = this.totalAmount;
-    data['dealerId'] = this.dealerId;
-    data['dealer'] = this.dealer;
-    data['tenantId'] = this.tenantId;
-    if (this.voucherLines != null) {
-      data['voucherLines'] = this.voucherLines!.map((v) => v.toJson()).toList();
+    if (this.ledgerDetails != null) {
+      data['ledgerDetails'] =
+          this.ledgerDetails!.map((v) => v.toJson()).toList();
     }
-    data['totalCount'] = this.totalCount;
-    data['pendingVoucherLines'] = this.pendingVoucherLines;
+    data['dealerId'] = this.dealerId;
+    data['voucherId'] = this.voucherId;
+    data['tenantId'] = this.tenantId;
+    data['totalAmount'] = this.totalAmount;
+    data['totalReceived'] = this.totalReceived;
     return data;
   }
 }
 
-class VoucherLines {
-  int? voucherLineId;
-  double? total;
-  int? type;
-  String? receivedDate;
-  int? receivedType;
-  String? amountReceivedDetail;
-  int? receivedById;
-  int? voucherId;
-  int? tenantId;
-  int? status;
-  String? images;
-  String? receiverDetail;
+class LedgerDetails {
+  Null? dealerId;
+  String? date;
+  String? title;
+  double? credit;
+  double? debit;
+  String? status;
+  String? description;
+  String? type;
 
-  VoucherLines(
-      {this.voucherLineId,
-        this.total,
-        this.type,
-        this.receivedDate,
-        this.receivedType,
-        this.amountReceivedDetail,
-        this.receivedById,
-        this.voucherId,
-        this.tenantId,
+  LedgerDetails(
+      {this.dealerId,
+        this.date,
+        this.title,
+        this.credit,
+        this.debit,
         this.status,
-        this.images,
-        this.receiverDetail});
+        this.description,
+        this.type});
 
-  VoucherLines.fromJson(Map<String, dynamic> json) {
-    voucherLineId = json['voucherLineId'];
-    total = json['total'];
-    type = json['type'];
-    receivedDate = json['receivedDate'];
-    receivedType = json['receivedType'];
-    amountReceivedDetail = json['amountReceivedDetail'];
-    receivedById = json['receivedById'];
-    voucherId = json['voucherId'];
-    tenantId = json['tenantId'];
+  LedgerDetails.fromJson(Map<String, dynamic> json) {
+    dealerId = json['dealerId'];
+    date = json['date'];
+    title = json['title'];
+    credit = json['credit'];
+    debit = json['debit'];
     status = json['status'];
-    images = json['images'];
-    receiverDetail = json['receiverDetail'];
+    description = json['description'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['voucherLineId'] = this.voucherLineId;
-    data['total'] = this.total;
-    data['type'] = this.type;
-    data['receivedDate'] = this.receivedDate;
-    data['receivedType'] = this.receivedType;
-    data['amountReceivedDetail'] = this.amountReceivedDetail;
-    data['receivedById'] = this.receivedById;
-    data['voucherId'] = this.voucherId;
-    data['tenantId'] = this.tenantId;
+    data['dealerId'] = this.dealerId;
+    data['date'] = this.date;
+    data['title'] = this.title;
+    data['credit'] = this.credit;
+    data['debit'] = this.debit;
     data['status'] = this.status;
-    data['images'] = this.images;
-    data['receiverDetail'] = this.receiverDetail;
+    data['description'] = this.description;
+    data['type'] = this.type;
     return data;
   }
 }

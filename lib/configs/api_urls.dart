@@ -12,10 +12,8 @@ const String orderLogUrl=baseUrl + "Order/getOrderLogs";
 const String orderGetDetails=baseUrl + "Order/get";
 const String cashBookUrl=baseUrl + "Voucher/getDealerStatement";
 const String sendPaymentUrl=baseUrl + "Voucher/createVoucherLineByDealer";
-
+const  String dashboardUrl=baseUrl + "Dashboard/GetDataDashboard?";
 // Urls For Rider
-
-
 const String riderApprovedOrdersurl=baseUrl + "Order/getApprovedOrdersListForRider";
 const String riderHistoryOrdersurl=baseUrl + "Order/getApprovedOrdersHistoryListForRider";
-const String deliveredOrderUrl=baseUrl + "Order/orderIsDelivered";
+const String deliveredOrderUrl=baseUrl + "Order/orderIsShipped";

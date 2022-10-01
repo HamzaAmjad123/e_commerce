@@ -3,6 +3,7 @@ import 'package:e_commerce/provider/Rider_providers/rider_orders_provider.dart';
 import 'package:e_commerce/provider/dealer_history_provider.dart';
 import 'package:e_commerce/provider/cash_book_provider.dart';
 import 'package:e_commerce/provider/category_provider.dart';
+import 'package:e_commerce/provider/home_dashboard_provider.dart';
 import 'package:e_commerce/provider/items_provider.dart';
 import 'package:e_commerce/provider/level_provider.dart';
 import 'package:e_commerce/provider/order_getDeatils_provider.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>OrderDetailsProvider()),
         ChangeNotifierProvider(create: (context)=>CashBookProvider()),
         ChangeNotifierProvider(create: (context)=>DealerHistoryProvider()),
+        ChangeNotifierProvider(create: (context)=>HomeDashboardProvider()),
         //Rider Provider
         ChangeNotifierProvider(create: (context)=>RiderHistoryProvider()),
         ChangeNotifierProvider(create: (context)=>RiderApprovesOrdersProvider())

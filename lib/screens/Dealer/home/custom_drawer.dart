@@ -5,6 +5,7 @@
  * Copyright (c) 2022
  */
 import 'package:e_commerce/configs/color.dart';
+import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
 import 'package:e_commerce/screens/Dealer/home/home_screen.dart';
@@ -32,139 +33,57 @@ class _CustomDrawerState extends State<CustomDrawer> {
     final box = GetStorage();
     String role=Provider.of<UserDataProvider>(context, listen: false).user!.userRoles![0];
     UserModel usermodels = UserModel.fromJson(box.read('user'));
+    String name=usermodels.name![0];
 
     return Drawer(
       child: ListView(children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          height: 100,
-          color: bgColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
-              Text("Welcome".tr, style: Get.textTheme.bodyText1),
-              // SizedBox(height: 5),
-              // Text("The Best Service Providing App".tr, style: Get.textTheme.bodyText1),
+              Container(
+                child: CircleAvatar(
+                  maxRadius: 30,
+                  backgroundColor: bgColor,
+                  child: Center(
+                    child: Text(usermodels.name![0],style: barStyle),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 15,
               ),
-              Text(usermodels.name!, style: TextStyle(color: Colors.white)),
+              Text(usermodels.name!, style: titleStyle),
               SizedBox(height: 3),
-              Text(usermodels.email!, style: TextStyle(color: Colors.white)),
+              Text(usermodels.email!, style: oderNoStyle),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: Colors.black,
+              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     Text("0 B",style: cashStyle,),
+              //     SizedBox(width: 5,),
+              //     Text("of 20 GB used",style: oderNoStyle,),
+              //   ],
+              // ),
+              // Divider(
+              //   color: Colors.black,
+              // ),
             ],
           ),
         ),
-
-        // Container(
-        //   padding: EdgeInsets.symmetric(vertical: 30, horizontal: 15),
-        //   decoration: BoxDecoration(
-        //     color: bgColor,
-        //     // color: Theme.of(context).hintColor.withOpacity(0.1),
-        //   ),
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       Text("Welcome".tr, style: Get.textTheme.headline5!.merge(TextStyle(color: Get.theme.colorScheme.secondary))),
-        //       SizedBox(height: 5),
-        //       Text("Login account or create new one for free".tr, style: Get.textTheme.bodyText1),
-        //       // Wrap(
-        //       //   spacing: 10,
-        //       //   children: <Widget>[
-        //       //     MaterialButton(
-        //       //       onPressed: () {
-        //       //        //Loginpage navigation
-        //       //       },
-        //       //       color: Get.theme.colorScheme.secondary,
-        //       //       height: 40,
-        //       //       elevation: 0,
-        //       //       child: Wrap(
-        //       //         runAlignment: WrapAlignment.center,
-        //       //         crossAxisAlignment: WrapCrossAlignment.center,
-        //       //         spacing: 9,
-        //       //         children: [
-        //       //           Icon(Icons.exit_to_app_outlined, color: whiteColor, size: 24),
-        //       //           Text(
-        //       //             "Login",
-        //       //             style: Get.textTheme.subtitle1!.merge(TextStyle(color: whiteColor)),
-        //       //           ),
-        //       //         ],
-        //       //       ),
-        //       //       shape: StadiumBorder(),
-        //       //     ),
-        //       //     MaterialButton(
-        //       //       color: Get.theme.focusColor.withOpacity(0.2),
-        //       //       height: 40,
-        //       //       elevation: 0,
-        //       //       onPressed: () {
-        //       //       // Register page navigation
-        //       //       },
-        //       //       child: Wrap(
-        //       //         runAlignment: WrapAlignment.center,
-        //       //         crossAxisAlignment: WrapCrossAlignment.center,
-        //       //         spacing: 9,
-        //       //         children: [
-        //       //           Icon(Icons.person_add_outlined, color: whiteColor, size: 24),
-        //       //           Text(
-        //       //             "Register".tr,
-        //       //             style: Get.textTheme.subtitle1!.merge(TextStyle(color: whiteColor)),
-        //       //           ),
-        //       //         ],
-        //       //       ),
-        //       //       shape: StadiumBorder(),
-        //       //     ),
-        //       //   ],
-        //       // ),
-        //     ],
-        //   ),
-        // ),
-        // UserAccountsDrawerHeader(
-        //   decoration: BoxDecoration(
-        //     color: bgColor,
-        //   ),
-        //   accountName: Text(
-        //     usermodels.name!,
-        //     style: TextStyle(color: Colors.black),
-        //   ),
-        //   accountEmail: Text(
-        //     usermodels.email!,
-        //     style: TextStyle(color: Colors.black),
-        //   ),
-        //   currentAccountPicture: Stack(
-        //     children: [
-        //       SizedBox(
-        //         width: 80,
-        //         height: 80,
-        //         child: ClipRRect(
-        //           borderRadius: BorderRadius.all(Radius.circular(80)),
-        //           child: usermodels.imageUrl==""?Image.asset(Images.placeHolder,
-        //             fit: BoxFit.cover,
-        //             width: double.infinity,
-        //             height: 80,
-        //           ):Image.network(usermodels.imageUrl!,height: 80,
-        //             width: double.infinity,
-        //             fit: BoxFit.cover,)
-        //           // CachedNetworkImage(
-        //           //   height: 80,
-        //           //   width: double.infinity,
-        //           //   fit: BoxFit.cover,
-        //           //   imageUrl: usermodels.imageUrl!,
-        //           //   placeholder: (context, url) => Image.asset(Images.loadingHolder,
-        //           //     fit: BoxFit.cover,
-        //           //     width: double.infinity,
-        //           //     height: 80,
-        //           //   ),
-        //           //   errorWidget: (context, url, error) => Icon(Icons.error_outline),
-        //           // ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
         role=="Dealer"?Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             DrawerLinkWidget(
               icon: Icons.home_outlined,
               text: "Home",
@@ -201,32 +120,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
               },
             ),
           ],
-        ):Container(
-          child: Text("Rider"),
-        ),
-
-        // DrawerLinkWidget(
-        //   icon: Icons.notifications_none_outlined,
-        //   text: "Notifications",
-        //   onTap: () {
-        //
-        //   },
-        // ),
-
-        ListTile(
-          dense: true,
-          title: Text(
-            "Application preferences".tr,
-            style: Get.textTheme.caption,
-          ),
-          trailing: Icon(
-            Icons.remove,
-            color: Get.theme.focusColor.withOpacity(0.3),
-          ),
-        ),
+        ):Container(),
         DrawerLinkWidget(
           icon: Icons.account_balance_wallet_outlined,
-          text: "Payment History",
+          text: "Send Cash",
           onTap: () {
             role=="Dealer"?
                 NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen()):
@@ -234,42 +131,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
           },
         ),
-        // DrawerLinkWidget(
-        //   icon: Icons.person_outline,
-        //   text: "Account",
-        //   onTap: () async {
-        //     Get.back();
-        //
-        //   },
-        // ),
-        // DrawerLinkWidget(
-        //   icon: Icons.settings_outlined,
-        //   text: "Settings",
-        //   onTap: () async {
-        //
-        //   },
-        // ),
-        ListTile(
-          dense: true,
-          title: Text(
-            "Account",
-            style: Get.textTheme.caption,
-          ),
-          trailing: Icon(
-            Icons.remove,
-            color: Get.theme.focusColor.withOpacity(0.3),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Divider(
+            color: Colors.grey,
           ),
         ),
-        // DrawerLinkWidget(
-        //   icon: Icons.help_outline,
-        //   text: "Help & FAQ",
-        //   onTap: () async {
-        //   },
-        // ),
-        // CustomPageDrawerLinkWidget(),
-
         DrawerLinkWidget(
           icon: Icons.logout,
+          isLogout: true,
           text: "Logout",
           onTap: () async {
             Navigator.of(context);

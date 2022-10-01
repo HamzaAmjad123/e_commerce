@@ -291,7 +291,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                                   crossAxisCount: 2,
                                   mainAxisSpacing: 10,
                                   crossAxisSpacing: 10,
-                                  childAspectRatio: 0.84),
+                                  childAspectRatio:0.9),
                               itemCount: item.itemsList!.length,
                               itemBuilder:(context,index){
                                 return

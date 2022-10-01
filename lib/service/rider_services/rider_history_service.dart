@@ -12,7 +12,7 @@ class RiderHistoryService{
 
       var res=await PostRequestService().httpPostRequest(url: riderHistoryOrdersurl, body: _body, context: context);
       if(res !=null){
-        List<RiderOdersModel> historyList=(res).map<RiderOdersModel>((m)=> RiderOdersModel.fromJson(m)).toList();
+        List<RiderOrdersModel> historyList=(res).map<RiderOrdersModel>((m)=> RiderOrdersModel.fromJson(m)).toList();
         Provider.of<RiderHistoryProvider>(context,listen: false).updateRiderHistory(
           newList: historyList,
         );

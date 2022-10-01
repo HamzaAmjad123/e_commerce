@@ -1,4 +1,4 @@
-class RiderOdersModel {
+class RiderOrdersModel {
   int? orderId;
   String? orderNo;
   String? date;
@@ -9,12 +9,15 @@ class RiderOdersModel {
   int? dealerId;
   Dealer? dealer;
   int? warehouseId;
-  Null? warehouse;
+  String? warehouse;
   int? tenantId;
-  Null? orderLines;
+  String? voucher;
+  String? orderLines;
   bool? isVerifiedByGatePassUser;
+  int? numberOfBags;
+  String? cargoReciptImage;
 
-  RiderOdersModel(
+  RiderOrdersModel(
       {this.orderId,
         this.orderNo,
         this.date,
@@ -27,10 +30,13 @@ class RiderOdersModel {
         this.warehouseId,
         this.warehouse,
         this.tenantId,
+        this.voucher,
         this.orderLines,
-        this.isVerifiedByGatePassUser});
+        this.isVerifiedByGatePassUser,
+        this.numberOfBags,
+        this.cargoReciptImage});
 
-  RiderOdersModel.fromJson(Map<String, dynamic> json) {
+  RiderOrdersModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
     orderNo = json['orderNo'];
     date = json['date'];
@@ -44,8 +50,11 @@ class RiderOdersModel {
     warehouseId = json['warehouseId'];
     warehouse = json['warehouse'];
     tenantId = json['tenantId'];
+    voucher = json['voucher'];
     orderLines = json['orderLines'];
     isVerifiedByGatePassUser = json['isVerifiedByGatePassUser'];
+    numberOfBags = json['numberOfBags'];
+    cargoReciptImage = json['cargoReciptImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -64,8 +73,11 @@ class RiderOdersModel {
     data['warehouseId'] = this.warehouseId;
     data['warehouse'] = this.warehouse;
     data['tenantId'] = this.tenantId;
+    data['voucher'] = this.voucher;
     data['orderLines'] = this.orderLines;
     data['isVerifiedByGatePassUser'] = this.isVerifiedByGatePassUser;
+    data['numberOfBags'] = this.numberOfBags;
+    data['cargoReciptImage'] = this.cargoReciptImage;
     return data;
   }
 }
@@ -82,6 +94,10 @@ class Dealer {
   Null? name;
   Null? tenantId;
   Null? warehouseId;
+  Null? aqmId;
+  Null? rmsId;
+  Null? asmId;
+  Null? meId;
 
   Dealer(
       {this.id,
@@ -94,7 +110,11 @@ class Dealer {
         this.imageUrl,
         this.name,
         this.tenantId,
-        this.warehouseId});
+        this.warehouseId,
+        this.aqmId,
+        this.rmsId,
+        this.asmId,
+        this.meId});
 
   Dealer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -108,6 +128,10 @@ class Dealer {
     name = json['name'];
     tenantId = json['tenantId'];
     warehouseId = json['warehouseId'];
+    aqmId = json['aqmId'];
+    rmsId = json['rmsId'];
+    asmId = json['asmId'];
+    meId = json['meId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -123,6 +147,10 @@ class Dealer {
     data['name'] = this.name;
     data['tenantId'] = this.tenantId;
     data['warehouseId'] = this.warehouseId;
+    data['aqmId'] = this.aqmId;
+    data['rmsId'] = this.rmsId;
+    data['asmId'] = this.asmId;
+    data['meId'] = this.meId;
     return data;
   }
 }

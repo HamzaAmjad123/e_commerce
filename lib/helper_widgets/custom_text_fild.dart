@@ -39,10 +39,17 @@ class CustomTextField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        headerText == null ? SizedBox() : Text(headerText!),
+        headerText == null ? SizedBox() : Padding(
+          padding:  EdgeInsets.symmetric(
+            horizontal: headerText==null?0.0:10.0,
+            vertical: headerText==null?0.0:0.0,
+          ),
+          child: Text(headerText!,style: TextStyle(color: blackColor,fontSize: 15.0,fontWeight: FontWeight.w600),),
+        ),
         Container(
           height: 45.0,
           child: TextField(
+            style: TextStyle(color: shape?Colors.black:null),
             controller: controller,
             focusNode: focusNode,
             textInputAction: inputAction,
@@ -51,13 +58,16 @@ class CustomTextField extends StatelessWidget {
             onSubmitted: onSubmit,
             obscureText: obScureText,
             decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
               hintText: hintText,
               labelText: labelText,
+              hintStyle: TextStyle(color: shape?Colors.grey:null),
               enabledBorder: shape
                   ? OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
                       borderSide:
-                          BorderSide(color: lightBlackColor, width: 1.8),
+                          BorderSide(color: Colors.grey, width: 1.8),
                     )
                   : UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -65,7 +75,7 @@ class CustomTextField extends StatelessWidget {
               focusedBorder: shape
                   ? OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide(color: bgColor, width: 1.8))
+                      borderSide: BorderSide(color:  Colors.grey, width: 1.8))
                   : UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
                       borderSide: BorderSide(color: bgColor, width: 3.0)),
@@ -73,7 +83,7 @@ class CustomTextField extends StatelessWidget {
                   ? null
                   : Icon(
                       prefixIcon,
-                      color: bgColor,
+                      color: shape? Colors.grey:bgColor,
                     ),
               suffixIcon: suffixIcon == null
                   ? null
@@ -84,7 +94,8 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
+        shape?SizedBox()
+        :SizedBox(
           height: 5.0,
         )
       ],

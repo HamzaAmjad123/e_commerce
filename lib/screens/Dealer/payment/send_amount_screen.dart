@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
+import 'package:e_commerce/provider/cash_book_provider.dart';
 import 'package:e_commerce/service/send_payment_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../../configs/text_style.dart';
 import '../../../helper_widgets/custom_button.dart';
 import '../../../helper_widgets/custom_text_fild.dart';
@@ -82,7 +84,7 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text("Total Amount", style: cashStyle),
-                            Text("50,000", style: rsStyle),
+                            Text(Provider.of<CashBookProvider>(context,listen: false).cashBook!.result!.totalAmount!.toString()),
                           ],
                         ),
                       ),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
+import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
 import 'package:e_commerce/model/rider_models/rider_order_model.dart';
 import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/service/rider_services/delivered_order_service.dart';
@@ -13,11 +14,15 @@ import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import '../../configs/color.dart';
 import 'dart:ui' as ui;
 
-class OrderIsDelivered extends StatefulWidget {
-  final RiderOdersModel? order;
-  final int orderId;
+import '../../configs/text_style.dart';
 
-  OrderIsDelivered({this.order, required this.orderId});
+class OrderIsDelivered extends StatefulWidget {
+  final RiderOrdersModel? order;
+  final int orderId;
+  final   String orderNo;
+  final int noOfBags;
+
+  OrderIsDelivered({this.order, required this.orderId, required this.orderNo, required this.noOfBags});
 
   @override
   State<OrderIsDelivered> createState() => _OrderIsDeliveredState();
@@ -40,6 +45,9 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   String? _isRider;
   ui.Image? dealerImage;
   ui.Image? riderImage;
+
+  TextEditingController _detailsCont=TextEditingController();
+  FocusNode _detailsFocus=FocusNode();
   @override
   void initState() {
     usermodels = UserModel.fromJson(box.read('user'));
@@ -51,10 +59,10 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
     CustomLoader.showLoader(context: context);
     await DeliveredOrderService().deliverOrder(
         context: context,
-        orderId: widget.orderId,
-        dealerSign:dealerBytes,
-        riderSign: riderBytes,
-    deliveredImage: recepitBytes,
+      orderId: widget.orderId,
+      reciptPath: recepitBytes,
+      shipmentDetails:_detailsCont.text
+
     );
     CustomLoader.hideLoader(context);
   }
@@ -76,12 +84,12 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
       bottomNavigationBar: GestureDetector(
         onTap: ()async {
           setState(() {});
-          if(_validateSignatures()){
-           await _convertDealerImage();
-           await _convertRiderImage();
+          // if(_validateSignatures()){
+          //  await _convertDealerImage();
+          //  await _convertRiderImage();
            await _convertRcepitIntoBytes();
           await _deliveredOrderHandler();
-          }
+          // }
             setState(() {});
         },
         child: Container(
@@ -102,117 +110,147 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
       ),
       bottomSheet: _showBottomSheet(),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Dealer Signature",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14),
-                        ),
+            // Container(
+            //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Text(
+            //               "Dealer Signature",
+            //               style: TextStyle(
+            //                   color: Colors.black,
+            //                   fontWeight: FontWeight.w600,
+            //                   fontSize: 14),
+            //             ),
+            //
+            //
+            //             TextButton(
+            //               child: Text(
+            //                 "Clear Signature",
+            //                 style: TextStyle(
+            //                     color: bgColor,
+            //                     fontWeight: FontWeight.w600,
+            //                     fontSize: 14),
+            //               ),
+            //               onPressed: () {
+            //                 _dealerSignature.currentState!.clear();
+            //                 _isDealer=null;
+            //                 setState(() {
+            //
+            //                 });
+            //               },
+            //             ),
+            //           ],
+            //         ),
+            //
+            //         Container(
+            //           child: SfSignaturePad(
+            //             key: _dealerSignature,
+            //             backgroundColor: Colors.grey[200],
+            //             onDrawStart: () {
+            //               print("ststtsstsss");
+            //               _isDealer="start";
+            //         return false;
+            //         },
+            //           ),
+            //           height: 120,
+            //           width: 300,
+            //         ),
+            //       ],
+            //     )),
+            // Container(
+            //     padding: EdgeInsets.symmetric(horizontal: 20),
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Text(
+            //               "Rider Signature",
+            //               style: TextStyle(
+            //                   color: Colors.black,
+            //                   fontWeight: FontWeight.w600,
+            //                   fontSize: 14.0),
+            //             ),
+            //             TextButton(
+            //               child: Text(
+            //                 "Clear Signature",
+            //                 style: TextStyle(
+            //                     color: bgColor,
+            //                     fontWeight: FontWeight.w600,
+            //                     fontSize: 14),
+            //               ),
+            //               onPressed: () {
+            //
+            //                 _riderSignature.currentState!.clear();
+            //                 _isRider=null;
+            //                 setState(() {
+            //
+            //                 });
+            //               },
+            //
+            //             ),
+            //           ],
+            //         ),
+            //         Container(
+            //           child: SfSignaturePad(
+            //             key: _riderSignature,
+            //             backgroundColor: Colors.grey[200],
+            //             onDrawStart: () {
+            //               _isRider="start";
+            //               return false;
+            //             },
+            //           ),
+            //           height: 120,
+            //           width: 300,
+            //         ),
+            //         SizedBox(
+            //           height: 5.0,
+            //         ),
+            //
+            //       ],
+            //     )),
 
+           RichText(
 
-                        TextButton(
-                          child: Text(
-                            "Clear Signature",
-                            style: TextStyle(
-                                color: bgColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14),
-                          ),
-                          onPressed: () {
-                            _dealerSignature.currentState!.clear();
-                            _isDealer=null;
-                            setState(() {
+               text: TextSpan(
 
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                   text: "Order No: ",
+                   style: titleStyle,
+           children: [
+             TextSpan(
+               text: "${widget.orderNo}",style:oderNoStyle
+             ),
+           ])),    RichText(
 
-                    Container(
-                      child: SfSignaturePad(
-                        key: _dealerSignature,
-                        backgroundColor: Colors.grey[200],
-                        onDrawStart: () {
-                          print("ststtsstsss");
-                          _isDealer="start";
-                    return false;
-                    },
-                      ),
-                      height: 120,
-                      width: 300,
-                    ),
-                  ],
-                )),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Rider Signature",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14.0),
-                        ),
-                        TextButton(
-                          child: Text(
-                            "Clear Signature",
-                            style: TextStyle(
-                                color: bgColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14),
-                          ),
-                          onPressed: () {
+               text: TextSpan(
 
-                            _riderSignature.currentState!.clear();
-                            _isRider=null;
-                            setState(() {
+                   text: "No Of Bags: ",
+                   style: titleStyle,
+           children: [
+             TextSpan(
+               text: "${widget.noOfBags}",style:oderNoStyle
+             ),
+           ])),
+            SizedBox(height: 15.0,),
+            CustomTextField(
+              headerText: "Details",
+              shape: true,
+              controller: _detailsCont,
+              focusNode: _detailsFocus,
+            ),
 
-                            });
-                          },
-
-                        ),
-                      ],
-                    ),
-                    Container(
-                      child: SfSignaturePad(
-                        key: _riderSignature,
-                        backgroundColor: Colors.grey[200],
-                        onDrawStart: () {
-                          _isRider="start";
-                          return false;
-                        },
-                      ),
-                      height: 120,
-                      width: 300,
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-
-                  ],
-                )),
 
             Container(
                 margin: EdgeInsets.only(top: 10),
@@ -368,23 +406,23 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
       return Text("");
     }
   }
-  _validateSignatures(){
-    if(_isDealer==null){
-     CustomSnackBar.failedSnackBar(context: context, message: "Dealer Signature can't be empty");
-      return false;
-    }
-    else if(_isRider==null){
-     CustomSnackBar.failedSnackBar(context: context, message: "Rider Signature can't be empty");
-      return false;
-    }
-    else if(recipetImage==null){
-      CustomSnackBar.failedSnackBar(context: context, message: "Please Add Recipet Picture");
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
+  // _validateSignatures(){
+  //   if(_isDealer==null){
+  //    CustomSnackBar.failedSnackBar(context: context, message: "Dealer Signature can't be empty");
+  //     return false;
+  //   }
+  //   else if(_isRider==null){
+  //    CustomSnackBar.failedSnackBar(context: context, message: "Rider Signature can't be empty");
+  //     return false;
+  //   }
+  //   else if(recipetImage==null){
+  //     CustomSnackBar.failedSnackBar(context: context, message: "Please Add Recipet Picture");
+  //     return false;
+  //   }
+  //   else{
+  //     return true;
+  //   }
+  // }
 
   _convertDealerImage()async{
    dealerImage =

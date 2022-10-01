@@ -37,13 +37,12 @@ class _RiderHistoryState extends State<RiderHistory> {
 
 
 class RiderHistoryWidget extends StatelessWidget {
-  RiderOdersModel orderHistory;
+  RiderOrdersModel orderHistory;
 
   RiderHistoryWidget({required this.orderHistory});
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       elevation: 10.0,
@@ -63,10 +62,33 @@ class RiderHistoryWidget extends StatelessWidget {
               color: Colors.black38,
             ),
             ListTile(
-              leading: Text(
+              leading:orderHistory.cargoReciptImage==null?Container(
+                height: 35.0,width: 35.0,
+                decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.red,),
+
+              ):Container(
+                height: 45.0,
+                width: 45.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        getImageAddress(
+                      orderHistory.cargoReciptImage!
+                    ),
+                    )
+                  )
+                ),
+               // child: Image.network("https://pos.impliessolutions.com/${orderHistory.cargoReciptImage}"),
+              ),
+              title: Text(
                 "Date: ${Methods().getFormatedDate(orderHistory.date)}",
                 style: TextStyle(height: 1.4),
               ),
+              subtitle: Text(orderHistory.cargoReciptImage!=null?
+                getImageAddress(
+                    orderHistory.cargoReciptImage!
+                ):"",
+              style: TextStyle(fontSize: 6),),
               trailing: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
                   decoration: BoxDecoration(
@@ -131,6 +153,14 @@ class RiderHistoryWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String getImageAddress(String cargoReciptImage) {
+    print(cargoReciptImage);
+    String str = cargoReciptImage;
+    print(str);
+    String string= "https://pos.impliessolutions.com/"+str.replaceAll("//", "/");
+     return string;
   }
 
 
