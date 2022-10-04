@@ -1,7 +1,9 @@
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
+import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:e_commerce/helper_services/navigation_services.dart';
+import 'package:e_commerce/helper_widgets/custom_button.dart';
 import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
 import 'package:e_commerce/provider/dealer_history_provider.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
@@ -15,6 +17,7 @@ import '../../../model/cash_book_model.dart';
 import '../../../model/dealer_orders_model.dart';
 import '../../../provider/cash_book_provider.dart';
 import '../../../service/dealer_history_service.dart';
+import '../../helper_classes/pdf_service.dart';
 import 'order_details_screen.dart';
 
 class ApprovedOrdersScreen extends StatefulWidget {
@@ -25,6 +28,8 @@ class ApprovedOrdersScreen extends StatefulWidget {
 }
 
 class _ApprovedOrdersScreenState extends State<ApprovedOrdersScreen> {
+  final PdfInvoiceService service = PdfInvoiceService();
+  int number = 0;
  String startDate="";
   String endDate="";
   _getDelearStatment() async {
@@ -54,6 +59,28 @@ class _ApprovedOrdersScreenState extends State<ApprovedOrdersScreen> {
         ),
         backgroundColor: bgColor,
         centerTitle: true,
+      ),
+      bottomNavigationBar: Container(
+        height: 50,
+        color: Colors.grey[100],
+        child: Center(
+          child: CustomButton(
+            width: MediaQuery.of(context).size.width*0.7,
+            text: "Create Invoice",
+            onTap: ()async{
+              if(startDate==""||endDate==""){
+                CustomSnackBar.failedSnackBar(context: context, message: "Select Date First");
+              }
+              else if(Provider.of<CashBookProvider>(context,listen: false).cashBook!=null){
+                final data = await service.createInvoice(Provider.of<CashBookProvider>(context,listen: false).cashBook!.result!.ledgerDetails);
+                service.savePdfFile("invoice_$number", data);
+                number++;
+              }else{
+                CustomSnackBar.failedSnackBar(context: context, message: "No Record Found");
+              }
+            },
+          )
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: () {
@@ -238,109 +265,4 @@ class ApprovedOrderWidget extends StatelessWidget {
 
 }
 
-// class ApprovedOrderWidget extends StatelessWidget {
-//   Result order;
-//
-//   ApprovedOrderWidget({required this.order});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     String date = order.date!;
-//     return Card(
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-//       elevation: 10.0,
-//       margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-//       child: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             Center(
-//                 child: Text(
-//               "Order No: ${order.orderNo}",
-//               style: orderStyle,
-//             )),
-//             Divider(
-//               color: Colors.black38,
-//             ),
-//             ListTile(
-//               leading: Text(
-//                 "Date: ${Methods().getFormatedDate(date)}",
-//                 style: TextStyle(height: 1.4),
-//               ),
-//               trailing: Container(
-//                   padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-//                   decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(12.0),
-//                       border: Border.all(
-//                           color:
-//                               order.status == 1 ? Colors.red : Colors.green)),
-//                   child: Text(order.status == 1
-//                       ? "Pending"
-//                       : order.status == 2
-//                           ? "Approved"
-//                           : order.status == 3
-//                               ? "Processing"
-//                               : order.status == 4
-//                                   ? "On Way"
-//                                   : order.status == 5
-//                                       ? "Deliver"
-//                                       : "")),
-//             ),
-//             Text(
-//               "Amount ${order.totalAmount}",
-//               style: orderStyle,
-//             ),
-//             Divider(
-//               color: Colors.black38,
-//             ),
-//             Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                 crossAxisAlignment: CrossAxisAlignment.center,
-//                 children: [
-//                   // order.status==1?
-//                   // ElevatedButton.icon(
-//                   //     style: ElevatedButton.styleFrom(
-//                   //       shape: RoundedRectangleBorder(
-//                   //         borderRadius: BorderRadius.circular(12.0),
-//                   //       ),
-//                   //       primary: bgColor
-//                   //     ),
-//                   //     onPressed: (){}, icon: Icon(Icons.edit,size: 20.0,), label: Text("Edit"))
-//                   //     :
-//                   Container(),
-//                   ElevatedButton.icon(
-//                       style: ElevatedButton.styleFrom(
-//                           shape: RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(12.0),
-//                           ),
-//                           primary: bgColor),
-//                       onPressed: () {
-//                         NavigationServices.goNextAndKeepHistory(
-//                             context: context,
-//                             widget: OrderDetailsScreen(id: order.orderId!));
-//                       },
-//                       icon: Icon(
-//                         Icons.remove_red_eye,
-//                         size: 20.0,
-//                       ),
-//                       label: Text("View")),
-//                   // ElevatedButton.icon(
-//                   //     style: ElevatedButton.styleFrom(
-//                   //         shape: RoundedRectangleBorder(
-//                   //           borderRadius: BorderRadius.circular(12.0),
-//                   //         ),
-//                   //         primary: bgColor
-//                   //     ),
-//                   //     onPressed: (){
-//                   //       NavigationServices.goNextAndKeepHistory(context: context, widget: OrderLogScreen(id: order.orderId!));
-//                   //     }, icon: Icon(Icons.check_circle_rounded,size: 20.0,), label: Text("Status"))
-//                 ]),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-// }
+

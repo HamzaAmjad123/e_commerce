@@ -260,6 +260,5 @@ class _DashBoardWidgetState extends State<DashBoardWidget> {
           ),
         ],
       );
-
   }
 }

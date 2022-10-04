@@ -84,11 +84,6 @@ class RiderHistoryWidget extends StatelessWidget {
                 "Date: ${Methods().getFormatedDate(orderHistory.date)}",
                 style: TextStyle(height: 1.4),
               ),
-              subtitle: Text(orderHistory.cargoReciptImage!=null?
-                getImageAddress(
-                    orderHistory.cargoReciptImage!
-                ):"",
-              style: TextStyle(fontSize: 6),),
               trailing: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
                   decoration: BoxDecoration(
@@ -159,7 +154,7 @@ class RiderHistoryWidget extends StatelessWidget {
     print(cargoReciptImage);
     String str = cargoReciptImage;
     print(str);
-    String string= "https://pos.impliessolutions.com/"+str.replaceAll("//", "/");
+    String string= "https://pos.impliessolutions.com/"+str.replaceAll("\\", "/");
      return string;
   }
 
