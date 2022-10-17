@@ -8,7 +8,7 @@ import '../../../configs/color.dart';
 import '../../../configs/text_style.dart';
 import '../../../model/rider_models/rider_order_model.dart';
 import '../../../provider/Rider_providers/rider_orders_provider.dart';
-import '../../Dealer/order/order_details_screen.dart';
+import '../../Dealer/order_details/order_details_screen.dart';
 import '../order_is_delivered.dart';
 
 class RiderApprovedOrder extends StatefulWidget {

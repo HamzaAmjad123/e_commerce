@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../configs/text_style.dart';
+
 class CustomTextField extends StatelessWidget {
   final String? headerText;
   final TextEditingController? controller;
@@ -44,10 +46,11 @@ class CustomTextField extends StatelessWidget {
             horizontal: headerText==null?0.0:10.0,
             vertical: headerText==null?0.0:0.0,
           ),
-          child: Text(headerText!,style: TextStyle(color: blackColor,fontSize: 15.0,fontWeight: FontWeight.w600),),
+          child: Text(headerText!,style: subtitleStyle,),
         ),
         Container(
           height: 45.0,
+          margin: EdgeInsets.symmetric(vertical: 8.0),
           child: TextField(
             style: TextStyle(color: shape?Colors.black:null),
             controller: controller,
@@ -63,11 +66,12 @@ class CustomTextField extends StatelessWidget {
               hintText: hintText,
               labelText: labelText,
               hintStyle: TextStyle(color: shape?Colors.grey:null),
+              labelStyle: TextStyle(color: Colors.grey[600],fontWeight: FontWeight.w400),
               enabledBorder: shape
                   ? OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
                       borderSide:
-                          BorderSide(color: Colors.grey, width: 1.8),
+                          BorderSide(color: Colors.grey,width: 1.2),
                     )
                   : UnderlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),

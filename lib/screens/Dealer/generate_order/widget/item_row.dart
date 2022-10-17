@@ -7,115 +7,75 @@ import '../../../../model/items_model.dart';
 
 class GenerateOrderWidget extends StatelessWidget {
   ItemsList item;
- /* final Function(String)? onCange;*/
-  // final String? totalPrice;
   final Function()? onTap;
-  // TextEditingController qtyController;
 
   GenerateOrderWidget(
       {required this.item,
-        // required this.qtyController,
-        /*this.onCange,*/
-        // this.totalPrice,
         this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return
-        Container(
-          height: MediaQuery.of(context).size.height*0.03,
-          child: Card(
-            elevation: 10.0,
-            margin: EdgeInsets.symmetric(horizontal: 9.0,vertical: 4.0),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  bottomRight: Radius.circular(10.0)
-                )
-            ),
-            shadowColor: bgColor,
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: const <BoxShadow>[
-                      BoxShadow(
-                        color: Color.fromRGBO(217, 210, 200, 0.51),
-                        offset: Offset(6, 6),
-                        blurRadius: 16,
-                      ),
-                      BoxShadow(
-                        color: Color.fromRGBO(255, 255, 255, 0.83),
-                        offset: Offset(-6, -6),
-                        blurRadius: 16,
-                      ),
-                    ],
-                  ),
-                  padding: EdgeInsets.only(top: 10.0,left: 18.0,right: 10.0),
-                  child: Column(
-                    children: [
-                      Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/7,fit: BoxFit.cover,),
-                      Divider(
-                        thickness: 2.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+        Card(
+          elevation: 10.0,
+          margin: EdgeInsets.symmetric(horizontal: 9.0,vertical: 4.0),
+          shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(8.0
+             ),
+            side: BorderSide(color: blackColor)
+          ),
+          shadowColor: bgColor,
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: const <BoxShadow>[
+                    BoxShadow(
+                      color: Color.fromRGBO(217, 210, 200, 0.51),
+                      offset: Offset(6, 6),
+                      blurRadius: 16,
+                    ),
+                    BoxShadow(
+                      color: Color.fromRGBO(255, 255, 255, 0.83),
+                      offset: Offset(-6, -6),
+                      blurRadius: 16,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    ClipRRect(
+
+                        child: Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8.0),
+                      topLeft: Radius.circular(8.0)
+                    ),
+                    ),
+                    Container(
+
+                      height: 2,
+                      width: double.infinity,
+                      color: Colors.black,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 2,vertical: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // Text("Title",style: titleStyle,),
-                          Text(item.name!,style: titleStyle,),
-                        ],
-                      ),
-                      SizedBox(height: 1.0,),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     // Text("Discount",style: titleStyle,),
-                      //     Text("${item.unitDiscountPercentage}%"),
-                      //   ],
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Text("U-Price",style: titleStyle,),
-                          Text("${item.unitPrice}PKR"),
+                          Text("Add To Cart",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
                           InkWell(
                               onTap: onTap,
-                              child: Icon(Icons.add_shopping_cart,color: Colors.green,))
+                              child: Icon(Icons.add,color: Colors.green,)),
                         ],
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-
-
-                // Padding(
-                //   padding: const EdgeInsets.only(bottom: 3.0),
-                //   child: Align(
-                //     alignment: Alignment.bottomRight,
-                //     child: InkWell(
-                //         onTap: onTap,
-                //         child: Icon(Icons.add_shopping_cart,color: Colors.green,)),
-                //
-                //
-                //   ),
-                // ),
-          ]),
-
-          // Positioned( //<-- SEE HERE
-          //   right: 0,
-          //   left: 330.0,
-          //   top: 0,
-          //   bottom:170.0 ,
-          //   child: IconButton(
-          //     icon: Icon(Icons.shopping_cart,color: bgColor,),
-          //     onPressed: onTap,
-          //   ),),
-
-    ),
-        );
+              ),
+        ]),
+    );
   }
 }
 
@@ -126,11 +86,8 @@ class CreateOrderWidget extends StatelessWidget {
   final String? totalPrice;
   final String? initialValue;
 
-  // TextEditingController qtyController;
-
   CreateOrderWidget(
       {required this.item,
-        // required this.qtyController,
         this.onCange,
         this.totalPrice, this.initialValue});
 

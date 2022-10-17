@@ -54,152 +54,200 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: bgColor,
-          title: Text("Send Amount"),
-        ),
-        bottomSheet: _showBottomSheet(),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode _currentFocus=FocusScope.of(context);
+        _currentFocus.unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: whiteColor,
+          bottomSheet: _showBottomSheet(),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(80.0),
+            child: AppBar(
+              leading: Padding(
+                padding: const EdgeInsets.symmetric(vertical:15.0,horizontal: 22.0),
+                child: Icon(Icons.arrow_back_sharp,color: whiteColor,),
+              ),
+              centerTitle: true,
+              title: Text("Send Credit",style: barStyle,),
+              elevation: 0.0,
+              backgroundColor: whiteColor,
+              flexibleSpace:  Container(
+
+                width: double.infinity,
+
+                decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    )),
+              ),
+            ),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 12.0),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(12.0)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("Total Amount", style: cashStyle),
-                            Text(Provider.of<CashBookProvider>(context,listen: false).cashBook!.result!.totalAmount!.toString()),
-                          ],
+
+                    Center(
+                      child: Card(
+                        color: whiteColor,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                        elevation: 8.0,
+                        margin: EdgeInsets.symmetric(vertical: 15.0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: MediaQuery.of(context).size.height/7.5,
+                          width: MediaQuery.of(context).size.width/1.5,
+
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("Total Credit", style:creditStyle),
+                              SizedBox(width: 12.0,),
+                              Text(Provider.of<CashBookProvider>(context,listen: false).cashBook!.result!.totalAmount!.toString(),style: cashStyle,),
+                            ],
+                          ),
                         ),
                       ),
                     ),
+                    CustomTextField(
+                     labelText: "Enter Amount" ,
+                      shape: true,
+                      controller: _amountCont,
+                      focusNode: amountFocus,
+                      inputType: TextInputType.number,
+                      // onChange: (val){
+                      //   _amountCont.text=val;
+                      // },
+                    ),
+                    CustomTextField(
+                      shape: true,
+                      labelText: "Enter Receiver Name",
+                      controller: _nameCont,
+                      focusNode: nameFocus,
+                      inputType: TextInputType.text,
+                      // onChange: (value){
+                      //   _nameCont.text=value;
+                      // },
+                    ),
+                    CustomTextField(
+                      shape: true,
+                      labelText: "Enter Details",
+                      controller: _detailsCont,
+                      // focusNode: nameFocus,
+                      inputType: TextInputType.text,
+
+                    ),
+
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      height: 45.0,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(
+                              color: selectedAmount==null
+                                  ? lightBlackColor
+                                  : bgColor,
+                              width: 1.5)
+                      ),
+                      child: DropdownButton(
+                          isExpanded: true,
+                          underline: SizedBox(),
+                          hint: Text("Select Amount"),
+
+                          // value: selectedAmount,
+                          value:selectedAmount,
+                          items: amountList.map((item) {
+                            return DropdownMenuItem(
+                              value: item["id"],
+                              child: Text(item["name"]),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            // print("sfnfasnsdfn $selectedAmount");
+                            selectedAmount=value as int?;
+                            print("Asad $selectedAmount");
+                            setState(() {});
+                          }),
+                    ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+
+                        margin: EdgeInsets.only(right: 6.0,top: 8.8,bottom: 8.0,left:5.0),
+                        padding: EdgeInsets.symmetric(vertical: 4.0,horizontal: 4.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: lightBlackColor),
+                          borderRadius: BorderRadius.circular(8.0)
+                        ),
+                        child: amountImage != null
+                            ? Image.file(
+                          File(amountImage!.path),
+                          height: 100.0,
+                          width: 150.0,
+                          fit: BoxFit.cover,
+                        ) : Icon(
+                          Icons.camera_alt_sharp,
+
+                          color: blackColor,
+                        ),
+                      ),
+                      Container(
+                        height:amountImage==null?50.0:100.0,
+                        alignment: Alignment.center,
+                        child: TextButton(onPressed: (){
+                          _show = true;
+                              setState(() {});
+                        }, child: Text("Add Photo",style: photoStyle,)),
+                      )
+                      // CustomButton(
+                      //   height: 40,
+                      //   text: "Add Photo",
+                      //   buttonColor: lightBlackColor,
+                      //   onTap: (){
+                      //     _show = true;
+                      //     setState(() {});
+                      //   },
+                      // ),
+                    ],
+                  ),
+
                   ],
                 ),
-                CustomTextField(
-                  headerText: "Enter Amount",
-                  shape: true,
-                  hintText: "Enter Amount",
-                  controller: _amountCont,
-                  focusNode: amountFocus,
-                  inputType: TextInputType.number,
-                  // onChange: (val){
-                  //   _amountCont.text=val;
-                  // },
-                ),
-                Text(
-                  "Select Amount Type",
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  height: 45.0,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(
-                          color: selectedAmount==null
-                              ? lightBlackColor
-                              : bgColor,
-                          width: 1.5)
-                  ),
-                  child: DropdownButton(
-                      isExpanded: true,
-                      underline: SizedBox(),
-                      hint: Text("Select Amount"),
-                      // value: selectedAmount,
-                      value:selectedAmount,
-                      items: amountList.map((item) {
-                        return DropdownMenuItem(
-                          value: item["id"],
-                          child: Text(item["name"]),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        // print("sfnfasnsdfn $selectedAmount");
-                        selectedAmount=value as int?;
-                        print("Asad $selectedAmount");
-                        setState(() {});
-                      }),
-                ),
-                CustomTextField(
-                  shape: true,
-                  headerText: "Enter Reciver Name",
-                  hintText: "Enter Reciver",
-                  controller: _nameCont,
-                  focusNode: nameFocus,
-                  inputType: TextInputType.text,
-                  // onChange: (value){
-                  //   _nameCont.text=value;
-                  // },
-                ),
-                CustomTextField(
-                  shape: true,
-                  headerText: "Enter Details",
-                  hintText: "Details",
-                  controller: _detailsCont,
-                  // focusNode: nameFocus,
-                  inputType: TextInputType.text,
-
-                ),
-                Center(
-                  child: Container(
-
-                    height: 90,
-                    width: 130,
-                    child: amountImage != null
-                        ? Image.file(
-                      File(amountImage!.path),
-                      fit: BoxFit.cover,
-                    ) : Icon(
-                      Icons.camera_alt_sharp,
-                      size: 80,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                Center(
-                  child: CustomButton(
-                    height: 40,
-                    text: "Take Picture",
-                    buttonColor: lightBlackColor,
-                    onTap: (){
-                      _show = true;
-                      setState(() {});
-                    },
-                  ),
-                ),
-                CustomButton(
-                  text: "Submit",
-                  verticalMargin: 12.0,
-                  width:double.infinity,
-                  horizontalMargin: 20.0,
-                  onTap: () async{
-                    setState(() {});
-                    if(validation()){
-                      await _convertImageIntoBytes();
-                      await _sendPaymentHandler();
-                    }
-                  },
-                ),
-              ],
+              ),
             ),
           ),
-        ));
+      bottomNavigationBar: Container(
+        height: kTextTabBarHeight*0.9,
+        margin: EdgeInsets.symmetric(vertical: 8.0,horizontal: 12.0),
+        child:  CustomButton(
+          text: "Submit",
+          fontSize: 18.0,
+          width:double.infinity,
+          horizontalMargin: 25.0,
+          onTap: () async{
+            setState(() {});
+            if(validation()){
+              await _convertImageIntoBytes();
+              await _sendPaymentHandler();
+            }
+          },
+        ),
+      ),
+      ),
+    );
   }
   Widget _showBottomSheet() {
     if (_show) {

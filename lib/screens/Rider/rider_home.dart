@@ -1,16 +1,9 @@
-import 'package:e_commerce/helper_services/custom_loader.dart';
-import 'package:e_commerce/screens/Dealer/order/dealer_statement.dart';
 import 'package:e_commerce/screens/Rider/widget/approved_widget.dart';
 import 'package:e_commerce/screens/Rider/widget/history_widget.dart';
-import 'package:e_commerce/service/rider_services/rider_history_service.dart';
-import 'package:e_commerce/service/rider_services/rider_order_service.dart';
 import 'package:e_commerce/utils/handlers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../../configs/color.dart';
-import '../../provider/Rider_providers/rider_orders_provider.dart';
 import '../Dealer/home/custom_drawer.dart';
 
 class RiderHome extends StatefulWidget {

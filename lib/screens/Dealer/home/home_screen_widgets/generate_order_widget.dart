@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../configs/color.dart';
 import '../../../../configs/text_style.dart';
+import '../../../../configs/ui.dart';
 import '../../../../helper_widgets/custom_container_decoration.dart';
 import '../../../../provider/user_data_provider.dart';
 import '../../../../service/home_dashboard_service.dart';
@@ -25,7 +26,6 @@ class _DashBoardWidgetState extends State<DashBoardWidget> {
             .id!);
     CustomLoader.hideLoader(context);
   }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -58,37 +58,24 @@ class _DashBoardWidgetState extends State<DashBoardWidget> {
                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.07),
                   height: MediaQuery.of(context).size.height*0.1,
                   width: MediaQuery.of(context).size.width*0.6,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: const Offset(
-                          5.0,
-                          5.0,
-                        ),
-                        blurRadius: 10.0,
-                        spreadRadius: 2.0,
-                      ), //BoxShadow
-                      BoxShadow(
-                        color: Colors.white,
-                        offset: const Offset(0.0, 0.0),
-                        blurRadius: 0.0,
-                        spreadRadius: 0.0,
-                      ), //BoxShadow
-                    ],
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  decoration: Ui.getBoxDecoration(borderRadius: 20.0),
+                  child: Column(
                     children: [
-                      Container(
-                        height: 30,
-                        width: 40,
-                        child: Image.asset("assets/icons/total_orders.png"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 40,
+                            child: Image.asset("assets/icons/total_orders.png"),
+                          ),
+                         Text("Total Orders",style:orderStyle,),
+                         SizedBox(height: 8),
+
+                        ],
                       ),
-                      Text("Total Orders",style:orderStyle,),
-                      Text("50",style:rsStyle),
+                      Text("50",style:rsStyle)
                     ],
                   ),
                 ),
@@ -99,23 +86,7 @@ class _DashBoardWidgetState extends State<DashBoardWidget> {
               width: double.infinity,
               margin: EdgeInsets.only(top: 10, bottom: 5),
               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: const Offset(
-                    5.0,
-                    5.0,
-                  ),
-                  blurRadius: 10.0,
-                  spreadRadius: 2.0,
-                ), //BoxShadow
-                BoxShadow(
-                  color: Colors.white,
-                  offset: const Offset(0.0, 0.0),
-                  blurRadius: 0.0,
-                  spreadRadius: 0.0,
-                ), //BoxShadow
-              ], borderRadius: BorderRadius.circular(12.0)),
+              decoration: Ui.getBoxDecoration(),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,

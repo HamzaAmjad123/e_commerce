@@ -1,4 +1,4 @@
-class OrderDetails {
+class OrderDetailsModel {
   int? orderId;
   String? orderNo;
   String? date;
@@ -14,7 +14,7 @@ class OrderDetails {
   List<OrderLines>? orderLines;
   bool? isVerifiedByGatePassUser;
 
-  OrderDetails(
+  OrderDetailsModel(
       {this.orderId,
         this.orderNo,
         this.date,
@@ -30,7 +30,7 @@ class OrderDetails {
         this.orderLines,
         this.isVerifiedByGatePassUser});
 
-  OrderDetails.fromJson(Map<String, dynamic> json) {
+  OrderDetailsModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
     orderNo = json['orderNo'];
     date = json['date'];
@@ -225,3 +225,4 @@ class Item {
     return data;
   }
 }
+

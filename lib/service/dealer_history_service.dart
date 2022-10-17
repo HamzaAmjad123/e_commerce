@@ -11,7 +11,7 @@ class DealerHistoryService{
     try{
       Map _body={"skip":skip,"take":take,"tenantId":tenatId,"dealerId":dealerid};
 
-      var res=await PostRequestService().httpPostRequest(url:  getDealerHistoryUrl, body: _body, context: context);
+      var res=await PostRequestService().httpPostRequest(url: getDealerHistoryUrl, body: _body, context: context);
       if(res !=null){
         DealerOrdersModel dealerHistoryModel=DealerOrdersModel.fromJson(res);
         Provider.of<DealerHistoryProvider>(context,listen: false).updateApprovedOrders(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../order/order_list_screen.dart';
+
+import '../order_details/pending_orders_screen.dart';
 
 class BookSuccess extends StatefulWidget {
   String? message;
@@ -18,7 +19,7 @@ class _BookSuccessState extends State<BookSuccess> {
       Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute<void>(
-          builder: (BuildContext context) =>  OrderListScreen(),
+          builder: (BuildContext context) =>  PendingOrdersScreen(),
         ),
       );
     });

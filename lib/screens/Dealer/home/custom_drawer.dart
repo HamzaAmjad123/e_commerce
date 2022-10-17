@@ -1,24 +1,18 @@
-/*
- * File name: custom_drawer.dart
- * Last modified: 2022.02.11 at 02:22:41
- * Author: SmarterVision - https://codecanyon.net/user/smartervision
- * Copyright (c) 2022
- */
+
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
-import 'package:e_commerce/screens/Dealer/home/home_screen.dart';
-import 'package:e_commerce/screens/Dealer/order/order_list_screen.dart';
+import 'package:e_commerce/screens/Dealer/home/dashboard_screen.dart';
 import 'package:e_commerce/screens/Auth/login_screen.dart';
 import 'package:e_commerce/screens/Dealer/payment/send_amount_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../../../helper_widgets/drawer_item_card.dart';
 import '../../../model/user_model.dart';
 import '../generate_order/generate_order_screen.dart';
+import '../order_details/pending_orders_screen.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -33,7 +27,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
     final box = GetStorage();
     String role=Provider.of<UserDataProvider>(context, listen: false).user!.userRoles![0];
     UserModel usermodels = UserModel.fromJson(box.read('user'));
-    String name=usermodels.name![0];
+
+
 
     return Drawer(
       child: ListView(children: [
@@ -91,7 +86,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Navigator.of(context);
                 NavigationServices.goNextAndDoNotKeepHistory(
                     context: context,
-                    widget: HomeScreen(
+                    widget: DashBoardScreen(
                         tenatId:
                         Provider.of<UserDataProvider>(context, listen: false)
                             .user!
@@ -115,7 +110,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               text: "Pending Orders",
               onTap: () {
                 NavigationServices.goNextAndKeepHistory(
-                    context: context, widget: OrderListScreen());
+                    context: context, widget: PendingOrdersScreen());
                 setState(() {});
               },
             ),

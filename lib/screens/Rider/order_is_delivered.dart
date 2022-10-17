@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:e_commerce/helper_services/custom_loader.dart';
-import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
 import 'package:e_commerce/model/rider_models/rider_order_model.dart';
 import 'package:e_commerce/model/user_model.dart';
@@ -9,12 +8,12 @@ import 'package:e_commerce/service/rider_services/delivered_order_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import '../../configs/color.dart';
 import 'dart:ui' as ui;
 
 import '../../configs/text_style.dart';
+import '../../helper_widgets/custom_button.dart';
 
 class OrderIsDelivered extends StatefulWidget {
   final RiderOrdersModel? order;
@@ -41,8 +40,6 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   List<int> recepitBytes=[];
   List<int> riderBytes=[];
   List<int> dealerBytes=[];
-  String? _isDealer;
-  String? _isRider;
   ui.Image? dealerImage;
   ui.Image? riderImage;
 
@@ -71,43 +68,47 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: bgColor,
-        title: Text("Order Delivery"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(vertical:15.0,horizontal: 22.0),
+            child: Icon(Icons.arrow_back_sharp,color: whiteColor,),
+          ),
+          centerTitle: true,
+          title: Text("Delivery Details",style: barStyle,),
+          elevation: 0.0,
+          backgroundColor: whiteColor,
+          flexibleSpace:  Container(
+
+            width: double.infinity,
+
+            decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                )),
+          ),
         ),
       ),
-      bottomNavigationBar: GestureDetector(
-        onTap: ()async {
-          setState(() {});
-          // if(_validateSignatures()){
-          //  await _convertDealerImage();
-          //  await _convertRiderImage();
-           await _convertRcepitIntoBytes();
-          await _deliveredOrderHandler();
-          // }
-            setState(() {});
-        },
-        child: Container(
-          height: 50,
-          decoration: BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              )),
-          child: Center(
-              child: Text(
-            "Order Delivery Done",
-            style: TextStyle(
-                color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-          )),
+        bottomNavigationBar: Container(
+          height: kTextTabBarHeight*0.9,
+          margin: EdgeInsets.symmetric(vertical: 8.0,horizontal: 12.0),
+          child:  CustomButton(
+            text: "Delivery Completed",
+            fontSize: 18.0,
+            width:double.infinity,
+            horizontalMargin: 25.0,
+            onTap: () async{
+              await _convertRcepitIntoBytes();
+              await _deliveredOrderHandler();
+              setState(() {
+
+              });
+            },
+          ),
         ),
-      ),
       bottomSheet: _showBottomSheet(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0),
@@ -115,173 +116,94 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Container(
-            //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.start,
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Text(
-            //               "Dealer Signature",
-            //               style: TextStyle(
-            //                   color: Colors.black,
-            //                   fontWeight: FontWeight.w600,
-            //                   fontSize: 14),
-            //             ),
-            //
-            //
-            //             TextButton(
-            //               child: Text(
-            //                 "Clear Signature",
-            //                 style: TextStyle(
-            //                     color: bgColor,
-            //                     fontWeight: FontWeight.w600,
-            //                     fontSize: 14),
-            //               ),
-            //               onPressed: () {
-            //                 _dealerSignature.currentState!.clear();
-            //                 _isDealer=null;
-            //                 setState(() {
-            //
-            //                 });
-            //               },
-            //             ),
-            //           ],
-            //         ),
-            //
-            //         Container(
-            //           child: SfSignaturePad(
-            //             key: _dealerSignature,
-            //             backgroundColor: Colors.grey[200],
-            //             onDrawStart: () {
-            //               print("ststtsstsss");
-            //               _isDealer="start";
-            //         return false;
-            //         },
-            //           ),
-            //           height: 120,
-            //           width: 300,
-            //         ),
-            //       ],
-            //     )),
-            // Container(
-            //     padding: EdgeInsets.symmetric(horizontal: 20),
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.start,
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Text(
-            //               "Rider Signature",
-            //               style: TextStyle(
-            //                   color: Colors.black,
-            //                   fontWeight: FontWeight.w600,
-            //                   fontSize: 14.0),
-            //             ),
-            //             TextButton(
-            //               child: Text(
-            //                 "Clear Signature",
-            //                 style: TextStyle(
-            //                     color: bgColor,
-            //                     fontWeight: FontWeight.w600,
-            //                     fontSize: 14),
-            //               ),
-            //               onPressed: () {
-            //
-            //                 _riderSignature.currentState!.clear();
-            //                 _isRider=null;
-            //                 setState(() {
-            //
-            //                 });
-            //               },
-            //
-            //             ),
-            //           ],
-            //         ),
-            //         Container(
-            //           child: SfSignaturePad(
-            //             key: _riderSignature,
-            //             backgroundColor: Colors.grey[200],
-            //             onDrawStart: () {
-            //               _isRider="start";
-            //               return false;
-            //             },
-            //           ),
-            //           height: 120,
-            //           width: 300,
-            //         ),
-            //         SizedBox(
-            //           height: 5.0,
-            //         ),
-            //
-            //       ],
-            //     )),
 
-           RichText(
 
-               text: TextSpan(
 
-                   text: "Order No: ",
-                   style: titleStyle,
-           children: [
-             TextSpan(
-               text: "${widget.orderNo}",style:oderNoStyle
-             ),
-           ])),    RichText(
+            Center(
+              child: Card(
+                color: whiteColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                elevation: 8.0,
+                margin: EdgeInsets.symmetric(vertical: 15.0),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: MediaQuery.of(context).size.height/7.5,
+                  width: MediaQuery.of(context).size.width/1.5,
 
-               text: TextSpan(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Order No :", style:creditStyle),
+                      SizedBox(width: 12.0,),
+                      Text(widget.orderNo,style: cashStyle,),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Card(
+                color: whiteColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                elevation: 8.0,
+                margin: EdgeInsets.only(bottom: 15.0),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: MediaQuery.of(context).size.height/7.5,
+                  width: MediaQuery.of(context).size.width/1.5,
 
-                   text: "No Of Bags: ",
-                   style: titleStyle,
-           children: [
-             TextSpan(
-               text: "${widget.noOfBags}",style:oderNoStyle
-             ),
-           ])),
-            SizedBox(height: 15.0,),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("No Of Bags :", style:creditStyle),
+                      SizedBox(width: 12.0,),
+                      Text(widget.noOfBags.toString(),style: cashStyle,),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
             CustomTextField(
-              headerText: "Details",
+              labelText: "Other Details",
               shape: true,
               controller: _detailsCont,
               focusNode: _detailsFocus,
             ),
 
 
-            Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: 90,
-                      width: 130,
-                      child: recipetImage != null
-                          ? Image.file(
-                              File(recipetImage!.path),
-                              fit: BoxFit.cover,
-                            )
-                          : Icon(
-                              Icons.camera_alt_sharp,
-                              size: 80,
-                              color: Colors.grey,
-                            ),
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          _show = true;
-                          setState(() {});
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.grey,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 6.0,top: 8.8,bottom: 8.0,left:5.0),
+                  padding: EdgeInsets.symmetric(vertical: 4.0,horizontal: 4.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: lightBlackColor),
+                      borderRadius: BorderRadius.circular(8.0)
+                  ),
+                  child: recipetImage != null
+                      ? Image.file(
+                          File(recipetImage!.path),
+                    height: 100.0,
+                    width: 150.0,
+                    fit: BoxFit.fill,
+                        )
+                      : Icon(
+                          Icons.camera_alt_sharp,
+
+                          color: blackColor,
                         ),
-                        child: Text("Take Picture"))
-                  ],
-                )),
+                ),
+                TextButton(onPressed: (){
+                  _show = true;
+                  setState(() {});
+                }, child: Text("Add Photo",style: photoStyle,))
+              ],
+            ),
           ],
         ),
       ),

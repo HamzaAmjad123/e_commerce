@@ -15,7 +15,7 @@ class OrderViewService {
 
       var res = await PostRequestService().httpPostRequest(url: orderGetDetails, body: _body, context: context);
       if (res != null) {
-        OrderDetails orderDeatils=OrderDetails.fromJson(res);
+        OrderDetailsModel orderDeatils=OrderDetailsModel.fromJson(res);
         print(res);
         Provider.of<OrderDetailsProvider>(context,listen: false).updateOrderDetails(
           newOrderDetails:  orderDeatils,

@@ -1,16 +1,13 @@
-
-
 import 'package:e_commerce/provider/Rider_providers/rider_history_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../configs/color.dart';
 import '../../../configs/text_style.dart';
 import '../../../helper_services/navigation_services.dart';
 import '../../../model/rider_models/rider_order_model.dart';
 import '../../../utils/functions.dart';
-import '../../Dealer/order/order_details_screen.dart';
+import '../../Dealer/order_details/order_details_screen.dart';
 
 class RiderHistory extends StatefulWidget {
   const RiderHistory({Key? key}) : super(key: key);
@@ -63,8 +60,8 @@ class RiderHistoryWidget extends StatelessWidget {
             ),
             ListTile(
               leading:orderHistory.cargoReciptImage==null?Container(
-                height: 35.0,width: 35.0,
-                decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.red,),
+                height: 45.0,width: 45.0,
+                child: Image.asset("assets/images/book.jpg"),
 
               ):Container(
                 height: 45.0,

@@ -147,43 +147,86 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Consumer<CategoriesProvider>(builder: (context, cat, _) {
-                return Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: height * .005, horizontal: 14.0),
-                  height: height * .065,
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  decoration: BoxDecoration(
-                      color: lightBlackColor,
-                      borderRadius: BorderRadius.circular(12.0)),
-                  child: DropdownButton(
-                    isExpanded: true,
-                    underline: SizedBox(),
-                    hint: Text("Select Category"),
-                    value: selectedCat,
-                    onChanged: (int? newValue) async {
-                      if (updateCat != null) {
-                        updateCat(newValue!);
-                        catSelected = true;
-                        setState(() {});
-                        if (catSelected == true && seriesSelected == true) {
-                          await _getAllItems();
-                          dt = dt =
-                              Provider.of<ItemsProvider>(context, listen: false)
-                                  .itemsList!;
-                        }
-                      }
-                      print("Selected Category $selectedCat");
-                    },
-                    items: cat.myCat!.map((item) {
-                      return DropdownMenuItem(
-                        value: item.itemTypeId,
-                        child: Text(item.name!),
-                      );
-                    }).toList(),
-                  ),
-                );
-              }),
+              Container(
+                height: 100,
+                margin: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child:Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Ctaegories",style: subtitleStyle,),
+                        Text("View More",style: rsStyle,),
+                      ],
+                    ),
+                    SizedBox(height: 5,),
+                    Container(
+                      height: 70,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: 10,
+                          itemBuilder: (context,index){
+                            return Container(
+                              height: 50,
+                              width: 70,
+                              margin: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: bgColor,
+                              ),
+                              child: Center(
+                                child: Text("Class"+"$index",style: subtitleWhite,
+                                ),
+                              ),
+                            );
+                          }),
+                    )
+                  ],
+                )
+              ),
+              // Consumer<CategoriesProvider>(builder: (context, cat, _) {
+              //   return Container(
+              //     margin: EdgeInsets.symmetric(
+              //         vertical: height * .005, horizontal: 14.0),
+              //     height: height * .065,
+              //     padding: EdgeInsets.symmetric(horizontal: 12.0),
+              //     decoration: BoxDecoration(
+              //         color: lightBlackColor,
+              //         borderRadius: BorderRadius.circular(12.0)),
+              //     child: DropdownButton(
+              //       isExpanded: true,
+              //       underline: SizedBox(),
+              //       hint: Text("Select Category"),
+              //       value: selectedCat,
+              //       onChanged: (int? newValue) async {
+              //         if (updateCat != null) {
+              //           updateCat(newValue!);
+              //           catSelected = true;
+              //           setState(() {});
+              //           if (catSelected == true && seriesSelected == true) {
+              //             await _getAllItems();
+              //             dt = dt =
+              //                 Provider.of<ItemsProvider>(context, listen: false)
+              //                     .itemsList!;
+              //           }
+              //         }
+              //         print("Selected Category $selectedCat");
+              //       },
+              //       items: cat.myCat!.map((item) {
+              //         return DropdownMenuItem(
+              //           value: item.itemTypeId,
+              //           child: Text(item.name!),
+              //         );
+              //       }).toList(),
+              //     ),
+              //   );
+              // }),
               // Consumer<LevelProvider>(builder: (context,level,_){
               //   return Container(
               //     margin: EdgeInsets.symmetric(vertical: height*.020),
@@ -220,78 +263,60 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
               //     ),
               //   );
               // }),
-              Consumer<SeriesProvider>(builder: (context, series, _) {
-                return Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: height * .020, horizontal: 14.0),
-                  height: height * .065,
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  decoration: BoxDecoration(
-                      color: lightBlackColor,
-                      // border: Border.all(
-                      //   color: Colors.black,
-                      // ),
-                      borderRadius: BorderRadius.circular(12.0)),
-                  child: DropdownButton(
-                    isExpanded: true,
-                    underline: SizedBox(),
-                    hint: Text("Select Series"),
-                    value: selectSeries,
-                    onChanged: (int? newValue) async {
-                      seriesSelected = true;
-                      if (updateSeries != null) {
-                        updateSeries(newValue!);
-                        setState(() {});
-                        if (catSelected == true && seriesSelected == true) {
-                          await _getAllItems();
-                          dt =
-                              Provider.of<ItemsProvider>(context, listen: false)
-                                  .itemsList!;
-                        }
-                      }
-                    },
-                    items: series.mySeries!.map((item) {
-                      return DropdownMenuItem(
-                        value: item.seriesId,
-                        child: Text(item.name!),
-                      );
-                    }).toList(),
-                  ),
-                );
-              }),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     ItemsWidget(
-              //       itemText: "Title",
+              // Consumer<SeriesProvider>(builder: (context, series, _) {
+              //   return Container(
+              //     margin: EdgeInsets.symmetric(
+              //         vertical: height * .020, horizontal: 14.0),
+              //     height: height * .065,
+              //     padding: EdgeInsets.symmetric(horizontal: 12.0),
+              //     decoration: BoxDecoration(
+              //         color: lightBlackColor,
+              //         borderRadius: BorderRadius.circular(12.0)),
+              //     child: DropdownButton(
+              //       isExpanded: true,
+              //       underline: SizedBox(),
+              //       hint: Text("Select Series"),
+              //       value: selectSeries,
+              //       onChanged: (int? newValue) async {
+              //         seriesSelected = true;
+              //         if (updateSeries != null) {
+              //           updateSeries(newValue!);
+              //           setState(() {});
+              //           if (catSelected == true && seriesSelected == true) {
+              //             await _getAllItems();
+              //             dt =
+              //                 Provider.of<ItemsProvider>(context, listen: false)
+              //                     .itemsList!;
+              //           }
+              //         }
+              //       },
+              //       items: series.mySeries!.map((item) {
+              //         return DropdownMenuItem(
+              //           value: item.seriesId,
+              //           child: Text(item.name!),
+              //         );
+              //       }).toList(),
               //     ),
-              //     ItemsWidget(
-              //       itemText: "Disc",
-              //     ),
-              //     ItemsWidget(
-              //       itemText: "U-Price",
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(
-              //   height: 5.0,
-              // ),
-
+              //   );
+              // }),
               Consumer<ItemsProvider>(builder: (context, item, _) {
                 return item.itemsList!.length == 0
                     ? Center(
                         child: Text("No Item Found"),
                       )
                     : Expanded(
-                        child: SizedBox(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 18.0),
                           //width:MediaQuery.of(context).size.width/2.3,
                           child: GridView.builder(
-                              gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
-                                  childAspectRatio:0.9),
+                              padding: EdgeInsets.symmetric(vertical: 10.0),
+                              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  mainAxisExtent: 170.0,
+                                  maxCrossAxisExtent: 200,
+                                  childAspectRatio: 1.2,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20
+                              ),
                               itemCount: item.itemsList!.length,
                               itemBuilder:(context,index){
                                 return
@@ -307,27 +332,6 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                                     },
                                   );
                               })
-
-
-                          /*ListView.builder(
-                              itemCount: item.itemsList!.length,
-                              shrinkWrap: true,
-                              primary: false,
-                              physics: ScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              itemBuilder: (BuildContext, index) {
-                                return GenerateOrderWidget(
-                                  item: item.itemsList![index],
-                                  onTap: () async {
-                                    await onTap(
-                                      index,
-                                      item.itemsList![index],
-                                    );
-                                    cartTotal = getItemTotal(cart);
-                                    setState(() {});
-                                  },
-                                );
-                              }),*/
                         ),
                       );
               })
@@ -341,12 +345,10 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   onTap(int index, ItemsList items) async {
     temporary_list.clear();
     if (cart.length > 0) {
-      print("herer");
       var last = cart.last.id;
       bool select = false;
       for (var element in cart) {
         if (element.id == items.itemId) {
-          print("herereeeeeeeeee");
           // element.qty++;
           // sum = sum + 1;
           // print("element.qty${element.qty}");
@@ -471,143 +473,159 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
           child: cart.length == 0
               ? Center(child: Text("No Items Add into Cart"))
               : SingleChildScrollView(
-              child: ListView.builder(
-                  itemCount: cart.length,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemBuilder: (context, index) {
-                    cont.add(new TextEditingController());
-                    if (_totalPriceList.length < cart.length) {
-                      _totalPriceList.add("0");
-                    }
-                    return Container(
-                      height: 100,
-                      width: double.infinity,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      padding: EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 70,
-                                width: 80,
-                                child:
-                                    Image.asset("assets/images/book.jpg"),
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+              child:Column(
+                children: [
+                  ListView.builder(
+                      itemCount: cart.length,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) {
+                        cont.add(new TextEditingController());
+                        if (_totalPriceList.length < cart.length) {
+                          _totalPriceList.add("0");
+                        }
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "${cart[index].name}",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 14),
-                                  ),
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "${cart[index].unitprice}",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14),
+                                      Container(
+                                          height: 60,
+                                          width: 80,
+                                          child:ClipRRect(
+                                            child:  Image.asset("assets/images/book.jpg",),
+                                          )
                                       ),
-                                      Text(
-                                        "${cart[index].discount}",
-                                        style: TextStyle(
-                                            color: bgColor, fontSize: 12),
-                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                        children: [
+
+                                          Text(
+                                            "${cart[index].name}",
+                                            style: TextStyle(
+                                              color: Colors.black, fontSize: 16,fontWeight: FontWeight.w600,),textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   ),
-                                  Container(
-                                      margin: EdgeInsets.only(top: 5),
-                                      height: 30,
-                                      width: 150,
-                                      child: TextFormField(
-                                        keyboardType: TextInputType.number,
-                                        textInputAction:
-                                            TextInputAction.done,
-                                        controller: cont[index],
-                                        obscureText: false,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          contentPadding: EdgeInsets.all(5),
-                                          hintText: "Enter Quantity",
-                                          label: Text("Enter Qty"),
-                                        ),
-                                        onChanged: (value) {
-                                          if (cont[index].value.text ==
-                                              "") {
-                                            _totalPriceList[index] =
-                                                0.0.toString();
-                                            cart[index].qty = 0;
-                                            setState(() {});
-                                          } else {
-                                            cart[index].qty =
-                                                int.parse(value.toString());
-                                            cartTotal = getItemTotal(cart);
-                                            setState(() {});
-                                          }
-                                        },
-                                      )),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      InkResponse(
+                                          onTap: () {
+                                            // if (sum == 1) {
+                                            //   cart.clear();
+                                            //   dt.clear();
+                                            //   cartTotal = 0.0;
+                                            //   setState(() {});
+                                            // } else {
+                                            //  cart.removeWhere((item) => item.id == cart[index].id);
+                                            //   cartTotal = getItemTotal(cart);
+                                            //   setState(() {});
+                                            // }
+                                            // sum = sum-1;
+                                          },
+                                          child: Container(
+                                            height: 25,
+                                            width: 25,
+                                            margin:
+                                            EdgeInsets.only( right: 5),
+                                            decoration: BoxDecoration(
+                                              color: bgColor,),
+                                            child: Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          )),
+                                      InkResponse(
+                                          onTap: () {
+                                            // if (sum == 1) {
+                                            //   cart.clear();
+                                            //   dt.clear();
+                                            //   cartTotal = 0.0;
+                                            //   setState(() {});
+                                            // } else {
+                                            //  cart.removeWhere((item) => item.id == cart[index].id);
+                                            //   cartTotal = getItemTotal(cart);
+                                            //   setState(() {});
+                                            // }
+                                            // sum = sum-1;
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            height: 25,
+                                            width: 25,
+                                            margin:
+                                            EdgeInsets.only(right: 5),
+                                            decoration: BoxDecoration(
+                                                border:Border.all(color: Colors.black)),
+                                            child:Text(
+                                              "${cart[index].qty}",
+                                              style: TextStyle(
+                                                  color: bgColor,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )),
+                                      InkResponse(
+                                          onTap: () {
+                                            // if (sum == 1) {
+                                            //   cart.clear();
+                                            //   dt.clear();
+                                            //   cartTotal = 0.0;
+                                            //   setState(() {});
+                                            // } else {
+                                            //  cart.removeWhere((item) => item.id == cart[index].id);
+                                            //   cartTotal = getItemTotal(cart);
+                                            //   setState(() {});
+                                            // }
+                                            // sum = sum-1;
+                                          },
+                                          child: Container(
+                                            height: 25,
+                                            width: 25,
+                                            margin:
+                                            EdgeInsets.only( right: 5),
+                                            decoration: BoxDecoration(
+                                              color: bgColor,),
+                                            child: Icon(
+                                              Icons.remove,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          )),
+                                    ],
+                                  ),
                                 ],
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              InkResponse(
-                                  onTap: () {
-                                    if (sum == 1) {
-                                      cart.clear();
-                                      dt.clear();
-                                      cartTotal = 0.0;
-                                      setState(() {});
-                                    } else {
-                                     cart.removeWhere((item) => item.id == cart[index].id);
-                                      cartTotal = getItemTotal(cart);
-                                      setState(() {});
-                                    }
-                                    sum = sum-1;
-                                  },
-                                  child: Container(
-                                    height: 25,
-                                    width: 25,
-                                    margin:
-                                        EdgeInsets.only(top: 10, right: 5),
-                                    decoration: BoxDecoration(
-                                        color: bgColor,
-                                        shape: BoxShape.circle),
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
-                                      size: 16,
-                                    ),
-                                  )),
-                              Text(
-                                "${cart[index].qty}",
-                                style: TextStyle(
-                                    color: bgColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+                            ),
+                            Divider(
+                              thickness: 2,
+                              color: Colors.black12,
+                            )
+                          ],
+                        );
+                      }),
+
+                ],
+              )
                 ),
         ),
       ),

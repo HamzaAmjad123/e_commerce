@@ -9,7 +9,7 @@ import 'package:e_commerce/service/login_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../Dealer/home/home_screen.dart';
+import '../Dealer/home/dashboard_screen.dart';
 import '../Rider/rider_home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,7 +65,7 @@ class _SigInWidgetState extends State<SigInWidget> {
     if (res) {
       Provider.of<UserDataProvider>(context,listen: false).user!.userRoles![0] !="Dealer"?
       NavigationServices.goNextAndKeepHistory(context: context, widget: RiderHome(
-      )):NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: HomeScreen(
+      )):NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: DashBoardScreen(
         tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.user!.tenantId!,
       ));
     }
