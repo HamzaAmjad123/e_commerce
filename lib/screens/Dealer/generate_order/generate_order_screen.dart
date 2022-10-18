@@ -2,7 +2,6 @@ import 'package:badges/badges.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:e_commerce/provider/items_provider.dart';
-import 'package:e_commerce/provider/series_provider.dart';
 import 'package:e_commerce/screens/Dealer/generate_order/widget/item_row.dart';
 import 'package:e_commerce/service/save_order_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,9 +11,12 @@ import '../../../configs/color.dart';
 import '../../../helper_services/custom_loader.dart';
 import '../../../helper_services/navigation_services.dart';
 import '../../../model/items_model.dart';
-import '../../../provider/category_provider.dart';
 import '../../../provider/save_order_provider.dart';
+import '../../../provider/wearhouse_provider.dart';
+import '../../../provider/wearhouse_shipment_provider.dart';
 import '../../../service/get_items_service.dart';
+import '../../../service/wearhouse_service.dart';
+import '../../../service/wearhouse_shipment_service.dart';
 import 'book_success.dart';
 
 class GenerateOrderScreen extends StatefulWidget {
@@ -33,7 +35,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   final cart = CartModel.d1();
 
   List<CartModel> temporary_list = [];
-  List<ItemsList> dt = [];
+  List<Items> dt = [];
   double cartTotal = 0.0;
 
   List<TextEditingController> cont = [];
@@ -68,24 +70,60 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
     selectSeries = value;
     setState(() {});
   }
+  int? selectedWearHouse;
+  @override
+  void updateWearHouse(int value) {
+    setState(() {
+      selectedWearHouse = value;
+    });
+  }
+  int? selectedShipment;
+  @override
+  updateShipment(int value){
+    selectedShipment=value;
+  }
+  bool shipment=false;
+  getWearHouse() async {
+    CustomLoader.showLoader(context: context);
+    await WearHouseService().getWearHouse(context: context);
 
-  _getAllItems() async {
+    CustomLoader.hideLoader(context);
+  }
+getShipment(int wearHouseId)async{
+    CustomLoader.showLoader(context: context);
+    await WearHouseShipmentService().getShipment(context: context, wearHouseId: wearHouseId);
+    print("WearHouse $wearHouseId");
+    CustomLoader.hideLoader(context);
+}
+  _getAllItems(int wearHouseId) async {
     CustomLoader.showLoader(context: context);
     await ItemsService().getAllItems(
-        context: context,
-        take: 1000,
-        skip: 0,
-        seriesId: selectSeries!,
-        itemId: selectedCat!);
+      context: context,
+      take: 1000,
+      skip: 0,
+        itemTypeId: 0,
+        seriesId:0,
+        warehouseId: wearHouseId
+    );
+    CustomLoader.hideLoader(context);
+  }
+  getItems(int wearHouseId)async{
+    CustomLoader.showLoader(context: context);
+    await WearHouseShipmentService().getShipment(context: context, wearHouseId: wearHouseId);
+    print("WearHouse $wearHouseId");
     CustomLoader.hideLoader(context);
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getWearHouse();
+    });
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -142,11 +180,91 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Consumer<WearHouseProvider>(builder: (context,wearHouse,_){
+                return  Container(
+                    margin: EdgeInsets.symmetric(
+                            vertical: height * .005, horizontal: 14.0),
+                        height: height * .065,
+                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        decoration: BoxDecoration(
+                            color: lightBlackColor,
+                            borderRadius: BorderRadius.circular(12.0)),
+                  child: DropdownButton(
+                    isExpanded: true,
+                      underline: SizedBox(),
+                      hint: Text("Select WearHouse"),
+                      value: selectedWearHouse,
+                      items: wearHouse.wearHouseList!.map((item) {
+                        return DropdownMenuItem(
+                            value: item.warehouseId,
+                            child: Text(item.name!),
+                        );
+                      }).toList(),
+                      onChanged: (int? newValue){
+                        if(updateWearHouse!=null)
+                          updateWearHouse(newValue!);
+                        shipment=true;
+                        wearHouse.wearHouseList!.map((item) {
+                        if(newValue==item.warehouseId){
+                          if(selectedShipment==null)
+                          {
+                            getShipment(item.warehouseId!);
+                            _getAllItems(item.warehouseId!);
+
+                          }
+                          else{
+                            selectedShipment=null;
+                            getShipment(item.warehouseId!);
+                            _getAllItems(item.warehouseId!);
+                          }
+                        }
+                        }).toList();
+                        setState((){});
+                      }),
+                );
+              }),
+              if(shipment==true)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Consumer<WearHouseShipmentProvider>(builder: (context,ship,_){
+                  return   Container(
+                    margin: EdgeInsets.symmetric(
+                        vertical: height * .005, horizontal: 14.0),
+                    height: height * .065,
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    decoration: BoxDecoration(
+                        color: lightBlackColor,
+                        borderRadius: BorderRadius.circular(12.0)),
+                    child: DropdownButton(
+                        value: selectedShipment,
+                        isExpanded: true,
+                        underline: SizedBox(),
+                        hint: Text("Select Shipment"),
+                        items: ship.shipment!.map((item) {
+                          return DropdownMenuItem(
+                            child: Text(item.name!),
+                            value: item.cargoId,
+                          );
+                        }).toList(),
+                        onChanged:(int? newValue){
+                          if(updateShipment!=null)
+                            updateShipment(newValue!);
+                          setState((){});
+                        }
+                    ),
+                  );
+                }),
+
+              ],
+            ),
+
               Container(
                 height: 100,
                 margin: EdgeInsets.only(bottom: 10),
@@ -155,15 +273,17 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Ctaegories",style: subtitleStyle,),
+                        Text("Categories",style: subtitleStyle,),
                         Text("View More",style: rsStyle,),
                       ],
                     ),
                     SizedBox(height: 5,),
+
                     Container(
                       height: 70,
                       child: ListView.builder(
@@ -342,7 +462,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
     );
   }
 
-  onTap(int index, ItemsList items) async {
+  onTap(int index, Items items) async {
     temporary_list.clear();
     if (cart.length > 0) {
       var last = cart.last.id;

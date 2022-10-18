@@ -1,14 +1,14 @@
 class ItemsModel {
   int? totalCount;
-  List<ItemsList>? result;
+  List<Items>? result;
 
   ItemsModel({this.totalCount, this.result});
 
   ItemsModel.fromJson(Map<String, dynamic> json) {
     totalCount = json['totalCount'];
     if (json['result'] != null) {
-      result = <ItemsList>[];
-      json['result'].forEach((v) { result!.add(new ItemsList.fromJson(v)); });
+      result = <Items>[];
+      json['result'].forEach((v) { result!.add(new Items.fromJson(v)); });
     }
   }
 
@@ -22,7 +22,7 @@ class ItemsModel {
   }
 }
 
-class ItemsList {
+class Items {
   int? itemId;
   String? name;
   String? slogan;
@@ -31,7 +31,8 @@ class ItemsList {
   int? unitDiscountPercentage;
   int? status;
   int? availableStock;
-  bool? isAvailable;
+  bool? isApproved;
+  String? approvedBy;
   String? address;
   int? cityId;
   int? rankId;
@@ -39,21 +40,21 @@ class ItemsList {
   Null? languageId;
   Null? language;
   int? classId;
-  // Null? class;
   int? seriesId;
   Series? series;
   int? itemTypeId;
   Null? itemType;
+  int? warehouseId;
+  Warehouse? warehouse;
   int? tenantId;
   Null? createdBy;
   String? createdDate;
   Null? updatedBy;
   Null? updatedDate;
-  int? qty=0;
 
-  ItemsList({this.itemId, this.name, this.slogan, this.code, this.unitPrice, this.unitDiscountPercentage, this.status, this.availableStock, this.isAvailable, this.address, this.cityId, this.rankId, this.rank, this.languageId, this.language, this.classId, /*this.class,*/ this.seriesId, this.series, this.itemTypeId, this.itemType, this.tenantId, this.createdBy, this.createdDate, this.updatedBy, this.updatedDate,this.qty});
+  Items({this.itemId, this.name, this.slogan, this.code, this.unitPrice, this.unitDiscountPercentage, this.status, this.availableStock, this.isApproved, this.approvedBy, this.address, this.cityId, this.rankId, this.rank, this.languageId, this.language, this.classId, this.seriesId, this.series, this.itemTypeId, this.itemType, this.warehouseId, this.warehouse, this.tenantId, this.createdBy, this.createdDate, this.updatedBy, this.updatedDate});
 
-  ItemsList.fromJson(Map<String, dynamic> json) {
+  Items.fromJson(Map<String, dynamic> json) {
   itemId = json['itemId'];
   name = json['name'];
   slogan = json['slogan'];
@@ -62,7 +63,8 @@ class ItemsList {
   unitDiscountPercentage = json['unitDiscountPercentage'];
   status = json['status'];
   availableStock = json['availableStock'];
-  isAvailable = json['isAvailable'];
+  isApproved = json['isApproved'];
+  approvedBy = json['approvedBy'];
   address = json['address'];
   cityId = json['cityId'];
   rankId = json['rankId'];
@@ -70,11 +72,12 @@ class ItemsList {
   languageId = json['languageId'];
   language = json['language'];
   classId = json['classId'];
-// class = json['class'];
   seriesId = json['seriesId'];
   series = json['series'] != null ? new Series.fromJson(json['series']) : null;
   itemTypeId = json['itemTypeId'];
   itemType = json['itemType'];
+  warehouseId = json['warehouseId'];
+  warehouse = json['warehouse'] != null ? new Warehouse.fromJson(json['warehouse']) : null;
   tenantId = json['tenantId'];
   createdBy = json['createdBy'];
   createdDate = json['createdDate'];
@@ -92,7 +95,8 @@ class ItemsList {
   data['unitDiscountPercentage'] = this.unitDiscountPercentage;
   data['status'] = this.status;
   data['availableStock'] = this.availableStock;
-  data['isAvailable'] = this.isAvailable;
+  data['isApproved'] = this.isApproved;
+  data['approvedBy'] = this.approvedBy;
   data['address'] = this.address;
   data['cityId'] = this.cityId;
   data['rankId'] = this.rankId;
@@ -100,19 +104,21 @@ class ItemsList {
   data['languageId'] = this.languageId;
   data['language'] = this.language;
   data['classId'] = this.classId;
-  // data['class'] = this.class;
   data['seriesId'] = this.seriesId;
   if (this.series != null) {
   data['series'] = this.series!.toJson();
   }
   data['itemTypeId'] = this.itemTypeId;
   data['itemType'] = this.itemType;
+  data['warehouseId'] = this.warehouseId;
+  if (this.warehouse != null) {
+  data['warehouse'] = this.warehouse!.toJson();
+  }
   data['tenantId'] = this.tenantId;
   data['createdBy'] = this.createdBy;
   data['createdDate'] = this.createdDate;
   data['updatedBy'] = this.updatedBy;
   data['updatedDate'] = this.updatedDate;
-  data['qty'] = this.qty;
   return data;
   }
 }
@@ -142,6 +148,46 @@ class Series {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['seriesId'] = this.seriesId;
     data['name'] = this.name;
+    data['tenantId'] = this.tenantId;
+    data['createdBy'] = this.createdBy;
+    data['createdDate'] = this.createdDate;
+    data['updatedBy'] = this.updatedBy;
+    data['updatedDate'] = this.updatedDate;
+    return data;
+  }
+}
+
+class Warehouse {
+  int? warehouseId;
+  String? name;
+  String? address;
+  int? cityId;
+  int? tenantId;
+  String? createdBy;
+  String? createdDate;
+  String? updatedBy;
+  String? updatedDate;
+
+  Warehouse({this.warehouseId, this.name, this.address, this.cityId, this.tenantId, this.createdBy, this.createdDate, this.updatedBy, this.updatedDate});
+
+  Warehouse.fromJson(Map<String, dynamic> json) {
+    warehouseId = json['warehouseId'];
+    name = json['name'];
+    address = json['address'];
+    cityId = json['cityId'];
+    tenantId = json['tenantId'];
+    createdBy = json['createdBy'];
+    createdDate = json['createdDate'];
+    updatedBy = json['updatedBy'];
+    updatedDate = json['updatedDate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['warehouseId'] = this.warehouseId;
+    data['name'] = this.name;
+    data['address'] = this.address;
+    data['cityId'] = this.cityId;
     data['tenantId'] = this.tenantId;
     data['createdBy'] = this.createdBy;
     data['createdDate'] = this.createdDate;

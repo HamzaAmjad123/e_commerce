@@ -1,12 +1,11 @@
 import 'package:e_commerce/configs/color.dart';
-import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../../model/items_model.dart';
 
 class GenerateOrderWidget extends StatelessWidget {
-  ItemsList item;
+  Items item;
   final Function()? onTap;
 
   GenerateOrderWidget(

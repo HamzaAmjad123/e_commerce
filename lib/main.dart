@@ -12,6 +12,8 @@ import 'package:e_commerce/provider/order_log_provider.dart';
 import 'package:e_commerce/provider/save_order_provider.dart';
 import 'package:e_commerce/provider/series_provider.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
+import 'package:e_commerce/provider/wearhouse_provider.dart';
+import 'package:e_commerce/provider/wearhouse_shipment_provider.dart';
 import 'package:e_commerce/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -42,6 +44,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>CashBookProvider()),
         ChangeNotifierProvider(create: (context)=>DealerHistoryProvider()),
         ChangeNotifierProvider(create: (context)=>HomeDashboardProvider()),
+        ChangeNotifierProvider(create: (context)=>WearHouseProvider()),
+        ChangeNotifierProvider(create: (context)=>WearHouseShipmentProvider()),
         //Rider Provider
         ChangeNotifierProvider(create: (context)=>RiderHistoryProvider()),
         ChangeNotifierProvider(create: (context)=>RiderApprovesOrdersProvider())

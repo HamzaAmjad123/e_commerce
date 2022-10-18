@@ -12,14 +12,15 @@ class ItemsService {
       {required BuildContext context,
       required int take,
       required int skip,
-      required int seriesId,
-      required int itemId}) async {
+      required int seriesId, required int warehouseId,
+      required int itemTypeId}) async {
     try {
       Map _body = {
         "seriesId": seriesId,
         "take": take,
         "skip": skip,
-        "itemTypeId": itemId
+        "itemTypeId": itemTypeId,
+        "warehouseId": warehouseId
       };
 
       var res = await PostRequestService()
