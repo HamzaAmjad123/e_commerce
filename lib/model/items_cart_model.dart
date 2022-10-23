@@ -1,12 +1,13 @@
 class CartModel {
   int discount;
   double unitprice;
-  double totalprice;
   String name;
+  String image;
   int id;
   int qty = 0;
   CartModel(
-      this.discount, this.unitprice,this.totalprice, this.name, this.id, this.qty);
+      this.image,
+      this.discount, this.unitprice, this.name, this.id, this.qty);
   static List<CartModel> d1() => [];
 
   factory CartModel.fromJson(Map<String, dynamic> json) {

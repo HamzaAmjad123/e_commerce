@@ -49,7 +49,7 @@ class _BookSuccessState extends State<BookSuccess> {
                       child: Column(
                         children: [
                           Image.asset(
-                            'assets/images/bookingsuccess.png',
+                            'assets/image/bookingsuccess.png',
                             height: width * 0.7,
                             width: width * 0.8,
                           )

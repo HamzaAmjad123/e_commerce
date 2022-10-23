@@ -1,4 +1,5 @@
 import 'package:e_commerce/configs/color.dart';
+import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,13 +53,23 @@ class GenerateOrderWidget extends StatelessWidget {
                     ),
                     ),
                     Container(
-
                       height: 2,
                       width: double.infinity,
                       color: Colors.black,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 2,vertical: 4),
+                      padding: EdgeInsets.only(left: 8.0,right: 8.0,top: 6.0),
+                      child:Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(item.name!,style: subtitleStyle,),
+                          Text(item.unitPrice.toString())
+                        ],
+                      )
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 2.0,right: 2.0,top: 2.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,

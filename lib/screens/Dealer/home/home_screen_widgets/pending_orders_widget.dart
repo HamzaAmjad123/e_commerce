@@ -1,7 +1,6 @@
 import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../../configs/color.dart';
 import '../../../../configs/text_style.dart';
@@ -11,7 +10,7 @@ import '../../../../model/order_list_model.dart';
 import '../../../../provider/order_list_provider.dart';
 import '../../../../provider/user_data_provider.dart';
 import '../../../../service/order_list_service.dart';
-import '../../order/order_details_screen.dart';
+import '../../order_details/order_details_screen.dart';
 
 class PendingOrderWidget extends StatefulWidget {
   const PendingOrderWidget({Key? key}) : super(key: key);

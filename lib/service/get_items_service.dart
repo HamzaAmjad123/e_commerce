@@ -12,6 +12,7 @@ class ItemsService {
       {required BuildContext context,
       required int take,
       required int skip,
+        required int classId,
       required int seriesId, required int warehouseId,
       required int itemTypeId}) async {
     try {
@@ -20,7 +21,8 @@ class ItemsService {
         "take": take,
         "skip": skip,
         "itemTypeId": itemTypeId,
-        "warehouseId": warehouseId
+        "warehouseId": warehouseId,
+        "classId":classId,
       };
 
       var res = await PostRequestService()

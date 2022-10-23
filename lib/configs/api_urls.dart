@@ -6,6 +6,7 @@ const String getWareHouseUrl=baseUrl+ "WareHouse/getListByActiveUser";
 const String getShipmentUrl=baseUrl + "Cargo/getShipmentsByWarehouse";
 const String getLevelUrl=baseUrl+ "Level/getList";
 const String getSereiesUrl=baseUrl+"Series/getList";
+const String getClassesUrl=baseUrl + "Level/getList";
 const String getItemsUrl=baseUrl+"Item/getList";
 const String saveOrderUrl=baseUrl+"Order/save";
 const String orderListUrl=baseUrl + "Order/getList";
@@ -15,6 +16,7 @@ const String orderGetDetails=baseUrl + "Order/get";
 const String cashBookUrl=baseUrl + "Voucher/getDealerStatement";
 const String sendPaymentUrl=baseUrl + "Voucher/createVoucherLineByDealer";
 const  String dashboardUrl=baseUrl + "Dashboard/GetDataDashboard?";
+
 // Urls For Rider
 const String riderApprovedOrdersurl=baseUrl + "Order/getApprovedOrdersListForRider";
 const String riderHistoryOrdersurl=baseUrl + "Order/getApprovedOrdersHistoryListForRider";

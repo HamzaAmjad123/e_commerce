@@ -71,9 +71,12 @@ class LedgerDetails {
   String? title;
   double? credit;
   double? debit;
-  String? status;
+  int? status;
   String? description;
   String? type;
+  int? orderId;
+  String? statusString;
+  int? voucherLineId;
 
   LedgerDetails(
       {this.dealerId,
@@ -83,7 +86,10 @@ class LedgerDetails {
         this.debit,
         this.status,
         this.description,
-        this.type});
+        this.type,
+        this.orderId,
+        this.statusString,
+        this.voucherLineId});
 
   LedgerDetails.fromJson(Map<String, dynamic> json) {
     dealerId = json['dealerId'];
@@ -94,6 +100,9 @@ class LedgerDetails {
     status = json['status'];
     description = json['description'];
     type = json['type'];
+    orderId = json['orderId'];
+    statusString = json['statusString'];
+    voucherLineId = json['voucherLineId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -106,6 +115,9 @@ class LedgerDetails {
     data['status'] = this.status;
     data['description'] = this.description;
     data['type'] = this.type;
+    data['orderId'] = this.orderId;
+    data['statusString'] = this.statusString;
+    data['voucherLineId'] = this.voucherLineId;
     return data;
   }
 }

@@ -1,3 +1,5 @@
+import 'package:e_commerce/model/items_model.dart';
+
 class OrderDetailsModel {
   int? orderId;
   String? orderNo;
@@ -9,10 +11,19 @@ class OrderDetailsModel {
   int? dealerId;
   Dealer? dealer;
   int? warehouseId;
-  Null? warehouse;
+  Warehouse? warehouse;
   int? tenantId;
+  Null? voucher;
   List<OrderLines>? orderLines;
   bool? isVerifiedByGatePassUser;
+  Null? numberOfBags;
+  Null? cargoReciptImage;
+  bool? isOrderObjection;
+  Null? orderObjectionDetail;
+  Null? objectionApprovedOrCancelledById;
+  int? objectionResult;
+  Null? cargoId;
+  Cargo? cargo;
 
   OrderDetailsModel(
       {this.orderId,
@@ -27,8 +38,17 @@ class OrderDetailsModel {
         this.warehouseId,
         this.warehouse,
         this.tenantId,
+        this.voucher,
         this.orderLines,
-        this.isVerifiedByGatePassUser});
+        this.isVerifiedByGatePassUser,
+        this.numberOfBags,
+        this.cargoReciptImage,
+        this.isOrderObjection,
+        this.orderObjectionDetail,
+        this.objectionApprovedOrCancelledById,
+        this.objectionResult,
+        this.cargoId,
+        this.cargo});
 
   OrderDetailsModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -42,8 +62,11 @@ class OrderDetailsModel {
     dealer =
     json['dealer'] != null ? new Dealer.fromJson(json['dealer']) : null;
     warehouseId = json['warehouseId'];
-    warehouse = json['warehouse'];
+    warehouse = json['warehouse'] != null
+        ? new Warehouse.fromJson(json['warehouse'])
+        : null;
     tenantId = json['tenantId'];
+    voucher = json['voucher'];
     if (json['orderLines'] != null) {
       orderLines = <OrderLines>[];
       json['orderLines'].forEach((v) {
@@ -51,6 +74,14 @@ class OrderDetailsModel {
       });
     }
     isVerifiedByGatePassUser = json['isVerifiedByGatePassUser'];
+    numberOfBags = json['numberOfBags'];
+    cargoReciptImage = json['cargoReciptImage'];
+    isOrderObjection = json['isOrderObjection'];
+    orderObjectionDetail = json['orderObjectionDetail'];
+    objectionApprovedOrCancelledById = json['objectionApprovedOrCancelledById'];
+    objectionResult = json['objectionResult'];
+    cargoId = json['cargoId'];
+    cargo = json['cargo'] != null ? new Cargo.fromJson(json['cargo']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -67,12 +98,26 @@ class OrderDetailsModel {
       data['dealer'] = this.dealer!.toJson();
     }
     data['warehouseId'] = this.warehouseId;
-    data['warehouse'] = this.warehouse;
+    if (this.warehouse != null) {
+      data['warehouse'] = this.warehouse!.toJson();
+    }
     data['tenantId'] = this.tenantId;
+    data['voucher'] = this.voucher;
     if (this.orderLines != null) {
       data['orderLines'] = this.orderLines!.map((v) => v.toJson()).toList();
     }
     data['isVerifiedByGatePassUser'] = this.isVerifiedByGatePassUser;
+    data['numberOfBags'] = this.numberOfBags;
+    data['cargoReciptImage'] = this.cargoReciptImage;
+    data['isOrderObjection'] = this.isOrderObjection;
+    data['orderObjectionDetail'] = this.orderObjectionDetail;
+    data['objectionApprovedOrCancelledById'] =
+        this.objectionApprovedOrCancelledById;
+    data['objectionResult'] = this.objectionResult;
+    data['cargoId'] = this.cargoId;
+    if (this.cargo != null) {
+      data['cargo'] = this.cargo!.toJson();
+    }
     return data;
   }
 }
@@ -88,7 +133,12 @@ class Dealer {
   Null? imageUrl;
   String? name;
   Null? tenantId;
-  Null? warehouseId;
+  Null? aqmId;
+  Null? rmsId;
+  Null? asmId;
+  Null? meId;
+  bool? isAsignAllWarehouse;
+  List<Warehouse>? warehouses;
 
   Dealer(
       {this.id,
@@ -101,7 +151,12 @@ class Dealer {
         this.imageUrl,
         this.name,
         this.tenantId,
-        this.warehouseId});
+        this.aqmId,
+        this.rmsId,
+        this.asmId,
+        this.meId,
+        this.isAsignAllWarehouse,
+        this.warehouses});
 
   Dealer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -114,7 +169,17 @@ class Dealer {
     imageUrl = json['imageUrl'];
     name = json['name'];
     tenantId = json['tenantId'];
-    warehouseId = json['warehouseId'];
+    aqmId = json['aqmId'];
+    rmsId = json['rmsId'];
+    asmId = json['asmId'];
+    meId = json['meId'];
+    isAsignAllWarehouse = json['isAsignAllWarehouse'];
+    if (json['warehouses'] != null) {
+      warehouses = <Warehouse>[];
+      json['warehouses'].forEach((v) {
+        warehouses!.add(new Warehouse.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -129,7 +194,55 @@ class Dealer {
     data['imageUrl'] = this.imageUrl;
     data['name'] = this.name;
     data['tenantId'] = this.tenantId;
+    data['aqmId'] = this.aqmId;
+    data['rmsId'] = this.rmsId;
+    data['asmId'] = this.asmId;
+    data['meId'] = this.meId;
+    data['isAsignAllWarehouse'] = this.isAsignAllWarehouse;
+    if (this.warehouses != null) {
+      data['warehouses'] = this.warehouses!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Warehouse {
+  Null? warehouseId;
+  Null? name;
+  Null? address;
+  int? cityId;
+  Null? tenantId;
+  Null? updatedBy;
+  Null? createdBy;
+
+  Warehouse(
+      {this.warehouseId,
+        this.name,
+        this.address,
+        this.cityId,
+        this.tenantId,
+        this.updatedBy,
+        this.createdBy});
+
+  Warehouse.fromJson(Map<String, dynamic> json) {
+    warehouseId = json['warehouseId'];
+    name = json['name'];
+    address = json['address'];
+    cityId = json['cityId'];
+    tenantId = json['tenantId'];
+    updatedBy = json['updatedBy'];
+    createdBy = json['createdBy'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['warehouseId'] = this.warehouseId;
+    data['name'] = this.name;
+    data['address'] = this.address;
+    data['cityId'] = this.cityId;
+    data['tenantId'] = this.tenantId;
+    data['updatedBy'] = this.updatedBy;
+    data['createdBy'] = this.createdBy;
     return data;
   }
 }
@@ -225,4 +338,42 @@ class Item {
     return data;
   }
 }
+
+class Cargo {
+  Null? cargoId;
+  Null? name;
+  Null? detail;
+  Null? warehouseId;
+  Null? warehouse;
+  Null? tenantId;
+
+  Cargo(
+      {this.cargoId,
+        this.name,
+        this.detail,
+        this.warehouseId,
+        this.warehouse,
+        this.tenantId});
+
+  Cargo.fromJson(Map<String, dynamic> json) {
+    cargoId = json['cargoId'];
+    name = json['name'];
+    detail = json['detail'];
+    warehouseId = json['warehouseId'];
+    warehouse = json['warehouse'];
+    tenantId = json['tenantId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['cargoId'] = this.cargoId;
+    data['name'] = this.name;
+    data['detail'] = this.detail;
+    data['warehouseId'] = this.warehouseId;
+    data['warehouse'] = this.warehouse;
+    data['tenantId'] = this.tenantId;
+    return data;
+  }
+}
+
 

@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:e_commerce/provider/items_provider.dart';
+import 'package:e_commerce/screens/Dealer/generate_order/widget/cart_widget.dart';
 import 'package:e_commerce/screens/Dealer/generate_order/widget/item_row.dart';
 import 'package:e_commerce/service/save_order_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,9 +12,11 @@ import '../../../configs/color.dart';
 import '../../../helper_services/custom_loader.dart';
 import '../../../helper_services/navigation_services.dart';
 import '../../../model/items_model.dart';
+import '../../../provider/class_provider.dart';
 import '../../../provider/save_order_provider.dart';
 import '../../../provider/wearhouse_provider.dart';
 import '../../../provider/wearhouse_shipment_provider.dart';
+import '../../../service/class_services.dart';
 import '../../../service/get_items_service.dart';
 import '../../../service/wearhouse_service.dart';
 import '../../../service/wearhouse_shipment_service.dart';
@@ -29,22 +32,18 @@ class GenerateOrderScreen extends StatefulWidget {
 class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   late double height;
   late double width;
-
+  bool cargoSelect=false;
   int sum = 0;
   GlobalKey<ScaffoldState> key = GlobalKey();
   final cart = CartModel.d1();
-
   List<CartModel> temporary_list = [];
   List<Items> dt = [];
   double cartTotal = 0.0;
-
-  List<TextEditingController> cont = [];
-  List<String> _totalPriceList = [];
-  String con_text = "";
-
+  List<bool>  visibility= [];
+  List<TextEditingController>  cont= [];
+  List<FocusNode> focusNodes= [];
   bool catSelected = false;
   bool seriesSelected = false;
-
   int? selectedCat;
 
   @override
@@ -95,7 +94,7 @@ getShipment(int wearHouseId)async{
     print("WearHouse $wearHouseId");
     CustomLoader.hideLoader(context);
 }
-  _getAllItems(int wearHouseId) async {
+  _getAllItems(int wearHouseId,int classId) async {
     CustomLoader.showLoader(context: context);
     await ItemsService().getAllItems(
       context: context,
@@ -103,7 +102,8 @@ getShipment(int wearHouseId)async{
       skip: 0,
         itemTypeId: 0,
         seriesId:0,
-        warehouseId: wearHouseId
+        warehouseId: wearHouseId,
+        classId: classId
     );
     CustomLoader.hideLoader(context);
   }
@@ -113,17 +113,23 @@ getShipment(int wearHouseId)async{
     print("WearHouse $wearHouseId");
     CustomLoader.hideLoader(context);
   }
+  getClassesHandler()async{
+    CustomLoader.showLoader(context: context);
+    await GetClassesService().getClasses(context: context);
+    CustomLoader.hideLoader(context);
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getWearHouse();
+      getClassesHandler();
     });
     super.initState();
   }
 
-
+int selectedClassColor=0;
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +137,7 @@ getShipment(int wearHouseId)async{
     height = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () async{
-        sum = 0;
-        cart.clear();
-        dt.clear();
+        clearCart();
          Navigator.pop(context);
         return true;
       },
@@ -186,7 +190,7 @@ getShipment(int wearHouseId)async{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Consumer<WearHouseProvider>(builder: (context,wearHouse,_){
-                return  Container(
+                return wearHouse.wearHouseList!=null? Container(
                     margin: EdgeInsets.symmetric(
                             vertical: height * .005, horizontal: 14.0),
                         height: height * .065,
@@ -209,26 +213,28 @@ getShipment(int wearHouseId)async{
                         if(updateWearHouse!=null)
                           updateWearHouse(newValue!);
                         shipment=true;
+                        clearCart();
                         wearHouse.wearHouseList!.map((item) {
                         if(newValue==item.warehouseId){
                           if(selectedShipment==null)
                           {
                             getShipment(item.warehouseId!);
-                            _getAllItems(item.warehouseId!);
+                            // _getAllItems(item.warehouseId!,0);
 
                           }
                           else{
                             selectedShipment=null;
                             getShipment(item.warehouseId!);
-                            _getAllItems(item.warehouseId!);
+                            // _getAllItems(item.warehouseId!,0);
                           }
                         }
                         }).toList();
                         setState((){});
                       }),
-                );
+                ):Container();
               }),
-              if(shipment==true)
+
+          if(shipment==true)
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,169 +262,78 @@ getShipment(int wearHouseId)async{
                         onChanged:(int? newValue){
                           if(updateShipment!=null)
                             updateShipment(newValue!);
+                          cargoSelect=true;
                           setState((){});
                         }
                     ),
                   );
                 }),
+                Container(
+                    height: 100,
+                    margin: EdgeInsets.only(bottom: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child:Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Categories",style: subtitleStyle,),
+                            Text("View More",style: rsStyle,),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+
+                        Consumer<ClassesProvider>(builder: (context,classes,_){
+                          return  Container(
+                            height: 70,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                primary: false,
+                                itemCount: classes.myClass!.length,
+                                itemBuilder: (context,index){
+                                  return InkWell(
+                                    onTap: ()async{
+                                      _getAllItems(selectedWearHouse!,classes.myClass![index].levelId!);
+                                      selectedClassColor=index;
+                                      setState(() {
+
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      width: 70,
+                                      margin: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: selectedClassColor==index?bgColor:Colors.transparent,
+                                          width: 1.5
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: selectedClassColor==index?whiteColor:bgColor,
+                                      ),
+                                      child: Center(
+                                        child: Text(classes.myClass![index].name!,style: selectedClassColor==index?rsStyle:subtitleWhite,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          );
+                        })
+                      ],
+                    )
+                ),
 
               ],
             ),
 
-              Container(
-                height: 100,
-                margin: EdgeInsets.only(bottom: 10),
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child:Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Categories",style: subtitleStyle,),
-                        Text("View More",style: rsStyle,),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Container(
-                      height: 70,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          primary: false,
-                          itemCount: 10,
-                          itemBuilder: (context,index){
-                            return Container(
-                              height: 50,
-                              width: 70,
-                              margin: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: bgColor,
-                              ),
-                              child: Center(
-                                child: Text("Class"+"$index",style: subtitleWhite,
-                                ),
-                              ),
-                            );
-                          }),
-                    )
-                  ],
-                )
-              ),
-              // Consumer<CategoriesProvider>(builder: (context, cat, _) {
-              //   return Container(
-              //     margin: EdgeInsets.symmetric(
-              //         vertical: height * .005, horizontal: 14.0),
-              //     height: height * .065,
-              //     padding: EdgeInsets.symmetric(horizontal: 12.0),
-              //     decoration: BoxDecoration(
-              //         color: lightBlackColor,
-              //         borderRadius: BorderRadius.circular(12.0)),
-              //     child: DropdownButton(
-              //       isExpanded: true,
-              //       underline: SizedBox(),
-              //       hint: Text("Select Category"),
-              //       value: selectedCat,
-              //       onChanged: (int? newValue) async {
-              //         if (updateCat != null) {
-              //           updateCat(newValue!);
-              //           catSelected = true;
-              //           setState(() {});
-              //           if (catSelected == true && seriesSelected == true) {
-              //             await _getAllItems();
-              //             dt = dt =
-              //                 Provider.of<ItemsProvider>(context, listen: false)
-              //                     .itemsList!;
-              //           }
-              //         }
-              //         print("Selected Category $selectedCat");
-              //       },
-              //       items: cat.myCat!.map((item) {
-              //         return DropdownMenuItem(
-              //           value: item.itemTypeId,
-              //           child: Text(item.name!),
-              //         );
-              //       }).toList(),
-              //     ),
-              //   );
-              // }),
-              // Consumer<LevelProvider>(builder: (context,level,_){
-              //   return Container(
-              //     margin: EdgeInsets.symmetric(vertical: height*.020),
-              //     height: height*.065,
-              //     padding: EdgeInsets.symmetric(horizontal: 12.0),
-              //     decoration: BoxDecoration(
-              //         color:lightBlackColor,
-              //         // border: Border.all(
-              //         //   color: Colors.black,
-              //         // ),
-              //         borderRadius: BorderRadius.circular(12.0)
-              //     ),
-              //     child: DropdownButton(
-              //       isExpanded: true,
-              //       underline: SizedBox(),
-              //       hint: Text("Select Class"),
-              //       value: selectedLevel,
-              //       onChanged: (int? newValue) {
-              //
-              //         if(updateLevel != null){
-              //           updateLevel(newValue!);
-              //           setState(() {
-              //
-              //           });
-              //         }
-              //         print("Selected Category $selectedCat");
-              //       },
-              //       items: level.myLevel!.map((item){
-              //         return DropdownMenuItem(
-              //           value: item.levelId,
-              //           child: Text(item.name!),
-              //         );
-              //       }).toList(),
-              //     ),
-              //   );
-              // }),
-              // Consumer<SeriesProvider>(builder: (context, series, _) {
-              //   return Container(
-              //     margin: EdgeInsets.symmetric(
-              //         vertical: height * .020, horizontal: 14.0),
-              //     height: height * .065,
-              //     padding: EdgeInsets.symmetric(horizontal: 12.0),
-              //     decoration: BoxDecoration(
-              //         color: lightBlackColor,
-              //         borderRadius: BorderRadius.circular(12.0)),
-              //     child: DropdownButton(
-              //       isExpanded: true,
-              //       underline: SizedBox(),
-              //       hint: Text("Select Series"),
-              //       value: selectSeries,
-              //       onChanged: (int? newValue) async {
-              //         seriesSelected = true;
-              //         if (updateSeries != null) {
-              //           updateSeries(newValue!);
-              //           setState(() {});
-              //           if (catSelected == true && seriesSelected == true) {
-              //             await _getAllItems();
-              //             dt =
-              //                 Provider.of<ItemsProvider>(context, listen: false)
-              //                     .itemsList!;
-              //           }
-              //         }
-              //       },
-              //       items: series.mySeries!.map((item) {
-              //         return DropdownMenuItem(
-              //           value: item.seriesId,
-              //           child: Text(item.name!),
-              //         );
-              //       }).toList(),
-              //     ),
-              //   );
-              // }),
+              if(shipment==true)
               Consumer<ItemsProvider>(builder: (context, item, _) {
                 return item.itemsList!.length == 0
                     ? Center(
@@ -431,7 +346,7 @@ getShipment(int wearHouseId)async{
                           child: GridView.builder(
                               padding: EdgeInsets.symmetric(vertical: 10.0),
                               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  mainAxisExtent: 170.0,
+                                  mainAxisExtent:190,
                                   maxCrossAxisExtent: 200,
                                   childAspectRatio: 1.2,
                                   crossAxisSpacing: 20,
@@ -463,6 +378,7 @@ getShipment(int wearHouseId)async{
   }
 
   onTap(int index, Items items) async {
+    print("iss Calling");
     temporary_list.clear();
     if (cart.length > 0) {
       var last = cart.last.id;
@@ -476,9 +392,9 @@ getShipment(int wearHouseId)async{
         } else if (last == element.id && !select) {
           sum = sum + 1;
           temporary_list.add(new CartModel(
+            "assets/images/book.jpg",
               items.unitDiscountPercentage!,
               items.unitPrice!,
-              dt[index].unitPrice!,
               items.name!,
               items.itemId!,
               1));
@@ -488,9 +404,9 @@ getShipment(int wearHouseId)async{
     } else {
       sum = sum + 1;
       temporary_list.add(new CartModel(
+          "assets/images/book.jpg",
           items.unitDiscountPercentage!,
           items.unitPrice!,
-          dt[index].unitPrice!,
           items.name!,
           items.itemId!,
           1));
@@ -499,7 +415,6 @@ getShipment(int wearHouseId)async{
     print(cart);
     return true;
   }
-
   Widget drawer(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -538,19 +453,19 @@ getShipment(int wearHouseId)async{
                   children: [
                     sum > 0
                         ? Expanded(
-                            child: Text(
-                              '${cartTotal}',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-                          )
+                      child: Text(
+                        '${cartTotal}',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                    )
                         : Text("0.0",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
                     Text(
                       'Total Amount',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -601,164 +516,75 @@ getShipment(int wearHouseId)async{
                       primary: false,
                       itemBuilder: (context, index) {
                         cont.add(new TextEditingController());
-                        if (_totalPriceList.length < cart.length) {
-                          _totalPriceList.add("0");
+                        focusNodes.add(new FocusNode());
+                        if (visibility.length < cart.length) {
+                          visibility.add(false);
                         }
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                          height: 60,
-                                          width: 80,
-                                          child:ClipRRect(
-                                            child:  Image.asset("assets/images/book.jpg",),
-                                          )
-                                      ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-
-                                          Text(
-                                            "${cart[index].name}",
-                                            style: TextStyle(
-                                              color: Colors.black, fontSize: 16,fontWeight: FontWeight.w600,),textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      InkResponse(
-                                          onTap: () {
-                                            // if (sum == 1) {
-                                            //   cart.clear();
-                                            //   dt.clear();
-                                            //   cartTotal = 0.0;
-                                            //   setState(() {});
-                                            // } else {
-                                            //  cart.removeWhere((item) => item.id == cart[index].id);
-                                            //   cartTotal = getItemTotal(cart);
-                                            //   setState(() {});
-                                            // }
-                                            // sum = sum-1;
-                                          },
-                                          child: Container(
-                                            height: 25,
-                                            width: 25,
-                                            margin:
-                                            EdgeInsets.only( right: 5),
-                                            decoration: BoxDecoration(
-                                              color: bgColor,),
-                                            child: Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                              size: 16,
-                                            ),
-                                          )),
-                                      InkResponse(
-                                          onTap: () {
-                                            // if (sum == 1) {
-                                            //   cart.clear();
-                                            //   dt.clear();
-                                            //   cartTotal = 0.0;
-                                            //   setState(() {});
-                                            // } else {
-                                            //  cart.removeWhere((item) => item.id == cart[index].id);
-                                            //   cartTotal = getItemTotal(cart);
-                                            //   setState(() {});
-                                            // }
-                                            // sum = sum-1;
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            height: 25,
-                                            width: 25,
-                                            margin:
-                                            EdgeInsets.only(right: 5),
-                                            decoration: BoxDecoration(
-                                                border:Border.all(color: Colors.black)),
-                                            child:Text(
-                                              "${cart[index].qty}",
-                                              style: TextStyle(
-                                                  color: bgColor,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          )),
-                                      InkResponse(
-                                          onTap: () {
-                                            // if (sum == 1) {
-                                            //   cart.clear();
-                                            //   dt.clear();
-                                            //   cartTotal = 0.0;
-                                            //   setState(() {});
-                                            // } else {
-                                            //  cart.removeWhere((item) => item.id == cart[index].id);
-                                            //   cartTotal = getItemTotal(cart);
-                                            //   setState(() {});
-                                            // }
-                                            // sum = sum-1;
-                                          },
-                                          child: Container(
-                                            height: 25,
-                                            width: 25,
-                                            margin:
-                                            EdgeInsets.only( right: 5),
-                                            decoration: BoxDecoration(
-                                              color: bgColor,),
-                                            child: Icon(
-                                              Icons.remove,
-                                              color: Colors.white,
-                                              size: 16,
-                                            ),
-                                          )),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Divider(
-                              thickness: 2,
-                              color: Colors.black12,
-                            )
-                          ],
+                        return CartDrawerWidget(
+                          isFirst: index==0?true:false,
+                          cont: cont[index],
+                          focus:focusNodes[index],
+                          show: visibility[index],
+                          textTap: (){
+                            visibility[index]=true;
+                            setState(() {});
+                          },
+                          onChange: (value){
+                            // cont[index].text=value;
+                          },
+                          onSubmit: (value){
+                            cont[index].text=value;
+                          },
+                          iconTap: (){
+                            cart[index].qty=int.parse(cont[index].text);
+                            visibility[index]=false;
+                            cartTotal = getItemTotal(cart);
+                            setState(() {});
+                          },
+                          deleteTap: (){
+                            if (sum == 1) {
+                              cart.clear();
+                              dt.clear();
+                              cartTotal = 0.0;
+                              sum=0;
+                              setState(() {});
+                            } else {
+                              cart.removeWhere((item) => item.id == cart[index].id);
+                              cartTotal = getItemTotal(cart);
+                              sum=sum-1;
+                              if(cart.length==0){
+                                sum=0;
+                              }
+                              setState(() {});
+                            }
+                          },
+                          cartModel: cart[index],
+                          subTap:(){
+                            cart[index].qty--;
+                            cartTotal = getItemTotal(cart);
+                            setState(() {});
+                          },
+                          addTap: (){
+                            cart[index].qty++;
+                            cartTotal = getItemTotal(cart);
+                            setState(() {});
+                          },
                         );
                       }),
-
                 ],
               )
-                ),
+          ),
         ),
       ),
     );
   }
 
   _saveOrder() async {
+    print(cargoSelect);
     bool res =
-        await SaveOrderServices().SaveOrder(context: context, list: cart);
+        await SaveOrderServices().SaveOrder(context: context, list: cart,wearHouseId: selectedWearHouse!,cargoId: selectedShipment??0,value: cargoSelect);
     if (res == true) {
-      cart.clear();
-      dt.clear();
-      sum = 0;
+      clearCart();
       NavigationServices.goNextAndDoNotKeepHistory(
           context: context,
           widget: BookSuccess(
@@ -769,42 +595,6 @@ getShipment(int wearHouseId)async{
     }
   }
 
-  //Functions for drwawer
-  //
-  // incrementCounterCart(int i) {
-  //   sum = sum + 1;
-  //   cart[i].qty++;
-  //   dt.forEach((element) {
-  //     if (element.itemId == cart[i].id) {
-  //       dt[i].qty = dt[i].qty! + 1;
-  //     }
-  //   });
-  //   cartTotal = getItemTotal(cart);
-  // }
-
-  getCartItemTotal(CartModel items) {
-    print("getCartItemTotal");
-    double sum = 0;
-    double dicount = (items.unitprice * items.discount / 100) * items.qty;
-    double total = (items.unitprice * items.qty);
-    sum = total - dicount;
-    return sum;
-  }
-
-  // decrementCounterCart(int i) {
-  //   sum = sum - 1;
-  //   if (cart[i].qty <= 1) {
-  //     cart.removeWhere((item) => item.id == cart[i].id);
-  //   } else {
-  //     cart[i].qty--;
-  //     dt.forEach((element) {
-  //       if (element.itemId == cart[i].id) {
-  //         dt[i].qty = dt[i].qty! - 1;
-  //       }
-  //     });
-  //   }
-  //   cartTotal = getItemTotal(cart);
-  // }
 
   getItemTotal(List<CartModel> items) {
     double sum = 0.0;
@@ -814,5 +604,11 @@ getShipment(int wearHouseId)async{
       sum += total - dicount;
     });
     return sum;
+  }
+
+  void clearCart() {
+    sum = 0;
+    cart.clear();
+    dt.clear();
   }
 }

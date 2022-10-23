@@ -44,9 +44,10 @@ class _OrderLogScreenState extends State<OrderLogScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 0.0,
           backgroundColor: bgColor,
           title: Text(
-            "OrderDetails",
+            "Order Tracking",
             style: TextStyle(color: Colors.white),
           ),
           leading: IconButton(

@@ -13,11 +13,14 @@ import '../model/save_order_model.dart';
 
 
 class SaveOrderServices{
-  Future<bool> SaveOrder({required BuildContext context,required List<CartModel> list})async{
+  Future<bool> SaveOrder({required BuildContext context,required bool value,required int wearHouseId, int? cargoId,required List<CartModel> list})async{
     try{
       Map _body={
         "orders": list,
+        "warehouseId": wearHouseId,
+        "cargoId": value?cargoId:null,
       };
+      print(_body);
       var res=await PostRequestService().httpPostRequest(url: saveOrderUrl, body: _body, context: context);
       if(res!=null){
         OrderSaveModel orderSave=OrderSaveModel.fromJson(res);

@@ -13,6 +13,35 @@ class Methods{
     return outputFormat.format(inputDate);
   }
 
+  String getDate(date) {
+    var inputFormat = DateFormat('yyyy-MM-dd');
+    var inputDate = inputFormat.parse(date);
+    DateTime dates = DateTime.parse(date);
+    return "${DateFormat.yMMMd().format(dates)}"+" ${DateFormat.jm().format(dates)}";
+    // "   ${DateFormat.jm().format()}";
+  }
+    incrementDate(date) {
+    var inputFormat = DateFormat('yyyy-MM-dd');
+    var inputDate = inputFormat.parse(date+5);
+    DateTime dates = DateTime.parse(date);
+    int day=dates.day;
+    String month = DateFormat('MMMM').format(dates);
+    print(day);
+    print(month);
+
+    // "   ${DateFormat.jm().format()}";
+  }
+  String getTime({String separator = ":"}) {
+    int day = 0;
+    int year = 0;
+    String seperator = ', ';
+    DateTime now = DateTime.now();
+    day = now.day + 5;
+    year = now.year;
+    String month = DateFormat('MMMM').format(now);
+    return month + " " + day.toString();
+  }
+
   // Future<bool?> popDialog() async {
   //   return await showCupertinoModalPopup(
   //       context: context,

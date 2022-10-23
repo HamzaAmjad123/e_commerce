@@ -2,23 +2,16 @@ import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
-import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/helper_widgets/custom_button.dart';
-import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
-import 'package:e_commerce/provider/dealer_history_provider.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
 import 'package:e_commerce/service/cash_book_service.dart';
 import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../model/cash_book_model.dart';
-import '../../../model/dealer_orders_model.dart';
 import '../../../provider/cash_book_provider.dart';
-import '../../../service/dealer_history_service.dart';
 import '../../helper_classes/pdf_service.dart';
-import 'order_details_screen.dart';
 
 class ApprovedOrdersScreen extends StatefulWidget {
   const ApprovedOrdersScreen({Key? key}) : super(key: key);

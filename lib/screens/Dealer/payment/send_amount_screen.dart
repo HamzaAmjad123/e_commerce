@@ -65,10 +65,9 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(80.0),
             child: AppBar(
-              leading: Padding(
-                padding: const EdgeInsets.symmetric(vertical:15.0,horizontal: 22.0),
-                child: Icon(Icons.arrow_back_sharp,color: whiteColor,),
-              ),
+             iconTheme: IconThemeData(
+               color: whiteColor
+             ),
               centerTitle: true,
               title: Text("Send Credit",style: barStyle,),
               elevation: 0.0,

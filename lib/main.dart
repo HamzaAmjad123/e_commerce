@@ -1,5 +1,6 @@
 import 'package:e_commerce/provider/Rider_providers/rider_history_provider.dart';
 import 'package:e_commerce/provider/Rider_providers/rider_orders_provider.dart';
+import 'package:e_commerce/provider/class_provider.dart';
 import 'package:e_commerce/provider/dealer_history_provider.dart';
 import 'package:e_commerce/provider/cash_book_provider.dart';
 import 'package:e_commerce/provider/category_provider.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>HomeDashboardProvider()),
         ChangeNotifierProvider(create: (context)=>WearHouseProvider()),
         ChangeNotifierProvider(create: (context)=>WearHouseShipmentProvider()),
+        ChangeNotifierProvider(create: (context)=>ClassesProvider()),
         //Rider Provider
         ChangeNotifierProvider(create: (context)=>RiderHistoryProvider()),
         ChangeNotifierProvider(create: (context)=>RiderApprovesOrdersProvider())
