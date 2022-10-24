@@ -33,6 +33,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   late double height;
   late double width;
   bool cargoSelect=false;
+  List<Items>? items_list=[];
   int sum = 0;
   GlobalKey<ScaffoldState> key = GlobalKey();
   final cart = CartModel.d1();
@@ -105,6 +106,8 @@ getShipment(int wearHouseId)async{
         warehouseId: wearHouseId,
         classId: classId
     );
+    items_list=Provider.of<ItemsProvider>(context,listen: false).itemsList;
+    setState(() {});
     CustomLoader.hideLoader(context);
   }
   getItems(int wearHouseId)async{
@@ -129,7 +132,9 @@ getShipment(int wearHouseId)async{
     super.initState();
   }
 
-int selectedClassColor=0;
+
+
+int selectedClassColor=-1;
 
   @override
   Widget build(BuildContext context) {
@@ -219,13 +224,10 @@ int selectedClassColor=0;
                           if(selectedShipment==null)
                           {
                             getShipment(item.warehouseId!);
-                            // _getAllItems(item.warehouseId!,0);
-
                           }
                           else{
                             selectedShipment=null;
                             getShipment(item.warehouseId!);
-                            // _getAllItems(item.warehouseId!,0);
                           }
                         }
                         }).toList();
@@ -298,6 +300,7 @@ int selectedClassColor=0;
                                 itemBuilder: (context,index){
                                   return InkWell(
                                     onTap: ()async{
+                                      items_list=[];
                                       _getAllItems(selectedWearHouse!,classes.myClass![index].levelId!);
                                       selectedClassColor=index;
                                       setState(() {
@@ -331,15 +334,9 @@ int selectedClassColor=0;
 
               ],
             ),
-
-
               if(shipment==true)
-              Consumer<ItemsProvider>(builder: (context, item, _) {
-                return item.itemsList!.length == 0
-                    ? Center(
-                        child: Text("No Item Found"),
-                      )
-                    : Expanded(
+                selectedClassColor<0?Center(child: Text("Select Class for Items")):items_list!.length==0?Center(child: Text("No Items Availible")):
+                Expanded(
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 18.0),
                           //width:MediaQuery.of(context).size.width/2.3,
@@ -352,15 +349,15 @@ int selectedClassColor=0;
                                   crossAxisSpacing: 20,
                                   mainAxisSpacing: 20
                               ),
-                              itemCount: item.itemsList!.length,
+                              itemCount: items_list!.length,
                               itemBuilder:(context,index){
                                 return
                                   GenerateOrderWidget(
-                                    item: item.itemsList![index],
+                                    item: items_list![index],
                                     onTap: () async {
                                       await onTap(
                                         index,
-                                        item.itemsList![index],
+                                        items_list![index],
                                       );
                                       cartTotal = getItemTotal(cart);
                                       setState(() {});
@@ -368,8 +365,7 @@ int selectedClassColor=0;
                                   );
                               })
                         ),
-                      );
-              })
+                      ),
             ],
           ),
         ),
@@ -607,6 +603,7 @@ int selectedClassColor=0;
   }
 
   void clearCart() {
+    items_list=[];
     sum = 0;
     cart.clear();
     dt.clear();

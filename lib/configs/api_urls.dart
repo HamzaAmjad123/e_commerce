@@ -16,6 +16,7 @@ const String orderGetDetails=baseUrl + "Order/get";
 const String cashBookUrl=baseUrl + "Voucher/getDealerStatement";
 const String sendPaymentUrl=baseUrl + "Voucher/createVoucherLineByDealer";
 const  String dashboardUrl=baseUrl + "Dashboard/GetDataDashboard?";
+const String approvedOrderUrl=baseUrl+"Order/getApprovedOrdersList";
 
 // Urls For Rider
 const String riderApprovedOrdersurl=baseUrl + "Order/getApprovedOrdersListForRider";
