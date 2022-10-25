@@ -139,10 +139,10 @@ class Dealer {
   Null? email;
   Null? password;
   Null? role;
-  String? phoneNumber;
+  Null? phoneNumber;
   Null? about;
   Null? imageUrl;
-  String? name;
+  Null? name;
   Null? tenantId;
   Null? aqmId;
   Null? rmsId;
@@ -216,6 +216,7 @@ class Dealer {
     return data;
   }
 }
+
 class WearHouse {
   int? warehouseId;
   String? name;

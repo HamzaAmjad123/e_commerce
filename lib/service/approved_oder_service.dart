@@ -10,9 +10,9 @@ import '../model/approved_order_model.dart';
 import '../provider/approved_order_provider.dart';
 
 class  ApprovedOrderService{
-  Future getApprovedOrder({required BuildContext context,required int dealerId,required int skip,required int take})async{
+  Future getApprovedOrder({required BuildContext context,required String searchText,required int skip,required int take})async{
     try{
-      Map _body={"dealerId":dealerId,"skip":skip,"take":take};
+      Map _body={"searchText":searchText,"skip":skip,"take":take};
       var res=await PostRequestService().httpPostRequest(url: approvedOrderUrl, body: _body, context: context);
       if(res!=null){
         ApprovedOrderModel approvedOrder=ApprovedOrderModel.fromJson(res);

@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../helper_services/custom_loader.dart';
+import '../service/approved_oder_service.dart';
 import '../service/rider_services/rider_history_service.dart';
 import '../service/rider_services/rider_order_service.dart';
 
@@ -14,4 +15,10 @@ historyHandler(BuildContext context)async{
   CustomLoader.showLoader(context: context);
   await RiderHistoryService().getRiderHistoryList(skip: 0, take: 1000, context: context);
   CustomLoader.hideLoader(context);
+}
+getDealerApprovedOrderHandler(BuildContext context,String searchText) async {
+  CustomLoader.showLoader(context: context);
+  await ApprovedOrderService().getApprovedOrder(context: context, searchText: searchText, skip: 0, take: 1000);
+  CustomLoader.hideLoader(context);
+
 }

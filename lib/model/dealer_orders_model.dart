@@ -1,15 +1,15 @@
 class DealerOrdersModel {
   int? totalCount;
-  List<Result>? result;
+  List<OrderHistory>? result;
 
   DealerOrdersModel({this.totalCount, this.result});
 
   DealerOrdersModel.fromJson(Map<String, dynamic> json) {
     totalCount = json['totalCount'];
     if (json['result'] != null) {
-      result = <Result>[];
+      result = <OrderHistory>[];
       json['result'].forEach((v) {
-        result!.add(new Result.fromJson(v));
+        result!.add(new OrderHistory.fromJson(v));
       });
     }
   }
@@ -24,7 +24,7 @@ class DealerOrdersModel {
   }
 }
 
-class Result {
+class OrderHistory {
   int? orderId;
   String? orderNo;
   String? date;
@@ -40,7 +40,7 @@ class Result {
   Null? orderLines;
   bool? isVerifiedByGatePassUser;
 
-  Result(
+  OrderHistory(
       {this.orderId,
         this.orderNo,
         this.date,
@@ -56,7 +56,7 @@ class Result {
         this.orderLines,
         this.isVerifiedByGatePassUser});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  OrderHistory.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
     orderNo = json['orderNo'];
     date = json['date'];
