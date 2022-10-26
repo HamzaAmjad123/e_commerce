@@ -12,11 +12,12 @@ const String saveOrderUrl=baseUrl+"Order/save";
 const String orderListUrl=baseUrl + "Order/getList";
 const String getDealerHistoryUrl=baseUrl + "Order/getDealerOrderList";
 const String orderLogUrl=baseUrl + "Order/getOrderLogs";
-const String orderGetDetails=baseUrl + "Order/get";
+const String getOrerDetailsUrl=baseUrl + "Order/get";
 const String cashBookUrl=baseUrl + "Voucher/getDealerStatement";
 const String sendPaymentUrl=baseUrl + "Voucher/createVoucherLineByDealer";
 const  String dashboardUrl=baseUrl + "Dashboard/GetDataDashboard?";
 const String approvedOrderUrl=baseUrl+"Order/getDealerHistoryList";
+const String createObjUrl=baseUrl+"orderobjection/create";
 
 
 // Urls For Rider

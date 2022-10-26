@@ -13,7 +13,7 @@ class OrderViewService {
     try {
       Map _body = {"id": id,};
 
-      var res = await PostRequestService().httpPostRequest(url: orderGetDetails, body: _body, context: context);
+      var res = await PostRequestService().httpPostRequest(url: getOrerDetailsUrl, body: _body, context: context);
       if (res != null) {
         OrderDetailsModel orderDeatils=OrderDetailsModel.fromJson(res);
         print(res);

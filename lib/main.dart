@@ -11,6 +11,7 @@ import 'package:e_commerce/provider/level_provider.dart';
 import 'package:e_commerce/provider/order_getDeatils_provider.dart';
 import 'package:e_commerce/provider/order_list_provider.dart';
 import 'package:e_commerce/provider/order_log_provider.dart';
+import 'package:e_commerce/provider/order_objection_provider.dart';
 import 'package:e_commerce/provider/save_order_provider.dart';
 import 'package:e_commerce/provider/series_provider.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>WearHouseShipmentProvider()),
         ChangeNotifierProvider(create: (context)=>ClassesProvider()),
         ChangeNotifierProvider(create: (context)=>ApprovedOrderProvider()),
+        ChangeNotifierProvider(create: (context)=>OrderObjectionProvider()),
         //Rider Provider
         ChangeNotifierProvider(create: (context)=>RiderHistoryProvider()),
         ChangeNotifierProvider(create: (context)=>RiderApprovesOrdersProvider())
