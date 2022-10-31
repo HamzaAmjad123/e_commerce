@@ -11,12 +11,12 @@ class SendPaymentService {
       required String total,
       required int receivedType,
       required String details,
-      required int tenatId,
       required List<int> image,
       required String receiverName}) async {
       try{
-          Map _body={"total":total,"receivedType":receivedType,"amountReceivedDetail":details,"tenantId":tenatId,"images":image,"receiverDetail":receiverName};
 
+          Map _body={"total":total,"paymentMethodId":receivedType,"amountReceivedDetail":details,"images":image,"receiverDetail":receiverName,"voucherId":0};
+          print(_body);
           var res=await PostRequestService().httpPostRequest(url: sendPaymentUrl, body: _body, context: context);
           if(res !=null){
               print("Payment send successfully");

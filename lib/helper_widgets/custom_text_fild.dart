@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onSubmit;
   final bool obScureText;
   final bool shape;
+  final double? height;
   final String? hintText;
   final String? labelText;
   final IconData? suffixIcon;
@@ -22,6 +23,7 @@ class CustomTextField extends StatelessWidget {
 
   CustomTextField(
       {this.headerText,
+        this.height=45,
       this.controller,
       this.focusNode,
       this.inputType,

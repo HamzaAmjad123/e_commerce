@@ -248,11 +248,13 @@ class Warehouse {
 class ObjectionOrderLines {
   int? orderLineId;
   int? quantity;
+  int? receivedQuantity;
   double? unitPrice;
   double? descountPrice;
   int? type;
   double? totalAmount;
   int? itemId;
+  int? objectionId=0;
   Item? item;
   int? orderId;
   int? tenantId;
@@ -267,7 +269,10 @@ class ObjectionOrderLines {
         this.itemId,
         this.item,
         this.orderId,
-        this.tenantId});
+        this.tenantId,
+      this.objectionId,
+        this.receivedQuantity
+      });
 
   ObjectionOrderLines.fromJson(Map<String, dynamic> json) {
     orderLineId = json['orderLineId'];
@@ -285,7 +290,7 @@ class ObjectionOrderLines {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['orderLineId'] = this.orderLineId;
-    data['quantity'] = this.quantity;
+    data['expectedQuantity'] = this.quantity;
     data['unitPrice'] = this.unitPrice;
     data['descountPrice'] = this.descountPrice;
     data['type'] = this.type;
@@ -296,6 +301,8 @@ class ObjectionOrderLines {
     }
     data['orderId'] = this.orderId;
     data['tenantId'] = this.tenantId;
+    data['orderObjectionId']=0;
+    data['receivedQuantity']=this.receivedQuantity;
     return data;
   }
 }

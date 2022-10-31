@@ -36,13 +36,62 @@ class PostRequestService {
       var jsonDecoded = json.decode(response.body);
       // if(jsonDecoded ==null || jsonDecoded['status'] != 200){
       if (jsonDecoded == null) {
-        CustomSnackBar.failedSnackBar(
-            context: context, message: jsonDecoded['title']);
+        // CustomSnackBar.failedSnackBar(
+        //     context: context, message: jsonDecoded['Message']);
         return null;
       } else {
+        // CustomSnackBar.showSnackBar(
+        //     context: context, message: jsonDecoded['Message']);
         return jsonDecoded;
       }
     } catch (err) {
+
+      print("exception in post request service $err");
+      CustomSnackBar.failedSnackBar(
+          context: context, message: "Exception==========> $err");
+      return null;
+    }
+  }
+}
+class PostRequestService1{
+  Future httpPostRequest(
+      {required String url,
+        required Map body,
+        required BuildContext context}) async {
+    print("post request url $url");
+    try {
+      late var headers;
+      if (url == "https://pos.impliessolutions.com/api/Authenticate/login") {
+        headers = {
+          "Content-Type": "application/json; charset=utf-8",
+        };
+      } else {
+        String token = await LocalStorageServices().getToken();
+        headers = {
+          "Content-Type": "application/json; charset=utf-8",
+          "authorization": "Bearer $token"
+        };
+      }
+      print("bbbbbbbbbbbbbbbbbbbbbbodddddddddddddddddddddyyyyyyyyyy");
+      print(json.encode(body));
+      http.Response response = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: headers);
+
+      print("post request status code ${response.statusCode}");
+      log("post request body ${response.body}");
+      var jsonDecoded = json.decode(response.body);
+      // if(jsonDecoded ==null || jsonDecoded['status'] != 200){
+      if (jsonDecoded == null) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: jsonDecoded['Message']);
+        return null;
+      } else {
+        CustomSnackBar.showSnackBar(
+            context: context, message: jsonDecoded['Message']);
+        return jsonDecoded;
+      }
+    } catch (err) {
+
       print("exception in post request service $err");
       CustomSnackBar.failedSnackBar(
           context: context, message: "Exception==========> $err");

@@ -45,8 +45,8 @@ class GenerateOrderWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     ClipRRect(
-
-                        child: Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
+                         child: Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
+                       // child: Image.network(item.image!=null?"https://pos.impliessolutions.com/${item.image}":"assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(8.0),
                       topLeft: Radius.circular(8.0)
@@ -68,17 +68,18 @@ class GenerateOrderWidget extends StatelessWidget {
                         ],
                       )
                     ),
-                    Container(
-                      padding: EdgeInsets.only(left: 2.0,right: 2.0,top: 2.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Add To Cart",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
-                          InkWell(
-                              onTap: onTap,
-                              child: Icon(Icons.add,color: Colors.green,)),
-                        ],
+                    InkWell(
+                      onTap: onTap,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 2.0,right: 2.0,top: 2.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("Add To Cart",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),
+                            Icon(Icons.add,color: Colors.green,),
+                          ],
+                        ),
                       ),
                     )
                   ],

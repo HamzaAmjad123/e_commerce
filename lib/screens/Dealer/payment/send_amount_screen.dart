@@ -35,7 +35,7 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
       "name":"cash"
     },
     {
-      "id":10,
+      "id":2,
       "name":"other"
     }
   ];
@@ -48,7 +48,7 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
 
   _sendPaymentHandler()async{
     CustomLoader.showLoader(context: context);
-    await SendPaymentService().sendPayment(context: context, total: _amountCont.text, receivedType: selectedAmount!, details: _detailsCont.text, tenatId: 0, image: Bytes, receiverName: _nameCont.text);
+    await SendPaymentService().sendPayment(context: context, total: _amountCont.text, receivedType: selectedAmount!, details: _detailsCont.text, image: Bytes, receiverName: _nameCont.text);
     CustomLoader.hideLoader(context);
 
   }

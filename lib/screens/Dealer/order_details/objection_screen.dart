@@ -32,21 +32,19 @@ class _ObjectionScreenState extends State<ObjectionScreen> {
 
     });
   }
-  List<String>temp=[];
+
+
 
   int ?itemId;
-  // _createObjectionHandler() async {
-  //   CustomLoader.showLoader(context: context);
-  //   await CreateObjectionService().createObjection(context: context,
-  //       orderId: widget.orderId,
-  //       objDetails: _objDetailsCont.toString(),
-  //       orderObjId: 0,
-  //       expectedQnt:Provider.of<OrderObjectionProvider>(context,listen: false).orderObjection!.orderLines![0].quantity!,
-  //       receivedQnt: temp??Provider.of<OrderObjectionProvider>(context,listen: false).orderObjection!.orderLines![index].itemId.toString(),
-  //       itemId: Provider.of<OrderObjectionProvider>(context,listen: false).orderObjection!.orderLines![0].itemId!
-  //   );
-  //   CustomLoader.hideLoader(context);
-  // }
+  _createObjectionHandler(List<ObjectionOrderLines>?objections) async {
+    CustomLoader.showLoader(context: context);
+    await CreateObjectionService().createObjection(context: context,
+        orderId: widget.orderId,
+        objDetails: _objDetailsCont.text, orderItems: objections!,
+
+    );
+    CustomLoader.hideLoader(context);
+  }
 
   @override
   void initState() {
@@ -112,50 +110,65 @@ class _ObjectionScreenState extends State<ObjectionScreen> {
                   SizedBox(height: 10.0,),
 
               Consumer<OrderObjectionProvider>(builder: (context,obj,_){
-                return obj.orderObjection!=null?ListView.builder(
-                    itemCount: obj.orderObjection!.orderLines!.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    primary: false,
-                    itemBuilder: (BuildContext, index) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                return obj.orderObjection!=null?
+                Column(
+                  children: [
+                    ListView.builder(
+                        itemCount: obj.orderObjection!.orderLines!.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        primary: false,
+                        itemBuilder: (BuildContext, index) {
 
-                          Expanded(child: Text(
-                              "${obj.orderObjection!.orderLines![index]
-                                  .item!.name}")),
-                          Expanded(child: Text(
-                              "${obj.orderObjection!.orderLines![index]
-                                  .totalAmount}")),
-                          Expanded(child: Text(
-                              "${obj.orderObjection!.orderLines![index]
-                                  .quantity}")),
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
 
-                          Expanded(
-                            child: Container(
-                              height: 20.0,
-                              width: 30.0,
+                              Expanded(child: Text(
+                                  "${obj.orderObjection!.orderLines![index]
+                                      .item!.name}")),
+                              Expanded(child: Text(
+                                  "${obj.orderObjection!.orderLines![index]
+                                      .totalAmount}")),
+                              Expanded(child: Text(
+                                  "${obj.orderObjection!.orderLines![index].quantity}")),
 
-                              child: TextFormField(
-                                // initialValue: widget.expectedQuantity!,
-                                onChanged: (value){
-                                  temp[index]=value;
-                                },
-                                initialValue: "${obj.orderObjection!.orderLines![index].quantity}",
+                              Expanded(
+                                child: Container(
+                                  height: 20.0,
+                                  width: 30.0,
+
+                                  child: TextField(
+                          keyboardType:TextInputType.number,
+                                    // initialValue: widget.expectedQuantity!,
+                                    onChanged: (value){
+                                      obj.orderObjection!.orderLines![index].receivedQuantity=int.parse(value);
+                                    },
+
+                                    // initialValue: "${obj.orderObjection!.orderLines![index].quantity}",
 
 
-                                decoration: InputDecoration(
+                                    decoration: InputDecoration(
 
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }) : Container(
+                            ],
+                          );
+                        }),
+                    CustomButton(
+                      text: "Create",
+                      onTap: (){
+                        _createObjectionHandler(
+                          obj.orderObjection!.orderLines!
+                        );
+                      },
+                    )
+                  ],
+                ) : Container(
                   child: Text("No Objection Against this order"),
                 );
               }),
@@ -164,13 +177,7 @@ class _ObjectionScreenState extends State<ObjectionScreen> {
                     headerText: "Comment",
                     controller: _objDetailsCont,
                   ),
-                  CustomButton(
-                    text: "Create",
-                    onTap: (){
 
-                      // _createObjectionHandler();
-                    },
-                  )
                 ],
               ),
             ),
