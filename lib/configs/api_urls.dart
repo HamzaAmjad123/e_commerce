@@ -18,6 +18,7 @@ const String sendPaymentUrl=baseUrl + "Voucher/createVoucherLineByDealer";
 const  String dashboardUrl=baseUrl + "Dashboard/GetDataDashboard?";
 const String approvedOrderUrl=baseUrl+"Order/getDealerHistoryList";
 const String createObjUrl=baseUrl+"orderobjection/create";
+const String selectAmountUrl=baseUrl + "PaymentMethod/getList";
 
 
 // Urls For Rider
