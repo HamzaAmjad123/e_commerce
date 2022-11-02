@@ -259,6 +259,7 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
             if(validation()){
               await _convertImageIntoBytes();
               await _sendPaymentHandler();
+              Navigator.pop(context);
             }
           },
         ),

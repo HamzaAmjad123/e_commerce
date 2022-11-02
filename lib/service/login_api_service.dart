@@ -8,7 +8,6 @@ import 'package:e_commerce/provider/user_data_provider.dart';
 import 'package:e_commerce/service/local_storage_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class LoginApiService {
@@ -25,6 +24,7 @@ class LoginApiService {
         Provider.of<UserDataProvider>(context, listen: false)
             .updateUserData(newUser: user);
         LocalStorageServices().saveToken("${user.token}");
+        LocalStorageServices().saveUser(true);
         final box = GetStorage();
         box.write('user', user.user!.toJson());
 

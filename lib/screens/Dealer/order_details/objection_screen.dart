@@ -134,7 +134,6 @@ class _ObjectionScreenState extends State<ObjectionScreen> {
                                       .totalAmount}")),
                               Expanded(child: Text(
                                   "${obj.orderObjection!.orderLines![index].quantity}")),
-
                               Expanded(
                                 child: Container(
                                   height: 20.0,

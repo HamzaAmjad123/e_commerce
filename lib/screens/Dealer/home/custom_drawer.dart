@@ -5,12 +5,14 @@ import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
 import 'package:e_commerce/screens/Dealer/home/dashboard_screen.dart';
 import 'package:e_commerce/screens/Auth/login_screen.dart';
+import 'package:e_commerce/screens/Dealer/home/dashboard_screens/approved_orders.dart';
 import 'package:e_commerce/screens/Dealer/payment/send_amount_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../../../helper_widgets/drawer_item_card.dart';
 import '../../../model/user_model.dart';
+import '../../../service/local_storage_service.dart';
 import '../generate_order/generate_order_screen.dart';
 import '../order_details/pending_orders_screen.dart';
 
@@ -27,9 +29,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
     final box = GetStorage();
     String role=Provider.of<UserDataProvider>(context, listen: false).user!.userRoles![0];
     UserModel usermodels = UserModel.fromJson(box.read('user'));
-
-
-
     return Drawer(
       child: ListView(children: [
         Container(
@@ -83,7 +82,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               icon: Icons.home_outlined,
               text: "Home",
               onTap: () {
-                Navigator.of(context);
+                Navigator.pop(context);
                 NavigationServices.goNextAndDoNotKeepHistory(
                     context: context,
                     widget: DashBoardScreen(
@@ -99,7 +98,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               icon: Icons.folder_special_outlined,
               text: " Generate Order",
               onTap: () {
-                Navigator.of(context);
+                Navigator.pop(context);
                 NavigationServices.goNextAndKeepHistory(
                     context: context, widget: GenerateOrderScreen());
                 setState(() {});
@@ -109,8 +108,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
               icon: Icons.assignment_outlined,
               text: "Pending Orders",
               onTap: () {
+                Navigator.pop(context);
                 NavigationServices.goNextAndKeepHistory(
                     context: context, widget: PendingOrdersScreen());
+                setState(() {});
+              },
+            ),
+            DrawerLinkWidget(
+              icon: Icons.assignment_turned_in,
+              text: "Approved Orders",
+              onTap: () {
+                Navigator.pop(context);
+                NavigationServices.goNextAndKeepHistory(
+                    context: context, widget:ApprovedOrdersScreen());
                 setState(() {});
               },
             ),
@@ -120,10 +130,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
           icon: Icons.account_balance_wallet_outlined,
           text: "Send Cash",
           onTap: () {
-            role=="Dealer"?
-                NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen()):
-                print("noithing");
-
+            if(role=="Dealer"){
+              Navigator.pop(context);
+              NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen());
+            }else{
+              print("noithing");
+            }
           },
         ),
         Container(
@@ -137,8 +149,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
           isLogout: true,
           text: "Logout",
           onTap: () async {
-            Navigator.of(context);
+            Navigator.pop(context);
             await box.remove('user');
+            // await LocalStorageServices().saveUser(false);
             NavigationServices.goNextAndDoNotKeepHistory(
                 context: context, widget: LoginScreen());
           },

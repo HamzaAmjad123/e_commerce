@@ -52,6 +52,7 @@ dependencies:
 #  open_document: ^1.0.5
   flutter_image_compress: ^1.1.2
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
