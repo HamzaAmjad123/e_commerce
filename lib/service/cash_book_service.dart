@@ -7,12 +7,17 @@ import '../helper_services/custom_post_request_service.dart';
 import '../model/cash_book_model.dart';
 
 class CashBookService {
-  Future getCashBook({required BuildContext context, required int skip,required int take, required int tenantId}) async {
+  Future getCashBook({required BuildContext context, required int skip,required int take,required String searchText,required String toDate,required String formDate}) async {
+    print("searchText   $searchText");
+    print("start   $toDate");
+    print("last   $formDate");
     try {
       Map _body = {
         "skip":skip,
         "take": take,
-        "tenantId":tenantId
+        "searchText":searchText,
+        "toDate":toDate,
+        "fromDate":formDate
       };
 
       var res = await PostRequestService().httpPostRequest(url: cashBookUrl, body: _body, context: context);

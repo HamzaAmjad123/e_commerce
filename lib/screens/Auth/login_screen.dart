@@ -49,8 +49,8 @@ class SigInWidget extends StatefulWidget {
 }
 
 class _SigInWidgetState extends State<SigInWidget> {
-  TextEditingController _userCont = TextEditingController(text: "dealer");
-  TextEditingController _passwordCont = TextEditingController(text: "dealer");
+  TextEditingController _userCont = TextEditingController();
+  TextEditingController _passwordCont = TextEditingController();
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String selectedRadio = '';

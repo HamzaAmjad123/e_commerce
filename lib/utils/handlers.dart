@@ -16,9 +16,9 @@ historyHandler(BuildContext context)async{
   await RiderHistoryService().getRiderHistoryList(skip: 0, take: 1000, context: context);
   CustomLoader.hideLoader(context);
 }
-getDealerApprovedOrderHandler(BuildContext context,String searchText) async {
+getDealerApprovedOrderHandler(BuildContext context,String searchText,String toDate,String formDate) async {
   CustomLoader.showLoader(context: context);
-  await ApprovedOrderService().getApprovedOrder(context: context, searchText: searchText, skip: 0, take: 1000);
+  await ApprovedOrderService().getApprovedOrder(context: context, searchText: searchText,toDate: toDate,formDate: formDate, skip: 0, take: 1000);
   CustomLoader.hideLoader(context);
 
 }

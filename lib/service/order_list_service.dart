@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class OrderListService{
-  Future getOrderList({required int skip,required int take,required int tenatId,required BuildContext context})async{
+  Future getOrderList({required int skip,required int take,required int tenatId,required BuildContext context,required String searchText,required String fromDate,required String  toDate})async{
    try{
-     Map _body={"skip":skip,"take":take,"tenantId":tenatId};
+     Map _body={"skip":skip,"take":take,"tenantId":tenatId,"searchText":searchText,"fromDate":fromDate,"toDate":toDate};
 
      var res=await PostRequestService().httpPostRequest(url:orderListUrl , body: _body, context: context);
      if(res !=null){

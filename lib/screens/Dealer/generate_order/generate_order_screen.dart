@@ -387,8 +387,8 @@ int selectedClassColor=-1;
           select = true;
         } else if (last == element.id && !select) {
           sum = sum + 1;
-          temporary_list.add(new CartModel(
-            "assets/images/book.jpg",
+          temporary_list.add(CartModel(
+            items.image!,
               items.unitDiscountPercentage!,
               items.unitPrice!,
               items.name!,
@@ -399,8 +399,10 @@ int selectedClassColor=-1;
       ;
     } else {
       sum = sum + 1;
-      temporary_list.add(new CartModel(
-          "assets/images/book.jpg",
+      temporary_list.add(CartModel(
+        // items.image!,
+        ///Ask bY hAMZA
+          items.image==null?"Resources/Items/Images/e8e06423-ddab-484e-be81-e852826d02a8-2-1.png":"${items.image!}",
           items.unitDiscountPercentage!,
           items.unitPrice!,
           items.name!,
@@ -511,8 +513,8 @@ int selectedClassColor=-1;
                       shrinkWrap: true,
                       primary: false,
                       itemBuilder: (context, index) {
-                        cont.add(new TextEditingController());
-                        focusNodes.add(new FocusNode());
+                        cont.add(TextEditingController());
+                        focusNodes.add(FocusNode());
                         if (visibility.length < cart.length) {
                           visibility.add(false);
                         }

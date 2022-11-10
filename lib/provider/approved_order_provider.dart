@@ -1,11 +1,10 @@
 
 import 'package:flutter/cupertino.dart';
-
-import '../model/approved_order_model.dart';
+import '../model/order_list_model.dart';
 
 class ApprovedOrderProvider extends ChangeNotifier{
-  List<ApprovedOrder>? approvedOrder=[];
-  updateApprovedOrder({ List<ApprovedOrder>? newOrder}){
+  List<OrderList>? approvedOrder=[];
+  updateApprovedOrder({ List<OrderList>? newOrder}){
     approvedOrder=newOrder;
     notifyListeners();
   }

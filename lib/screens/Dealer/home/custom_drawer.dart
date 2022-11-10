@@ -110,17 +110,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               onTap: () {
                 Navigator.pop(context);
                 NavigationServices.goNextAndKeepHistory(
-                    context: context, widget: PendingOrdersScreen());
-                setState(() {});
-              },
-            ),
-            DrawerLinkWidget(
-              icon: Icons.assignment_turned_in,
-              text: "Approved Orders",
-              onTap: () {
-                Navigator.pop(context);
-                NavigationServices.goNextAndKeepHistory(
-                    context: context, widget:ApprovedOrdersScreen());
+                    context: context, widget: PreviousOrdersScreen());
                 setState(() {});
               },
             ),

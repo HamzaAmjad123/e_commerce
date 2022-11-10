@@ -7,9 +7,9 @@ import '../model/dealer_orders_model.dart';
 import '../model/order_list_model.dart';
 
 class DealerHistoryService{
-  Future getDelaerHistory({required int skip,required int take,required int tenatId,required int dealerid,required BuildContext context})async{
+  Future getDelaerHistory({required int skip,required int take,required BuildContext context,required String formDate,required String toDate,required String searchText})async{
     try{
-      Map _body={"skip":skip,"take":take,"tenantId":tenatId,"dealerId":dealerid};
+      Map _body={"skip":skip,"take":take,"fromDate":formDate,"toDate":toDate,"searchText":searchText};
 
       var res=await PostRequestService().httpPostRequest(url: getDealerHistoryUrl, body: _body, context: context);
       if(res !=null){

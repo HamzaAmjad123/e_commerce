@@ -12,9 +12,5 @@ class UserDataProvider extends ChangeNotifier{
   updateUserData({UserResponseModel? newUser})async{
     user=newUser;
     notifyListeners();
-    // print(user);
-    // box.write('user', user!.toJson());
-    // print("jskadhhdhdsgfhdsjkgsdfhgdskjgdshfkjdsghdshkjgsdfgdshkfjds");
-    // print(box.read('user'));
   }
 }

@@ -2,7 +2,7 @@ class CartModel {
   int discount;
   double unitprice;
   String name;
-  String image;
+  String? image;
   int id;
   int qty = 0;
   CartModel(

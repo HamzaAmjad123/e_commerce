@@ -25,19 +25,20 @@ class OrderHistoryScreen extends StatefulWidget {
 
 class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   
-  _orderHistoryHandler()async{
+  _orderSearchHistoryHandler()async{
     CustomLoader.showLoader(context: context);
-    await DealerHistoryService().getDelaerHistory(skip: 0, take: 1000, tenatId: 1, dealerid: 4, context: context);
+    await DealerHistoryService().getDelaerHistory(skip: 0, take: 1000,searchText: _searchCont.text??"",toDate: "",formDate: "", context: context);
     CustomLoader.hideLoader(context);
   }
   @override
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _orderHistoryHandler();
+      _orderSearchHistoryHandler();
     });
     super.initState();
   }
+  TextEditingController _searchCont=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,10 +66,12 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 //   color: Colors.white,
                 // ),
                 child: TextField(
+                  controller: _searchCont,
                   onSubmitted: (value){
-
+                    _orderSearchHistoryHandler();
                   },
                   decoration: InputDecoration(
+
                       fillColor: whiteColor,
                       filled: true,
                       hintText: "Search",

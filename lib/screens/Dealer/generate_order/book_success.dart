@@ -19,7 +19,7 @@ class _BookSuccessState extends State<BookSuccess> {
       Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute<void>(
-          builder: (BuildContext context) =>  PendingOrdersScreen(),
+          builder: (BuildContext context) =>  PreviousOrdersScreen(),
         ),
       );
     });

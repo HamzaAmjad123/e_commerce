@@ -9,12 +9,14 @@ import '../model/home_dashboard_model.dart';
 import '../provider/home_dashboard_provider.dart';
 
 class HomeDashboardService{
-  Future getDashboardData({required BuildContext context,required  int dealerId})async{
+  Future getDashboardData({required BuildContext context})async{
     try{
 
-      var res=await PostRequestService().httpPostRequest(url: dashboardUrl+"DealerId=$dealerId", body: {}, context: context);
+
+      var res=await PostRequestService().httpPostRequest(url: dashboardUrl, body: {}, context: context);
       if(res!=null){
         HomeDashboardModel dashboardModel=HomeDashboardModel.fromJson(res);
+        // print("1 thing  ${dashboardModel.totalPendingOrders}");
         Provider.of<HomeDashboardProvider>(context,listen: false).updateDashboard(
           newDashboard: dashboardModel
         );

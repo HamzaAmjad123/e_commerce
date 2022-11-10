@@ -20,9 +20,11 @@ class LoginApiService {
       var res = await PostRequestService()
           .httpPostRequest(url: loginUrl, body: _body, context: context);
       if (res != null) {
+        print("Inside");
         UserResponseModel user = UserResponseModel.fromJson(res);
         Provider.of<UserDataProvider>(context, listen: false)
             .updateUserData(newUser: user);
+
         LocalStorageServices().saveToken("${user.token}");
         LocalStorageServices().saveUser(true);
         final box = GetStorage();
