@@ -110,101 +110,103 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
           ),
         ),
       bottomSheet: _showBottomSheet(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
 
 
-            Center(
-              child: Card(
-                color: whiteColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                elevation: 8.0,
-                margin: EdgeInsets.symmetric(vertical: 15.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: MediaQuery.of(context).size.height/7.5,
-                  width: MediaQuery.of(context).size.width/1.5,
+              Center(
+                child: Card(
+                  color: whiteColor,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                  elevation: 8.0,
+                  margin: EdgeInsets.symmetric(vertical: 15.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.height/7.5,
+                    width: MediaQuery.of(context).size.width/1.5,
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Order No :", style:creditStyle),
-                      SizedBox(width: 12.0,),
-                      Text(widget.orderNo,style: cashStyle,),
-                    ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("Order No :", style:creditStyle),
+                        SizedBox(width: 12.0,),
+                        Text(widget.orderNo,style: cashStyle,),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Center(
-              child: Card(
-                color: whiteColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                elevation: 8.0,
-                margin: EdgeInsets.only(bottom: 15.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: MediaQuery.of(context).size.height/7.5,
-                  width: MediaQuery.of(context).size.width/1.5,
+              Center(
+                child: Card(
+                  color: whiteColor,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                  elevation: 8.0,
+                  margin: EdgeInsets.only(bottom: 15.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.height/7.5,
+                    width: MediaQuery.of(context).size.width/1.5,
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("No Of Bags :", style:creditStyle),
-                      SizedBox(width: 12.0,),
-                      Text(widget.noOfBags.toString(),style: cashStyle,),
-                    ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("No Of Bags :", style:creditStyle),
+                        SizedBox(width: 12.0,),
+                        Text(widget.noOfBags.toString(),style: cashStyle,),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            CustomTextField(
-              labelText: "Other Details",
-              shape: true,
-              controller: _detailsCont,
-              focusNode: _detailsFocus,
-            ),
+              CustomTextField(
+                labelText: "Other Details",
+                shape: true,
+                controller: _detailsCont,
+                focusNode: _detailsFocus,
+              ),
 
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 6.0,top: 8.8,bottom: 8.0,left:5.0),
-                  padding: EdgeInsets.symmetric(vertical: 4.0,horizontal: 4.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: lightBlackColor),
-                      borderRadius: BorderRadius.circular(8.0)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 6.0,top: 8.8,bottom: 8.0,left:5.0),
+                    padding: EdgeInsets.symmetric(vertical: 4.0,horizontal: 4.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: lightBlackColor),
+                        borderRadius: BorderRadius.circular(8.0)
+                    ),
+                    child: recipetImage != null
+                        ? Image.file(
+                            File(recipetImage!.path),
+                      height: 100.0,
+                      width: 150.0,
+                      fit: BoxFit.fill,
+                          )
+                        : Icon(
+                            Icons.camera_alt_sharp,
+
+                            color: blackColor,
+                          ),
                   ),
-                  child: recipetImage != null
-                      ? Image.file(
-                          File(recipetImage!.path),
-                    height: 100.0,
-                    width: 150.0,
-                    fit: BoxFit.fill,
-                        )
-                      : Icon(
-                          Icons.camera_alt_sharp,
-
-                          color: blackColor,
-                        ),
-                ),
-                TextButton(onPressed: (){
-                  _show = true;
-                  setState(() {});
-                }, child: Text("Add Photo",style: photoStyle,))
-              ],
-            ),
-          ],
+                  TextButton(onPressed: (){
+                    _show = true;
+                    setState(() {});
+                  }, child: Text("Add Photo",style: photoStyle,))
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

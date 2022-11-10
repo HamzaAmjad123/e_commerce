@@ -14,6 +14,7 @@ class DeliveredOrderService{
       if(res!=null){
         print("Order Is Delivered Successfully");
         CustomSnackBar.showSnackBar(context: context, message: "Order Is Delivered Successfully");
+        Navigator.pop(context);
         return true;
       }
       else{

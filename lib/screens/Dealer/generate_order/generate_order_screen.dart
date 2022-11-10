@@ -14,6 +14,7 @@ import '../../../helper_services/navigation_services.dart';
 import '../../../model/items_model.dart';
 import '../../../provider/class_provider.dart';
 import '../../../provider/save_order_provider.dart';
+import '../../../provider/series_provider.dart';
 import '../../../provider/wearhouse_provider.dart';
 import '../../../provider/wearhouse_shipment_provider.dart';
 import '../../../service/class_services.dart';
@@ -68,6 +69,8 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   @override
   void updateSeries(int value) {
     selectSeries = value;
+    print("series value");
+    print(selectSeries);
     setState(() {});
   }
   int? selectedWearHouse;
@@ -77,6 +80,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
       selectedWearHouse = value;
     });
   }
+
   int? selectedShipment;
   @override
   updateShipment(int value){
@@ -102,7 +106,7 @@ getShipment(int wearHouseId)async{
       take: 1000,
       skip: 0,
         itemTypeId: 0,
-        seriesId:0,
+        seriesId:selectSeries??0,
         warehouseId: wearHouseId,
         classId: classId
     );
@@ -235,6 +239,48 @@ int selectedClassColor=-1;
                       }),
                 ):Container();
               }),
+              if(shipment==true)
+              Consumer<SeriesProvider>(builder: (context,series,_){
+                return series.mySeries!=null? Container(
+                  margin: EdgeInsets.symmetric(
+                      vertical: height * .005, horizontal: 14.0),
+                  height: height * .065,
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  decoration: BoxDecoration(
+                      color: lightBlackColor,
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: DropdownButton(
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      hint: Text("Select Series"),
+                      value: selectSeries,
+                      items:series.mySeries!.map((item) {
+                        return DropdownMenuItem(
+                          value: item.seriesId,
+                          child: Text(item.name!),
+                        );
+                      }).toList(),
+                      onChanged: (int? newValue){
+                        if(updateSeries!=null)
+                          updateSeries(newValue!);
+                        shipment=true;
+                        clearCart();
+                        // wearHouse.wearHouseList!.map((item) {
+                        //   if(newValue==item.warehouseId){
+                        //     if(selectedShipment==null)
+                        //     {
+                        //       getShipment(item.warehouseId!);
+                        //     }
+                        //     else{
+                        //       selectedShipment=null;
+                        //       getShipment(item.warehouseId!);
+                        //     }
+                        //   }
+                        // }).toList();
+                        setState((){});
+                      }),
+                ):Container();
+              }),
 
           if(shipment==true)
             Column(
@@ -303,9 +349,7 @@ int selectedClassColor=-1;
                                       items_list=[];
                                       _getAllItems(selectedWearHouse!,classes.myClass![index].levelId!);
                                       selectedClassColor=index;
-                                      setState(() {
-
-                                      });
+                                      setState(() {});
                                     },
                                     child: Container(
                                       height: 50,

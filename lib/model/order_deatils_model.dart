@@ -13,16 +13,16 @@ class OrderDetailsModel {
   int? warehouseId;
   Warehouse? warehouse;
   int? tenantId;
-  Null? voucher;
+  int? voucher;
   List<OrderLines>? orderLines;
   bool? isVerifiedByGatePassUser;
-  Null? numberOfBags;
+  int? numberOfBags;
   Null? cargoReciptImage;
   bool? isOrderObjection;
   Null? orderObjectionDetail;
   Null? objectionApprovedOrCancelledById;
   int? objectionResult;
-  Null? cargoId;
+  int? cargoId;
   Cargo? cargo;
 
   OrderDetailsModel(
@@ -132,11 +132,11 @@ class Dealer {
   Null? about;
   Null? imageUrl;
   String? name;
-  Null? tenantId;
-  Null? aqmId;
-  Null? rmsId;
-  Null? asmId;
-  Null? meId;
+  int? tenantId;
+  int? aqmId;
+  int? rmsId;
+  int? asmId;
+  int? meId;
   bool? isAsignAllWarehouse;
   List<Warehouse>? warehouses;
 
@@ -207,11 +207,11 @@ class Dealer {
 }
 
 class Warehouse {
-  Null? warehouseId;
-  Null? name;
-  Null? address;
+  int? warehouseId;
+  String? name;
+  String? address;
   int? cityId;
-  Null? tenantId;
+  int? tenantId;
   Null? updatedBy;
   Null? createdBy;
 
@@ -306,54 +306,167 @@ class Item {
   int? itemId;
   String? name;
   int? seriesId;
-  Null? series;
+  Series? series;
   int? unitDiscountPercentage;
   double? unitPrice;
+  Null? slogan;
+  String? code;
+  int? availableStock;
+  bool? isApproved;
+  Null? approvedBy;
+  String? image;
+  String? address;
+  Null? cityId;
+  int? rankId;
+  Null? rank;
+  int? status;
+  int? languageId;
+  int? classId;
+  ClassModel? classModel;
+  int? itemTypeId;
+  ItemType? itemType;
+  int? warehouseId;
+  Null? warehouse;
+  int? tenantId;
+  Null? rankingColor;
 
-  Item(
-      {this.itemId,
-        this.name,
-        this.seriesId,
-        this.series,
-        this.unitDiscountPercentage,
-        this.unitPrice});
+  Item({this.itemId, this.name, this.seriesId, this.series, this.unitDiscountPercentage, this.unitPrice, this.slogan,
+  this.code, this.availableStock, this.isApproved, this.approvedBy, this.image, this.address, this.cityId, this.rankId,
+  this.rank, this.status, this.languageId, this.classId, this.classModel, this.itemTypeId, this.itemType, this.warehouseId, this.warehouse, this.tenantId, this.rankingColor});
 
   Item.fromJson(Map<String, dynamic> json) {
-    itemId = json['itemId'];
-    name = json['name'];
+  itemId = json['itemId'];
+  name = json['name'];
+  seriesId = json['seriesId'];
+  series = json['series'] != null ? new Series.fromJson(json['series']) : null;
+  unitDiscountPercentage = json['unitDiscountPercentage'];
+  unitPrice = json['unitPrice'];
+  slogan = json['slogan'];
+  code = json['code'];
+  availableStock = json['availableStock'];
+  isApproved = json['isApproved'];
+  approvedBy = json['approvedBy'];
+  image = json['image'];
+  address = json['address'];
+  cityId = json['cityId'];
+  rankId = json['rankId'];
+  rank = json['rank'];
+  status = json['status'];
+  languageId = json['languageId'];
+  classId = json['classId'];
+  classModel = json['class'] != null ? new ClassModel.fromJson(json['class']) : null;
+  itemTypeId = json['itemTypeId'];
+  itemType = json['itemType'] != null ? new ItemType.fromJson(json['itemType']) : null;
+  warehouseId = json['warehouseId'];
+  warehouse = json['warehouse'];
+  tenantId = json['tenantId'];
+  rankingColor = json['rankingColor'];
+  }
+
+  Map<String, dynamic> toJson() {
+  final Map<String, dynamic> data = new Map<String, dynamic>();
+  data['itemId'] = this.itemId;
+  data['name'] = this.name;
+  data['seriesId'] = this.seriesId;
+  if (this.series != null) {
+  data['series'] = this.series!.toJson();
+  }
+  data['unitDiscountPercentage'] = this.unitDiscountPercentage;
+  data['unitPrice'] = this.unitPrice;
+  data['slogan'] = this.slogan;
+  data['code'] = this.code;
+  data['availableStock'] = this.availableStock;
+  data['isApproved'] = this.isApproved;
+  data['approvedBy'] = this.approvedBy;
+  data['image'] = this.image;
+  data['address'] = this.address;
+  data['cityId'] = this.cityId;
+  data['rankId'] = this.rankId;
+  data['rank'] = this.rank;
+  data['status'] = this.status;
+  data['languageId'] = this.languageId;
+  data['classId'] = this.classId;
+  if (this.classModel != null) {
+  data['class'] = this.classModel!.toJson();
+  }
+  data['itemTypeId'] = this.itemTypeId;
+  if (this.itemType != null) {
+  data['itemType'] = this.itemType!.toJson();
+  }
+  data['warehouseId'] = this.warehouseId;
+  data['warehouse'] = this.warehouse;
+  data['tenantId'] = this.tenantId;
+  data['rankingColor'] = this.rankingColor;
+  return data;
+  }
+}
+
+class Series {
+  int? seriesId;
+  String? name;
+
+  Series({this.seriesId, this.name});
+
+  Series.fromJson(Map<String, dynamic> json) {
     seriesId = json['seriesId'];
-    series = json['series'];
-    unitDiscountPercentage = json['unitDiscountPercentage'];
-    unitPrice = json['unitPrice'];
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['itemId'] = this.itemId;
-    data['name'] = this.name;
     data['seriesId'] = this.seriesId;
-    data['series'] = this.series;
-    data['unitDiscountPercentage'] = this.unitDiscountPercentage;
-    data['unitPrice'] = this.unitPrice;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class ClassModel {
+  int? levelId;
+  String? name;
+
+  ClassModel({this.levelId, this.name});
+
+  ClassModel.fromJson(Map<String, dynamic> json) {
+    levelId = json['levelId'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['levelId'] = this.levelId;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class ItemType {
+  int? itemTypeId;
+  String? name;
+
+  ItemType({this.itemTypeId, this.name});
+
+  ItemType.fromJson(Map<String, dynamic> json) {
+    itemTypeId = json['itemTypeId'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['itemTypeId'] = this.itemTypeId;
+    data['name'] = this.name;
     return data;
   }
 }
 
 class Cargo {
-  Null? cargoId;
+  int? cargoId;
   Null? name;
   Null? detail;
-  Null? warehouseId;
+  int? warehouseId;
   Null? warehouse;
-  Null? tenantId;
+  int? tenantId;
 
-  Cargo(
-      {this.cargoId,
-        this.name,
-        this.detail,
-        this.warehouseId,
-        this.warehouse,
-        this.tenantId});
+  Cargo({this.cargoId, this.name, this.detail, this.warehouseId, this.warehouse, this.tenantId});
 
   Cargo.fromJson(Map<String, dynamic> json) {
     cargoId = json['cargoId'];
@@ -375,5 +488,3 @@ class Cargo {
     return data;
   }
 }
-
-

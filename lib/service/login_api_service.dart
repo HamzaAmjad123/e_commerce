@@ -16,7 +16,10 @@ class LoginApiService {
       required String password,
       required BuildContext context}) async {
     Map _body = {"username": userName, "password": password};
+    print("boddyyy");
+    print(_body);
     try {
+      print("inside try");
       var res = await PostRequestService()
           .httpPostRequest(url: loginUrl, body: _body, context: context);
       if (res != null) {
@@ -32,6 +35,8 @@ class LoginApiService {
 
         return true;
       } else {
+        print("this is response");
+        print(res);
         return false;
       }
     } catch (err) {

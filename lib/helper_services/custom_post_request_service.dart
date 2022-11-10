@@ -26,7 +26,7 @@ class PostRequestService {
           "authorization": "Bearer $token"
         };
       }
-      print("bbbbbbbbbbbbbbbbbbbbbbodddddddddddddddddddddyyyyyyyyyy");
+      print("bbbbbbbbby");
       print(json.encode(body));
       http.Response response = await http.post(Uri.parse(url),
           body: json.encode(body), headers: headers);
@@ -72,7 +72,7 @@ class PostRequestService1{
           "authorization": "Bearer $token"
         };
       }
-      print("bbbbbbbbbbbbbbbbbbbbbbodddddddddddddddddddddyyyyyyyyyy");
+      print("bbbbbbbbbbbbbbbbbbb111111111111111111111111111");
       print(json.encode(body));
       http.Response response = await http.post(Uri.parse(url),
           body: json.encode(body), headers: headers);

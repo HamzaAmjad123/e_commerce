@@ -23,15 +23,14 @@ class ItemsService {
         "itemTypeId": itemTypeId,
         "warehouseId": warehouseId,
         "classId":classId,
+        "isApproved":2
       };
 
       var res = await PostRequestService()
           .httpPostRequest(url: getItemsUrl, body: _body, context: context);
-
       if (res != null) {
         print("respon $res");
         ItemsModel itemsModel = ItemsModel.fromJson(res);
-
         Provider.of<ItemsProvider>(context, listen: false)
             .updateItems(newItemsList: itemsModel.result);
         return true;

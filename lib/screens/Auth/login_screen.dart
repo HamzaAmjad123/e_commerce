@@ -64,7 +64,7 @@ class _SigInWidgetState extends State<SigInWidget> {
      CustomLoader.hideLoader(context);
     if (res) {
       Provider.of<UserDataProvider>(context,listen: false).user!.userRoles![0] !="Dealer"?
-      NavigationServices.goNextAndKeepHistory(context: context, widget: RiderHome(
+      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: RiderHome(
       )):
       NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: DashBoardScreen(
         tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.user!.tenantId!,
