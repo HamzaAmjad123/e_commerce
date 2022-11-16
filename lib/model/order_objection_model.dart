@@ -122,19 +122,19 @@ class OrderObjectionModel {
 
 class Dealer {
   int? id;
-  Null? username;
-  Null? email;
-  Null? password;
-  Null? role;
+  String? username;
+  String? email;
+  String? password;
+  String? role;
   String? phoneNumber;
-  Null? about;
-  Null? imageUrl;
+  String? about;
+  String? imageUrl;
   String? name;
-  Null? tenantId;
-  Null? aqmId;
-  Null? rmsId;
-  Null? asmId;
-  Null? meId;
+  int? tenantId;
+  int? aqmId;
+  int? rmsId;
+  int? asmId;
+  int? meId;
   bool? isAsignAllWarehouse;
   List<Warehouse>? warehouses;
 
@@ -205,13 +205,13 @@ class Dealer {
 }
 
 class Warehouse {
-  Null? warehouseId;
-  Null? name;
-  Null? address;
+  int? warehouseId;
+  String? name;
+  String? address;
   int? cityId;
-  Null? tenantId;
-  Null? updatedBy;
-  Null? createdBy;
+  int? tenantId;
+  String? updatedBy;
+  String? createdBy;
 
   Warehouse(
       {this.warehouseId,
@@ -296,9 +296,9 @@ class ObjectionOrderLines {
     data['type'] = this.type;
     data['totalAmount'] = this.totalAmount;
     data['itemId'] = this.itemId;
-    if (this.item != null) {
-      data['item'] = this.item!.toJson();
-    }
+    // if (this.item != null) {
+    //   data['item'] = this.item!.toJson();
+    // }
     data['orderId'] = this.orderId;
     data['tenantId'] = this.tenantId;
     data['orderObjectionId']=0;
@@ -311,9 +311,12 @@ class Item {
   int? itemId;
   String? name;
   int? seriesId;
-  Null? series;
+  Series? series;
   int? unitDiscountPercentage;
   double? unitPrice;
+
+
+
 
   Item(
       {this.itemId,
@@ -327,7 +330,7 @@ class Item {
     itemId = json['itemId'];
     name = json['name'];
     seriesId = json['seriesId'];
-    series = json['series'];
+    series = json['series'] != null ? new Series.fromJson(json['series']) : null;
     unitDiscountPercentage = json['unitDiscountPercentage'];
     unitPrice = json['unitPrice'];
   }
@@ -337,35 +340,51 @@ class Item {
     data['itemId'] = this.itemId;
     data['name'] = this.name;
     data['seriesId'] = this.seriesId;
-    data['series'] = this.series;
+    if (this.series != null) {
+      data['series'] = this.series!.toJson();
+    }
     data['unitDiscountPercentage'] = this.unitDiscountPercentage;
     data['unitPrice'] = this.unitPrice;
     return data;
   }
 }
+class Series {
+  int? seriesId;
+  String? name;
+
+  Series({this.seriesId, this.name});
+
+  Series.fromJson(Map<String, dynamic> json) {
+    seriesId = json['seriesId'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['seriesId'] = this.seriesId;
+    data['name'] = this.name;
+    return data;
+  }
+}
 
 class Cargo {
-  Null? cargoId;
-  Null? name;
-  Null? detail;
-  Null? warehouseId;
-  Null? warehouse;
-  Null? tenantId;
+  int? cargoId;
+  String? name;
+  String? detail;
+  int? warehouseId;
+  Warehouse? warehouse;
+  int? tenantId;
 
-  Cargo(
-      {this.cargoId,
-        this.name,
-        this.detail,
-        this.warehouseId,
-        this.warehouse,
-        this.tenantId});
+  Cargo({this.cargoId, this.name, this.detail, this.warehouseId, this.warehouse, this.tenantId});
 
   Cargo.fromJson(Map<String, dynamic> json) {
     cargoId = json['cargoId'];
     name = json['name'];
     detail = json['detail'];
     warehouseId = json['warehouseId'];
-    warehouse = json['warehouse'];
+    warehouse = json['warehouse'] != null
+        ? new Warehouse.fromJson(json['warehouse'])
+        : null;
     tenantId = json['tenantId'];
   }
 
@@ -375,7 +394,9 @@ class Cargo {
     data['name'] = this.name;
     data['detail'] = this.detail;
     data['warehouseId'] = this.warehouseId;
-    data['warehouse'] = this.warehouse;
+    if (this.warehouse != null) {
+      data['warehouse'] = this.warehouse!.toJson();
+    }
     data['tenantId'] = this.tenantId;
     return data;
   }

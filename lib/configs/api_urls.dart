@@ -1,29 +1,27 @@
 
-const String baseUrl="https://pos.impliessolutions.com/api/";
-// const String baseUrl="https://cantabdealersautomation.com/api/";
-const String loginUrl=baseUrl + "Authenticate/login";
-const String getCatUrl=baseUrl+ "ItemType/getList";
-const String getWareHouseUrl=baseUrl+ "WareHouse/getListByActiveUser";
-const String getShipmentUrl=baseUrl + "Cargo/getShipmentsByWarehouse";
-const String getLevelUrl=baseUrl+ "Level/getList";
-const String getSereiesUrl=baseUrl+"Series/getList";
-const String getClassesUrl=baseUrl + "Level/getList";
-const String getItemsUrl=baseUrl+"Item/getList";
-const String saveOrderUrl=baseUrl+"DealerOrders/saveDealerOrder";
-const String orderListUrl=baseUrl + "Order/getList";
-const String orderLogUrl=baseUrl + "Order/getOrderLogs";
-const String getOrerDetailsUrl=baseUrl + "Order/get";
-const String cashBookUrl=baseUrl + "Voucher/getDealerStatement";
-const String sendPaymentUrl=baseUrl + "Voucher/createVoucherLineByDealer";
-const  String dashboardUrl=baseUrl + "dashboard/dealersdatafordashboard";
-//change by hamza start
-const String approvedOrderUrl=baseUrl+"DealerOrders/getDealerHistoryList";
-const String getDealerHistoryUrl=baseUrl + "DealerOrders/getDealerOrderList";
-//end
-const String createObjUrl=baseUrl+"orderobjection/create";
-const String selectAmountUrl=baseUrl + "PaymentMethod/getList";
-
+// const String baseUrl="https://pos.impliessolutions.com/";
+const String baseUrl="https://cantabdealersautomation.com/";
+const String loginUrl=baseUrl + "api/Authenticate/login";
+const String getCatUrl=baseUrl+ "api/ItemType/getList";
+const String getWareHouseUrl=baseUrl+ "api/WareHouse/getListByActiveUser";
+const String getShipmentUrl=baseUrl + "api/Cargo/getShipmentsByWarehouse";
+const String getLevelUrl=baseUrl+ "api/Level/getList";
+const String getSereiesUrl=baseUrl+"api/Series/getList";
+const String getClassesUrl=baseUrl + "api/Level/getList";
+const String getItemsUrl=baseUrl+"api/Item/getList";
+const String saveOrderUrl=baseUrl+"api/DealerOrders/saveDealerOrder";
+const String orderListUrl=baseUrl + "api/Order/getList";
+const String orderLogUrl=baseUrl + "api/Order/getOrderLogs";
+const String getOrerDetailsUrl=baseUrl + "api/Order/get";
+const String cashBookUrl=baseUrl + "api/Voucher/getDealerStatement";
+const String sendPaymentUrl=baseUrl + "api/Voucher/createVoucherLineByDealer";
+const  String dashboardUrl=baseUrl + "api/dashboard/dealersdatafordashboard";
+const String approvedOrderUrl=baseUrl+"api/DealerOrders/getDealerHistoryList";
+const String getDealerHistoryUrl=baseUrl + "api/DealerOrders/getDealerOrderList";
+const String createObjUrl=baseUrl+"api/orderobjection/create";
+const String selectAmountUrl=baseUrl + "api/PaymentMethod/getList";
+const String markAsDeliveredUrl=baseUrl+ "api/DealerOrders/orderIsApprovedByDealer";
 // Urls For Rider
-const String riderApprovedOrdersurl=baseUrl + "RiderOrders/getApprovedOrdersListForRider";
-const String riderHistoryOrdersurl=baseUrl + "RiderOrders/getApprovedOrdersHistoryListForRider";
-const String deliveredOrderUrl=baseUrl + "RiderOrders/orderIsShipped";
+const String riderApprovedOrdersurl=baseUrl + "api/RiderOrders/getApprovedOrdersListForRider";
+const String riderHistoryOrdersurl=baseUrl + "api/RiderOrders/getApprovedOrdersHistoryListForRider";
+const String deliveredOrderUrl=baseUrl + "api/RiderOrders/orderIsShipped";

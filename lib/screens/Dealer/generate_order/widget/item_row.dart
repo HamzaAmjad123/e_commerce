@@ -1,3 +1,4 @@
+import 'package:e_commerce/configs/api_urls.dart';
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
@@ -48,7 +49,7 @@ class GenerateOrderWidget extends StatelessWidget {
                          // child: Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
 
                       // child: Image.network(item.image!=null?"https://pos.impliessolutions.com/${item.image}":"assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
-                   child: item.image!=null?Image.network("https://cantabdealersautomation.com/${item.image}",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill):Image.asset("assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill),
+                   child: item.image!=null?Image.network("$baseUrl"+"${item.image}",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill):Image.asset("assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill),
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(8.0),
                       topLeft: Radius.circular(8.0)
@@ -65,7 +66,9 @@ class GenerateOrderWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item.name!,style: subtitleStyle,),
+                          Expanded(child: Text(item.name!,
+                            overflow: TextOverflow.ellipsis
+                            ,style: subtitleStyle,)),
                           Text(item.unitPrice.toString())
                         ],
                       )

@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
-
-
+import 'package:e_commerce/configs/api_urls.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:e_commerce/service/local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class PostRequestService {
+class PostRequestService{
   Future httpPostRequest(
       {required String url,
       required Map body,
@@ -15,17 +14,20 @@ class PostRequestService {
     print("post request url $url");
     try {
       late var headers;
-      if (url == "https://pos.impliessolutions.com/api/Authenticate/login") {
+      if (url == "$baseUrl"+"api/Authenticate/login") {
         headers = {
           "Content-Type": "application/json; charset=utf-8",
         };
       } else {
-        String token = await LocalStorageServices().getToken();
+        String token = await LocalStorageServices().getToken()??"";
+        print("token  $token");
         headers = {
           "Content-Type": "application/json; charset=utf-8",
           "authorization": "Bearer $token"
         };
       }
+      print("headerss");
+      print(headers);
       print("bbbbbbbbby");
       print(json.encode(body));
       http.Response response = await http.post(Uri.parse(url),

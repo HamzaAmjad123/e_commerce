@@ -33,6 +33,7 @@ class GenerateOrderScreen extends StatefulWidget {
 class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   late double height;
   late double width;
+  bool show=false;
   bool cargoSelect=false;
   List<Items>? items_list=[];
   int sum = 0;
@@ -47,6 +48,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   bool catSelected = false;
   bool seriesSelected = false;
   int? selectedCat;
+  int selectedClass=-1;
 
   @override
   void updateCat(int value) {
@@ -239,7 +241,6 @@ int selectedClassColor=-1;
                       }),
                 ):Container();
               }),
-              if(shipment==true)
               Consumer<SeriesProvider>(builder: (context,series,_){
                 return series.mySeries!=null? Container(
                   margin: EdgeInsets.symmetric(
@@ -264,7 +265,13 @@ int selectedClassColor=-1;
                         if(updateSeries!=null)
                           updateSeries(newValue!);
                         shipment=true;
-                        clearCart();
+                        show=true;
+                        // clearCart();
+                        if(selectedClass>-1){
+                          items_list=[];
+                          _getAllItems(selectedWearHouse!,selectedClass);
+                        }
+
                         // wearHouse.wearHouseList!.map((item) {
                         //   if(newValue==item.warehouseId){
                         //     if(selectedShipment==null)
@@ -281,9 +288,7 @@ int selectedClassColor=-1;
                       }),
                 ):Container();
               }),
-
-          if(shipment==true)
-            Column(
+               Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -316,6 +321,7 @@ int selectedClassColor=-1;
                     ),
                   );
                 }),
+                if(show==true)
                 Container(
                     height: 100,
                     margin: EdgeInsets.only(bottom: 10),
@@ -347,8 +353,10 @@ int selectedClassColor=-1;
                                   return InkWell(
                                     onTap: ()async{
                                       items_list=[];
+
                                       _getAllItems(selectedWearHouse!,classes.myClass![index].levelId!);
                                       selectedClassColor=index;
+                                      selectedClass=classes.myClass![index].levelId!;
                                       setState(() {});
                                     },
                                     child: Container(
@@ -378,7 +386,7 @@ int selectedClassColor=-1;
 
               ],
             ),
-              if(shipment==true)
+              if(show==true)
                 selectedClassColor<0?Center(child: Text("Select Class for Items")):items_list!.length==0?Center(child: Text("No Items Availible")):
                 Expanded(
                         child: Container(
@@ -437,7 +445,9 @@ int selectedClassColor=-1;
               items.unitPrice!,
               items.name!,
               items.itemId!,
-              1));
+              1,
+            items.series!.name!
+          ));
         }
       }
       ;
@@ -446,12 +456,14 @@ int selectedClassColor=-1;
       temporary_list.add(CartModel(
         // items.image!,
         ///Ask bY hAMZA
-          items.image==null?"Resources/Items/Images/e8e06423-ddab-484e-be81-e852826d02a8-2-1.png":"${items.image!}",
+          items.image==null?"":"${items.image!}",
           items.unitDiscountPercentage!,
           items.unitPrice!,
           items.name!,
           items.itemId!,
-          1));
+          1,
+          items.series!.name!
+      ));
     }
     cart.addAll(temporary_list);
     print(cart);

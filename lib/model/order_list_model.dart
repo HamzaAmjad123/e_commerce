@@ -94,15 +94,15 @@ class OrderList {
 
 class Dealer {
   int? id;
-  Null? username;
-  Null? email;
-  Null? password;
-  Null? role;
-  Null? phoneNumber;
-  Null? about;
-  Null? imageUrl;
-  Null? name;
-  Null? tenantId;
+  String? username;
+  String? email;
+  String? password;
+  String? role;
+  String? phoneNumber;
+  String? about;
+  String? imageUrl;
+  String? name;
+  int? tenantId;
 
   Dealer(
       {this.id,

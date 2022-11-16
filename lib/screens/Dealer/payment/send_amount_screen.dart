@@ -3,7 +3,9 @@ import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:e_commerce/provider/cash_book_provider.dart';
+import 'package:e_commerce/provider/home_dashboard_provider.dart';
 import 'package:e_commerce/provider/select_amount_provider.dart';
+import 'package:e_commerce/service/cash_book_service.dart';
 import 'package:e_commerce/service/select_amount_service.dart';
 import 'package:e_commerce/service/send_payment_service.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +44,8 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _selectAmountHandler();
+
+
     });
     super.initState();
   }
@@ -127,7 +131,9 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
                             children: [
                               Text("Total Credit", style:creditStyle),
                               SizedBox(width: 12.0,),
-                              Text(Provider.of<CashBookProvider>(context,listen: false).cashBook!.result!.totalAmount!.toString(),style: cashStyle,),
+                              // Text(Provider.of<CashBookProvider>(context,listen: false).cashBook!.result!.totalAmount!.toString(),style: cashStyle,),
+                              Text(Provider.of<HomeDashboardProvider>(context,listen: false).dashboard!.revenueData!.totalAmount.toString(),style: cashStyle,),
+
                             ],
                           ),
                         ),

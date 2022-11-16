@@ -27,8 +27,8 @@ class _RiderHomeState extends State<RiderHome> {
   }
 
   static List<Widget> _widgetsList = [
-    RiderApprovedOrder(),
-    RiderHistory(),
+    RiderApprovedOrderScreen(),
+    RiderHistoryScreen(),
   ];
 
   int selectedIndex = 0;

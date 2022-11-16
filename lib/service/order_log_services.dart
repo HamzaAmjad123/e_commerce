@@ -14,8 +14,9 @@ class OrderLogService {
       if (res != null) {
         //to make list of order
         List<OrderLogModel> orderLog = (res).map<OrderLogModel>((m )=> OrderLogModel.fromJson(m)).toList();
+        List<OrderLogModel> neworderLog= await makeNewList(orderLog);
         Provider.of<OrderLogProvider>(context, listen: false)
-            .updateorderlog(neworderlog: orderLog);
+            .updateorderlog(neworderlog: neworderLog);
         return true;
       } else {
         return false;
@@ -24,5 +25,13 @@ class OrderLogService {
       print("Exception in OrderLogService $e");
       return false;
     }
+  }
+
+  Future<List<OrderLogModel>> makeNewList(List<OrderLogModel> orderLog) async{
+    List<OrderLogModel> temp=[];
+    orderLog.forEach((element) {
+      temp.add(element);
+    });
+    return temp;
   }
 }

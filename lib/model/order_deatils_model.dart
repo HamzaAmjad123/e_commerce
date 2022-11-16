@@ -17,10 +17,10 @@ class OrderDetailsModel {
   List<OrderLines>? orderLines;
   bool? isVerifiedByGatePassUser;
   int? numberOfBags;
-  Null? cargoReciptImage;
+  String? cargoReciptImage;
   bool? isOrderObjection;
-  Null? orderObjectionDetail;
-  Null? objectionApprovedOrCancelledById;
+  String? orderObjectionDetail;
+  int? objectionApprovedOrCancelledById;
   int? objectionResult;
   int? cargoId;
   Cargo? cargo;
@@ -124,13 +124,13 @@ class OrderDetailsModel {
 
 class Dealer {
   int? id;
-  Null? username;
-  Null? email;
-  Null? password;
-  Null? role;
+  String? username;
+  String? email;
+  String? password;
+  String? role;
   String? phoneNumber;
-  Null? about;
-  Null? imageUrl;
+  String? about;
+  String? imageUrl;
   String? name;
   int? tenantId;
   int? aqmId;
@@ -212,8 +212,8 @@ class Warehouse {
   String? address;
   int? cityId;
   int? tenantId;
-  Null? updatedBy;
-  Null? createdBy;
+  String? updatedBy;
+  String? createdBy;
 
   Warehouse(
       {this.warehouseId,
@@ -309,14 +309,14 @@ class Item {
   Series? series;
   int? unitDiscountPercentage;
   double? unitPrice;
-  Null? slogan;
+  String? slogan;
   String? code;
   int? availableStock;
   bool? isApproved;
-  Null? approvedBy;
+  String? approvedBy;
   String? image;
   String? address;
-  Null? cityId;
+  int? cityId;
   int? rankId;
   Null? rank;
   int? status;
@@ -328,7 +328,7 @@ class Item {
   int? warehouseId;
   Null? warehouse;
   int? tenantId;
-  Null? rankingColor;
+  String? rankingColor;
 
   Item({this.itemId, this.name, this.seriesId, this.series, this.unitDiscountPercentage, this.unitPrice, this.slogan,
   this.code, this.availableStock, this.isApproved, this.approvedBy, this.image, this.address, this.cityId, this.rankId,
@@ -460,10 +460,10 @@ class ItemType {
 
 class Cargo {
   int? cargoId;
-  Null? name;
-  Null? detail;
+  String? name;
+  String? detail;
   int? warehouseId;
-  Null? warehouse;
+  Warehouse? warehouse;
   int? tenantId;
 
   Cargo({this.cargoId, this.name, this.detail, this.warehouseId, this.warehouse, this.tenantId});
@@ -473,7 +473,9 @@ class Cargo {
     name = json['name'];
     detail = json['detail'];
     warehouseId = json['warehouseId'];
-    warehouse = json['warehouse'];
+    warehouse = json['warehouse'] != null
+        ? new Warehouse.fromJson(json['warehouse'])
+        : null;
     tenantId = json['tenantId'];
   }
 
@@ -483,7 +485,9 @@ class Cargo {
     data['name'] = this.name;
     data['detail'] = this.detail;
     data['warehouseId'] = this.warehouseId;
-    data['warehouse'] = this.warehouse;
+    if (this.warehouse != null) {
+      data['warehouse'] = this.warehouse!.toJson();
+    }
     data['tenantId'] = this.tenantId;
     return data;
   }

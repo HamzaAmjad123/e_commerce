@@ -49,8 +49,8 @@ class SigInWidget extends StatefulWidget {
 }
 
 class _SigInWidgetState extends State<SigInWidget> {
-  TextEditingController _userCont = TextEditingController();
-  TextEditingController _passwordCont = TextEditingController();
+  TextEditingController _userCont = TextEditingController(text: "lhrdealer");
+  TextEditingController _passwordCont = TextEditingController(text: "lhrdealer@123");
   FocusNode _userFocus = FocusNode();
   FocusNode _passwordFocus = FocusNode();
   String selectedRadio = '';
@@ -71,6 +71,7 @@ class _SigInWidgetState extends State<SigInWidget> {
       ));
     }
   }
+  bool isObscure=true;
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +115,16 @@ class _SigInWidgetState extends State<SigInWidget> {
                   prefixIcon: Icons.key,
                   hintText: "Password",
                   inputType: TextInputType.visiblePassword,
-                  obScureText: true,
+                  suffixIconColor: isObscure==true?bgColor:blackColor,
+                  obScureText: isObscure,
+                  suffixIcon: isObscure==true?Icons.visibility:Icons.visibility_off,
+
+                  sufixOnTap: (){
+                    isObscure =! isObscure;
+                    setState(() {
+
+                    });
+                  },
                   controller: _passwordCont,
                   focusNode: _passwordFocus,
                 ),

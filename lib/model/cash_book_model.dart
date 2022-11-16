@@ -66,7 +66,7 @@ class Result {
 }
 
 class LedgerDetails {
-  Null? dealerId;
+  int? dealerId;
   String? date;
   String? title;
   double? credit;

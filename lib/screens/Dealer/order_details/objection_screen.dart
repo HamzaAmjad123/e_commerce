@@ -120,7 +120,7 @@ class _ObjectionScreenState extends State<ObjectionScreen> {
                         scrollDirection: Axis.vertical,
                         primary: false,
                         itemBuilder: (BuildContext, index) {
-
+                          print("${obj.orderObjection!.orderLines![index].quantity}");
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,9 +139,11 @@ class _ObjectionScreenState extends State<ObjectionScreen> {
                                   height: 20.0,
                                   width: 30.0,
 
-                                  child: TextField(
-                          keyboardType:TextInputType.number,
+                                  child:  TextFormField(
+                                    initialValue: "${obj.orderObjection!.orderLines![index].quantity}",
+                                    keyboardType:TextInputType.number,
                                     // initialValue: widget.expectedQuantity!,
+
                                     onChanged: (value){
                                       obj.orderObjection!.orderLines![index].receivedQuantity=int.parse(value);
                                     },
@@ -152,13 +154,22 @@ class _ObjectionScreenState extends State<ObjectionScreen> {
                                     decoration: InputDecoration(
 
                                     ),
-                                  ),
+                                  )
                                 ),
                               ),
                             ],
                           );
                         }),
+                    SizedBox(height: 10.0,),
+
+                    CustomTextField(
+                      shape: true,
+                      headerText: "Comment",
+                      controller: _objDetailsCont,
+                    ),
                     CustomButton(
+                      verticalMargin: 10,
+                      height: 40,
                       text: "Create",
                       onTap: (){
                         _createObjectionHandler(
@@ -171,11 +182,12 @@ class _ObjectionScreenState extends State<ObjectionScreen> {
                   child: Text("No Objection Against this order"),
                 );
               }),
-                  SizedBox(height: 10.0,),
-                  CustomTextField(
-                    headerText: "Comment",
-                    controller: _objDetailsCont,
-                  ),
+                  // SizedBox(height: 10.0,),
+                  // CustomTextField(
+                  //   shape: true,
+                  //   headerText: "Comment",
+                  //   controller: _objDetailsCont,
+                  // ),
 
                 ],
               ),

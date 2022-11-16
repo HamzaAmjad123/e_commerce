@@ -11,6 +11,31 @@ import '../../../provider/Rider_providers/rider_orders_provider.dart';
 import '../../Dealer/order_details/order_details_screen.dart';
 import '../order_is_delivered.dart';
 
+class RiderApprovedOrderScreen extends StatefulWidget {
+  final bool isShow;
+  RiderApprovedOrderScreen({this.isShow=true});
+
+  @override
+  State<RiderApprovedOrderScreen> createState() => _RiderApprovedOrderScreenState();
+}
+
+class _RiderApprovedOrderScreenState extends State<RiderApprovedOrderScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.isShow==true?RiderApprovedOrder():
+    Scaffold(
+        appBar: AppBar(
+          backgroundColor: bgColor,
+          title: Text(
+            "Rider screen",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      body: RiderApprovedOrder(),
+    )
+    ;
+  }
+}
 class RiderApprovedOrder extends StatefulWidget {
   const RiderApprovedOrder({Key? key}) : super(key: key);
 
@@ -23,7 +48,7 @@ class _RiderApprovedOrderState extends State<RiderApprovedOrder> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-      return  approvedHandler(context);
+        return  approvedHandler(context);
       },
       child: Consumer<RiderApprovesOrdersProvider>(
           builder: (context, approvedOrders, _) {
@@ -45,7 +70,6 @@ class _RiderApprovedOrderState extends State<RiderApprovedOrder> {
     );
   }
 }
-
 
 class RiderOrderWidget extends StatelessWidget {
   RiderOrdersModel order;

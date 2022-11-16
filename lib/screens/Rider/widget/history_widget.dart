@@ -9,6 +9,32 @@ import '../../../model/rider_models/rider_order_model.dart';
 import '../../../utils/functions.dart';
 import '../../Dealer/order_details/order_details_screen.dart';
 
+class RiderHistoryScreen extends StatefulWidget {
+  final bool isShow;
+  RiderHistoryScreen({ this.isShow=true});
+
+  @override
+  State<RiderHistoryScreen> createState() => _RiderHistoryScreenState();
+}
+
+class _RiderHistoryScreenState extends State<RiderHistoryScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.isShow==true?RiderHistory()
+        : Scaffold(
+        appBar: AppBar(
+          backgroundColor: bgColor,
+          title: Text(
+            "Rider screen",
+            style: TextStyle(color: Colors.white),
+          ),
+
+        ),
+      body: RiderHistory(),
+    );
+  }
+}
+
 class RiderHistory extends StatefulWidget {
   const RiderHistory({Key? key}) : super(key: key);
 
@@ -26,11 +52,12 @@ class _RiderHistoryState extends State<RiderHistory> {
           shrinkWrap: true,
           primary: false,
           itemBuilder: (BuildContext,index){
-        return RiderHistoryWidget(orderHistory:history.historyList![index] );
-      });
+            return RiderHistoryWidget(orderHistory:history.historyList![index] );
+          });
     });
   }
 }
+
 
 
 class RiderHistoryWidget extends StatelessWidget {

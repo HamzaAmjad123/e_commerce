@@ -19,7 +19,9 @@ class CustomTextField extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final IconData? suffixIcon;
+  final Function()? sufixOnTap;
   final IconData? prefixIcon;
+  final Color suffixIconColor;
 
   CustomTextField(
       {this.headerText,
@@ -35,7 +37,7 @@ class CustomTextField extends StatelessWidget {
       this.hintText,
       this.labelText,
       this.suffixIcon,
-      this.prefixIcon});
+      this.prefixIcon, this.sufixOnTap,  this.suffixIconColor=bgColor});
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +67,7 @@ class CustomTextField extends StatelessWidget {
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
+              contentPadding: EdgeInsets.all(8.0),
               hintText: hintText,
               labelText: labelText,
               hintStyle: TextStyle(color: shape?Colors.grey:null),
@@ -93,9 +96,10 @@ class CustomTextField extends StatelessWidget {
                     ),
               suffixIcon: suffixIcon == null
                   ? null
-                  : Icon(
-                      suffixIcon,
-                      color: bgColor,
+                  : IconButton(
+                    icon: Icon(  suffixIcon),
+                      onPressed: sufixOnTap,
+                      color: suffixIconColor,
                     ),
             ),
           ),

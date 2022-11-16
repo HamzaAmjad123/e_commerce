@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 import '../../../helper_widgets/drawer_item_card.dart';
 import '../../../model/user_model.dart';
 import '../../../service/local_storage_service.dart';
+import '../../Rider/widget/approved_widget.dart';
+import '../../Rider/widget/history_widget.dart';
 import '../generate_order/generate_order_screen.dart';
 import '../order_details/pending_orders_screen.dart';
 
@@ -30,7 +32,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
     String role=Provider.of<UserDataProvider>(context, listen: false).user!.userRoles![0];
     UserModel usermodels = UserModel.fromJson(box.read('user'));
     return Drawer(
-      child: ListView(children: [
+      child:
+      ListView(children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -114,20 +117,50 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 setState(() {});
               },
             ),
+            DrawerLinkWidget(
+              icon: Icons.account_balance_wallet_outlined,
+              text: "Send Cash",
+              onTap: () {
+                if(role=="Dealer"){
+                  Navigator.pop(context);
+                  NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen());
+                }else{
+                  print("noithing");
+                }
+              },
+            ),
           ],
-        ):Container(),
-        DrawerLinkWidget(
-          icon: Icons.account_balance_wallet_outlined,
-          text: "Send Cash",
-          onTap: () {
-            if(role=="Dealer"){
-              Navigator.pop(context);
-              NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen());
-            }else{
-              print("noithing");
-            }
-          },
+        ):Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DrawerLinkWidget(
+              icon: Icons.fastfood_rounded,
+              text: "Approved Order",
+              onTap: () {
+                Navigator.pop(context);
+                NavigationServices.goNextAndKeepHistory(
+                    context: context, widget: RiderApprovedOrderScreen(
+                  isShow: false,
+                ));
+                setState(() {});
+              },
+            ),
+            DrawerLinkWidget(
+              icon: Icons.fastfood_rounded,
+              text: "Order History",
+              onTap: () {
+                Navigator.pop(context);
+                NavigationServices.goNextAndKeepHistory(
+                    context: context, widget: RiderHistoryScreen(
+                  isShow: false,
+                ));
+                setState(() {});
+              },
+            ),
+          ],
         ),
+
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Divider(
