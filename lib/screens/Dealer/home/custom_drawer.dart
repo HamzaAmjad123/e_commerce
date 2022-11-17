@@ -1,4 +1,5 @@
 
+import 'package:e_commerce/configs/api_urls.dart';
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/navigation_services.dart';
@@ -30,6 +31,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     final box = GetStorage();
     String role=Provider.of<UserDataProvider>(context, listen: false).user!.userRoles![0];
+    String url=Provider.of<UserDataProvider>(context,listen: false).user!.tenant!.logoUrl??"";
     UserModel usermodels = UserModel.fromJson(box.read('user'));
     return Drawer(
       child:
@@ -41,13 +43,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                child: CircleAvatar(
-                  maxRadius: 30,
-                  backgroundColor: bgColor,
-                  child: Center(
-                    child: Text(usermodels.name![0],style: barStyle),
-                  ),
-                ),
+                height: 55,
+                width: 70,
+                margin: EdgeInsets.only(top: 10),
+                child: url.isEmpty?Image.asset("image/logo.png",fit: BoxFit.fill,):Image.network("$baseUrl"+url,fit: BoxFit.fill,),
               ),
               SizedBox(
                 height: 15,

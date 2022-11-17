@@ -1,4 +1,3 @@
-
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/service/marked_as_delivered_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +25,7 @@ class OrderHistoryScreen extends StatefulWidget {
 }
 
 class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
-  
+
   // _orderSearchHistoryHandler()async{
   //   CustomLoader.showLoader(context: context);
   //   await DealerHistoryService().getDelaerHistory(skip: 0, take: 1000,searchText: _searchCont.text??"",toDate: "",formDate: "", context: context);
@@ -36,11 +35,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      orderSearchHistoryHandler(context,_searchCont.text??"");
+      orderSearchHistoryHandler(context, _searchCont.text ?? "");
     });
     super.initState();
   }
-  TextEditingController _searchCont=TextEditingController();
+
+  TextEditingController _searchCont = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,7 +53,10 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
             children: [
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height*0.13,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.13,
                 decoration: BoxDecoration(
                     color: bgColor,
                     borderRadius: BorderRadius.only(
@@ -61,7 +65,10 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                     )
                 ),),
               Container(
-                height: MediaQuery.of(context).size.height*0.10,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.10,
                 alignment: Alignment.bottomCenter,
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 // decoration: BoxDecoration(
@@ -69,8 +76,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 // ),
                 child: TextField(
                   controller: _searchCont,
-                  onSubmitted: (value){
-                    orderSearchHistoryHandler(context,_searchCont.text??"");
+                  onSubmitted: (value) {
+                    orderSearchHistoryHandler(context, _searchCont.text ?? "");
                   },
                   decoration: InputDecoration(
 
@@ -96,7 +103,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           Consumer<DealerHistoryProvider>(builder: (context, orders, _) {
             return orders.history != null
                 ? ListView.builder(
-                physics:NeverScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: orders.history!.length,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -119,22 +126,23 @@ class OrderHistoryWidget extends StatefulWidget {
   OrderHistoryWidget({required this.order});
 
 
-
   @override
   State<OrderHistoryWidget> createState() => _OrderHistoryWidgetState();
 }
 
 class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
-  _markAsDeliveredHandler()async{
+  _markAsDeliveredHandler() async {
     CustomLoader.showLoader(context: context);
-    await MarkAsDeliveredService().markAsDelivered(context: context, orderId: widget.order.orderId!);
+    await MarkAsDeliveredService().markAsDelivered(
+        context: context, orderId: widget.order.orderId!);
     CustomLoader.hideLoader(context);
   }
+
   @override
   Widget build(BuildContext context) {
     String date = widget.order.date!;
     return Container(
-      padding: const EdgeInsets.only(left: 10,top: 12.0,bottom: 12),
+      padding: const EdgeInsets.only(left: 10, top: 12.0, bottom: 12),
       margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
       decoration: Ui.getBoxDecoration(),
       child: Row(
@@ -145,22 +153,26 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("PKR"+"${widget.order.totalAmount}",style: TextStyle(color: bgColor,fontWeight: FontWeight.w600,fontSize: 14.0),),
+              Text("PKR" + "${widget.order.totalAmount}", style: TextStyle(
+                  color: bgColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.0),),
               SizedBox(height: 10,),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap:(){
+                      onTap: () {
                         NavigationServices.goNextAndKeepHistory(
                             context: context,
-                            widget: OrderDetailsScreen(id: widget.order.orderId!));
+                            widget: OrderDetailsScreen(
+                                id: widget.order.orderId!));
                       },
                       child: Container(
                         height: 35,
 
-                        width: widget.order.status==4?60.0:100.0,
+                        width: widget.order.status == 4 ? 60.0 : 100.0,
                         padding: EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
@@ -168,27 +180,35 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
                           color: Colors.white,
                         ),
                         child: Row(
-                          mainAxisAlignment: widget.order.status==4?MainAxisAlignment.spaceBetween:MainAxisAlignment.center,
+                          mainAxisAlignment: widget.order.status == 4
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.remove_red_eye,color: bgColor,size: 18,),
+                            Icon(
+                              Icons.remove_red_eye, color: bgColor, size: 18,),
                             SizedBox(
-                              width: widget.order.status==4?0.0:10.0,
+                              width: widget.order.status == 4 ? 0.0 : 10.0,
                             ),
-                            Text("view",style: TextStyle(fontSize: widget.order.status==4?12.0:16.0,color: bgColor,fontWeight: widget.order.status==4?FontWeight.normal:FontWeight.w500),)
+                            Text("view", style: TextStyle(fontSize: widget.order
+                                .status == 4 ? 12.0 : 16.0,
+                                color: bgColor,
+                                fontWeight: widget.order.status == 4
+                                    ? FontWeight.normal
+                                    : FontWeight.w500),)
                           ],
                         ),
                       ),
                     ),
-                    widget.order.status==4?   InkWell(
+                    widget.order.status == 4 ? InkWell(
 
-                      onTap:(){
-                       buildShowObjectionDialog(context);
-                      } ,
+                      onTap: () {
+                        buildShowObjectionDialog(context);
+                      },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 5),
                         height: 35,
-                        width:85,
+                        width: 85,
                         padding: EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
@@ -199,33 +219,38 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.location_on,color: bgColor,size: 18,),
-                            Text("Objection",style: TextStyle(fontSize: 12,color: bgColor),)
+                            Icon(Icons.location_on, color: bgColor, size: 18,),
+                            Text("Objection", style: TextStyle(
+                                fontSize: 12, color: bgColor),)
                           ],
                         ),
                       ),
-                    ):SizedBox(),
+                    ) : SizedBox(),
                   ]),
             ],
           ),
-           SizedBox(width: widget.order.status==4?5.0:25.0,),
+          SizedBox(width: widget.order.status == 4 ? 5.0 : 25.0,),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("ORDER"+" "+"No"+" "+"${widget.order.orderNo}",style: normalStyle,),
+              Text("ORDER" + " " + "No" + " " + "${widget.order.orderNo}",
+                style: normalStyle,),
               SizedBox(height: 8,),
-              Text("26,Oct,2022 3:00 Pm",style: normalStyle,),
+              Text("26,Oct,2022 3:00 Pm", style: normalStyle,),
               Container(
-                  width: MediaQuery.of(context).size.width * 0.3,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.3,
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(top: 8.0),
-                  padding: EdgeInsets.symmetric( vertical: 2.0),
+                  padding: EdgeInsets.symmetric(vertical: 2.0),
                   child: Row(mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Status :",style: subtitleStyle,),
-                      SizedBox(width:widget.order.status==7?0: 5,),
+                      Text("Status :", style: subtitleStyle,),
+                      SizedBox(width: widget.order.status == 7 ? 0 : 5,),
                       Expanded(
                         child: Text(widget.order.status == 1
                             ? "Pending"
@@ -236,12 +261,16 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
                             : widget.order.status == 4
                             ? "Shipped"
                             : widget.order.status == 5
-                            ? "Delivered":
+                            ? "Delivered" :
                         widget.order.status == 6
-                            ?"Cancel"
-                            : widget.order.status==7?"Ready To Shippment":"",
+                            ? "Cancel"
+                            : widget.order.status == 7
+                            ? "Ready To Shippment"
+                            : "",
                           overflow: TextOverflow.ellipsis,
-                          style: widget.order.status==7?statusStyle:rsStyle,),
+                          style: widget.order.status == 7
+                              ? statusStyle
+                              : rsStyle,),
                       )
                     ],)),
 
@@ -252,55 +281,49 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
     );;
   }
 
-buildShowObjectionDialog(BuildContext context)async{
-    return showDialog(context: context, builder: (context){
-      return  Dialog(
-          child: Container(
-            height: 150.0,
-      width: 50.0,
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Align(
-              alignment: Alignment.topRight,
-              child: InkWell(
-                  onTap: (){
-                    Navigator.pop(context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Icon(Icons.close),
-                  ))),
-          // Text("Mark As Delivered"),
-          TextButton(onPressed: ()async{
-           await _markAsDeliveredHandler();
-           await orderSearchHistoryHandler(context, "");
-            print("NNNNNNNNNNNNNNNNNNNNNNN");
-            Navigator.pop(context);
+  buildShowObjectionDialog(BuildContext context) async {
+    return showDialog(context: context, builder: (context) {
+      return Dialog(
+        child: Container(
+          height: 150.0,
+          width: 50.0,
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Align(
+                  alignment: Alignment.topRight,
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Icon(Icons.close),
+                      ))),
+              // Text("Mark As Delivered"),
+              TextButton(onPressed: () async {
+                await _markAsDeliveredHandler();
+                await orderSearchHistoryHandler(context, "");
+                Navigator.pop(context);
+                setState(() {});
+              }, child: Text("Mark As Delivered")),
+              TextButton(onPressed: () {
+                NavigationServices.goNextAndKeepHistory(
+                    context: context,
+                    widget: ObjectionScreen(
 
-            setState(() {
-
-            });
-
-          }, child: Text("Mark As Delivered")),
-          TextButton(onPressed: (){
-            NavigationServices.goNextAndKeepHistory(
-                context: context,
-                widget:ObjectionScreen(
-
-                  orderId: widget.order.orderId!,
+                      orderId: widget.order.orderId!,
 
 
+                    ));
+              }, child: Text("Create Objection")),
 
-                ));
-          }, child: Text("Create Objection")),
-
-        ],
-      ),
+            ],
           ),
-        );
+        ),
+      );
     });
-}
+  }
 }
