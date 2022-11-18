@@ -26,10 +26,10 @@ class Level {
   String? name;
   int? tenantId;
   Null? tenant;
-  Null? createdBy;
+  String? createdBy;
   String? createdDate;
-  Null? updatedBy;
-  Null? updatedDate;
+  String? updatedBy;
+  String? updatedDate;
 
   Level(
       {this.levelId,

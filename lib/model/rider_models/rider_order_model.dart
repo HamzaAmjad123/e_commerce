@@ -84,20 +84,20 @@ class RiderOrdersModel {
 
 class Dealer {
   int? id;
-  Null? username;
-  Null? email;
-  Null? password;
-  Null? role;
-  Null? phoneNumber;
-  Null? about;
-  Null? imageUrl;
-  Null? name;
-  Null? tenantId;
-  Null? warehouseId;
-  Null? aqmId;
-  Null? rmsId;
-  Null? asmId;
-  Null? meId;
+  String? username;
+  String? email;
+  String? password;
+  String? role;
+  String? phoneNumber;
+  String? about;
+  String? imageUrl;
+  String? name;
+  int? tenantId;
+  String? warehouseId;
+  int? aqmId;
+  int? rmsId;
+  int? asmId;
+  int? meId;
 
   Dealer(
       {this.id,

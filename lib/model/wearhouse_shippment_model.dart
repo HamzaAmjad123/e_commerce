@@ -28,10 +28,10 @@ class WearHouseShipment {
   int? warehouseId;
   Warehouse? warehouse;
   int? tenantId;
-  Null? createdBy;
+  String? createdBy;
   String? createdDate;
-  Null? updatedBy;
-  Null? updatedDate;
+  String? updatedBy;
+  String? updatedDate;
 
   WearHouseShipment(
       {this.cargoId,

@@ -41,6 +41,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   }
 
   TextEditingController _searchCont = TextEditingController();
+  bool enableSearch=false;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +78,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 child: TextField(
                   controller: _searchCont,
                   onSubmitted: (value) {
+
                     orderSearchHistoryHandler(context, _searchCont.text ?? "");
+                    enableSearch=true;
+                    setState(() {
+
+                    });
+
                   },
                   decoration: InputDecoration(
 
@@ -91,9 +98,20 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
                           borderSide: BorderSide(color: bgColor, width: 1.3)),
-                      suffixIcon: Icon(
-                        Icons.search,
-                        color: bgColor,
+                      suffixIcon: IconButton(
+                        onPressed: (){
+                          enableSearch?orderSearchHistoryHandler(context,""):orderSearchHistoryHandler(context, _searchCont.text ?? "");
+
+                          enableSearch=!enableSearch;
+                          setState(() {
+
+                          });
+                        },
+                        icon:Icon(
+                          enableSearch?Icons.close:Icons.search,
+                          color: bgColor,
+
+                        )
                       )),
                 ),
               ),

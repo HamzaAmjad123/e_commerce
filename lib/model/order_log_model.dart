@@ -6,19 +6,19 @@ class OrderLogModel {
   String? dealerSign;
   String? deliveredBySign;
   bool? isVerifiedByGatePassUser;
-  Null? gatePassUserId;
+  int? gatePassUserId;
   Null? gatePassUser;
-  Null? warehouseId;
+  int? warehouseId;
   Null? warehouse;
-  Null? deliverById;
-  Null? deliverBy;
+  int? deliverById;
+  String? deliverBy;
   int? orderId;
   Null? order;
   int? tenantId;
   String? createdBy;
   String? createdDate;
-  Null? updatedBy;
-  Null? updatedDate;
+  String? updatedBy;
+  String? updatedDate;
 
   OrderLogModel(
       {this.deliveryLogId,

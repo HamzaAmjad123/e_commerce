@@ -28,8 +28,8 @@ class SelectAmount {
   int? tenantId;
   String? createdBy;
   String? createdDate;
-  Null? updatedBy;
-  Null? updatedDate;
+  String? updatedBy;
+  String? updatedDate;
 
   SelectAmount(
       {this.paymentMethodId,

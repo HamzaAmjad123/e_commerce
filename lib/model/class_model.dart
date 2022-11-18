@@ -26,10 +26,10 @@ class Classes {
   String? name;
   int? tenantId;
   Null? tenant;
-  Null? createdBy;
+  String? createdBy;
   String? createdDate;
-  Null? updatedBy;
-  Null? updatedDate;
+  String? updatedBy;
+  String? updatedDate;
 
   Classes(
       {this.levelId,
