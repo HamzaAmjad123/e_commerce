@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:e_commerce/configs/api_urls.dart';
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
@@ -8,12 +10,13 @@ import 'package:e_commerce/screens/Dealer/home/dashboard_screen.dart';
 import 'package:e_commerce/screens/Auth/login_screen.dart';
 import 'package:e_commerce/screens/Dealer/home/dashboard_screens/approved_orders.dart';
 import 'package:e_commerce/screens/Dealer/payment/send_amount_screen.dart';
+import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../helper_widgets/drawer_item_card.dart';
 import '../../../model/user_model.dart';
-import '../../../service/local_storage_service.dart';
 import '../../Rider/widget/approved_widget.dart';
 import '../../Rider/widget/history_widget.dart';
 import '../generate_order/generate_order_screen.dart';
@@ -27,12 +30,19 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+
+   UserResponseModel user=UserResponseModel();
+  String url="";
+  @override
+  void initState() {
+    // TODO: implement initState
+    initMethod();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    String role=Provider.of<UserDataProvider>(context, listen: false).user!.userRoles![0];
-    String url=Provider.of<UserDataProvider>(context,listen: false).user!.tenant!.logoUrl??"";
-    UserModel usermodels = UserModel.fromJson(box.read('user'));
+
+
     return Drawer(
       child:
       ListView(children: [
@@ -46,14 +56,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 height: 55,
                 width: 70,
                 margin: EdgeInsets.only(top: 10),
-                child: url.isEmpty?Image.asset("image/logo.png",fit: BoxFit.fill,):Image.network("$baseUrl"+url,fit: BoxFit.fill,),
+                child: url.isEmpty?Image.asset("assets/image/logo.png",fit: BoxFit.fill,):Image.network("$baseUrl"+url,fit: BoxFit.fill,),
               ),
               SizedBox(
                 height: 15,
               ),
-              Text(usermodels.name!, style: titleStyle),
+              Text(user.user!.userName??"", style: titleStyle),
               SizedBox(height: 3),
-              Text(usermodels.email!, style: oderNoStyle),
+              Text(user.user!.email??"", style: oderNoStyle),
               SizedBox(
                 height: 10,
               ),
@@ -75,7 +85,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ],
           ),
         ),
-        role=="Dealer"?Column(
+        user.userRoles![0]=="Dealer"?Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -120,7 +130,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               icon: Icons.account_balance_wallet_outlined,
               text: "Send Cash",
               onTap: () {
-                if(role=="Dealer"){
+                if(user.userRoles![0]=="Dealer"){
                   Navigator.pop(context);
                   NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen());
                 }else{
@@ -171,8 +181,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
           isLogout: true,
           text: "Logout",
           onTap: () async {
-            Navigator.pop(context);
-            await box.remove('user');
+            SharedPreferences pref=await SharedPreferences.getInstance();
+            pref.clear();
             // await LocalStorageServices().saveUser(false);
             NavigationServices.goNextAndDoNotKeepHistory(
                 context: context, widget: LoginScreen());
@@ -197,5 +207,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
       //     ),
       //   )
     );
+  }
+  initMethod()async{
+    user=await getUser();
+    print(user.user!.toJson().toString());
+    print(user.user!.imageUrl);
+    url=user.user!.imageUrl??"";
+    setState(() {});
   }
 }

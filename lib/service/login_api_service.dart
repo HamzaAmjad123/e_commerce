@@ -28,7 +28,8 @@ class LoginApiService {
         Provider.of<UserDataProvider>(context, listen: false)
             .updateUserData(newUser: user);
         await LocalStorageServices().saveToken("${user.token}");
-        LocalStorageServices().saveUser(true);
+        await  LocalStorageServices().saveUser(jsonEncode(user.toJson()));
+
         final box = GetStorage();
         box.write('user', user.user!.toJson());
 

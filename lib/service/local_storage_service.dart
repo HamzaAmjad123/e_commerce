@@ -14,15 +14,17 @@ class LocalStorageServices{
   }
 
 
-  Future saveUser(bool isLogin)async{
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    pref.setBool('isLogin', isLogin);
-    return  true;
-  }
-  Future getUser()async{
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    return pref.getBool('isLogin');
 
+  Future saveUser(String user)async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    prefs.setString('user', user);
+    return true;
 }
+Future getUser()async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    String? user=await prefs.getString('user');
+    return  user;
+}
+
 
 }

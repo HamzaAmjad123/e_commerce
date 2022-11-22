@@ -1,8 +1,13 @@
 
 
+import 'dart:convert';
+
+import 'package:e_commerce/service/local_storage_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../model/user_model.dart';
 
 class Methods{
   getFormatedDate(_date) {
@@ -83,4 +88,17 @@ class Methods{
   //         ),
   //       ));
   // }
+
+}
+
+getUser()async{
+  String getUser=await LocalStorageServices().getUser();
+  return UserResponseModel.fromJson(jsonDecode(getUser));
+}
+
+getUserId()async{
+  String getUser=await LocalStorageServices().getUser();
+  UserResponseModel user= UserResponseModel.fromJson(jsonDecode(getUser));
+   int id=user.user!.tenantId!;
+   return id;
 }

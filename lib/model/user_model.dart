@@ -20,7 +20,7 @@ class UserResponseModel {
     user = json['user'] != null ? new UserModel.fromJson(json['user']) : null;
     tenant =
     json['tenant'] != null ? new Tenant.fromJson(json['tenant']) : null;
-    userRoles = json['userRoles'].cast<String>();
+    userRoles = json['userRoles'].map<String>((v)=> v.toString()).toList();
     status = json['status'];
   }
 
