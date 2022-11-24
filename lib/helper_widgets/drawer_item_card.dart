@@ -46,8 +46,8 @@ class DrawerLinkWidget extends StatelessWidget {
             ),
             Container(
               width: 30,
-
-              child: isLogout?SizedBox():IconButton(
+              child: isLogout?SizedBox():
+              IconButton(
                 onPressed: onTap,
                 icon:Icon( Icons.arrow_forward_ios_outlined,color: Colors.grey,size: 14,),
               ),

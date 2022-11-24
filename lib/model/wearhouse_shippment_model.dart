@@ -7,7 +7,7 @@ class WearHouseShipmentModel {
     if (json['result'] != null) {
       result = <WearHouseShipment>[];
       json['result'].forEach((v) {
-        result!.add(new WearHouseShipment.fromJson(v));
+        result!.add(new WearHouseShipment.fromJson(v),);
       });
     }
   }

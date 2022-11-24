@@ -31,6 +31,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   //   await DealerHistoryService().getDelaerHistory(skip: 0, take: 1000,searchText: _searchCont.text??"",toDate: "",formDate: "", context: context);
   //   CustomLoader.hideLoader(context);
   // }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -42,6 +43,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
   TextEditingController _searchCont = TextEditingController();
   bool enableSearch=false;
+  int selectedIndex=0;
 
   @override
   Widget build(BuildContext context) {
@@ -118,24 +120,62 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
             ],
           ),
 
+
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0,bottom: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                    onTap: (){
+                      selectedIndex=0;
+                      setState(() {
+
+                      });
+                    },
+                    child: Text("Shipped Orders",style: TextStyle(color: selectedIndex==0?bgColor:blackColor,fontSize: selectedIndex==0?16.0:14.0,fontWeight: selectedIndex==0?FontWeight.bold:FontWeight.normal),)),
+                InkWell(
+                    onTap: (){
+                      selectedIndex=1;
+                      setState(() {
+
+                      });
+                    },
+                    child: InkWell(child: Text("Pending Orders",style: TextStyle(color: selectedIndex==1?bgColor:blackColor,fontSize: selectedIndex==1?16.0:14.0,fontWeight: selectedIndex==1?FontWeight.bold:FontWeight.normal),),))]),
+          ),
           Consumer<DealerHistoryProvider>(builder: (context, orders, _) {
-            return orders.history != null
-                ? ListView.builder(
+            return
+              selectedIndex==0?
+              ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: orders.history!.length,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext, index) {
-                  return OrderHistoryWidget(
+                  return orders.history![index].status==4?OrderHistoryWidget(
                     order: orders.history![index],
-                  );
-                })
-                : Container();
+                  ):SizedBox();
+                }):
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: orders.history!.length,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext, index) {
+                    return orders.history![index].status!=4?OrderHistoryWidget(
+                      order: orders.history![index],
+                    ):SizedBox();
+                  });
+
           }),
-        ],
-      ),
+
+            ],
+          )
+
     );
   }
+
 }
 
 class OrderHistoryWidget extends StatefulWidget {
@@ -224,7 +264,9 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
                         buildShowObjectionDialog(context);
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 5),
+                        margin: EdgeInsets.symmetric(horizontal:
+
+                        5),
                         height: 35,
                         width: 85,
                         padding: EdgeInsets.all(6),
@@ -238,8 +280,8 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Icon(Icons.location_on, color: bgColor, size: 18,),
-                            Text("Objection", style: TextStyle(
-                                fontSize: 12, color: bgColor),)
+                            Text("Action", style: TextStyle(
+                                fontSize: 14, color: bgColor),)
                           ],
                         ),
                       ),

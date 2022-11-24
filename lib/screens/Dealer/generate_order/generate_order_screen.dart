@@ -86,7 +86,11 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   int? selectedShipment;
   @override
   updateShipment(int value){
-    selectedShipment=value;
+    if(value!=-1){
+      selectedShipment=value;
+    }
+
+    print("Value $value");
   }
   bool shipment=false;
   getWearHouse() async {
@@ -315,6 +319,7 @@ int selectedClassColor=-1;
                         onChanged:(int? newValue){
                           if(updateShipment!=null)
                             updateShipment(newValue!);
+
                           cargoSelect=true;
                           setState((){});
                         }
@@ -440,7 +445,7 @@ int selectedClassColor=-1;
         } else if (last == element.id && !select) {
           sum = sum + 1;
           temporary_list.add(CartModel(
-            items.image!,
+            items.image??"",
               items.unitDiscountPercentage!,
               items.unitPrice!,
               items.name!,

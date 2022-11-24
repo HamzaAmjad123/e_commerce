@@ -14,6 +14,7 @@ import 'dart:ui' as ui;
 
 import '../../configs/text_style.dart';
 import '../../helper_widgets/custom_button.dart';
+import '../../utils/functions.dart';
 
 class OrderIsDelivered extends StatefulWidget {
   final RiderOrdersModel? order;
@@ -47,7 +48,8 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   FocusNode _detailsFocus=FocusNode();
   @override
   void initState() {
-    usermodels = UserModel.fromJson(box.read('user'));
+
+    initMethod();
     // TODO: implement initState
     super.initState();
   }
@@ -380,4 +382,11 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
   //   day = dates.day;
   //   time = DateFormat('hh:mm a').format(dates);
   // }
+initMethod()async{
+    UserResponseModel user=await getUser();
+    usermodels=user.user;
+    setState(() {
+
+    });
+}
 }

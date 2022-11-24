@@ -1,18 +1,12 @@
-
-import 'dart:convert';
-
 import 'package:e_commerce/configs/api_urls.dart';
-import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/provider/user_data_provider.dart';
 import 'package:e_commerce/screens/Dealer/home/dashboard_screen.dart';
 import 'package:e_commerce/screens/Auth/login_screen.dart';
-import 'package:e_commerce/screens/Dealer/home/dashboard_screens/approved_orders.dart';
 import 'package:e_commerce/screens/Dealer/payment/send_amount_screen.dart';
 import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../helper_widgets/drawer_item_card.dart';
@@ -31,8 +25,12 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
 
-   UserResponseModel user=UserResponseModel();
+   UserResponseModel? userResponseModel;
+   UserModel? user;
   String url="";
+  String name="";
+  String email="";
+  String role="";
   @override
   void initState() {
     // TODO: implement initState
@@ -41,8 +39,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
   @override
   Widget build(BuildContext context) {
-
-
     return Drawer(
       child:
       ListView(children: [
@@ -54,16 +50,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
             children: [
               Container(
                 height: 55,
-                width: 70,
                 margin: EdgeInsets.only(top: 10),
                 child: url.isEmpty?Image.asset("assets/image/logo.png",fit: BoxFit.fill,):Image.network("$baseUrl"+url,fit: BoxFit.fill,),
               ),
               SizedBox(
                 height: 15,
               ),
-              Text(user.user!.userName??"", style: titleStyle),
+              Text(name, style: titleStyle),
               SizedBox(height: 3),
-              Text(user.user!.email??"", style: oderNoStyle),
+              Text(email, style: oderNoStyle),
               SizedBox(
                 height: 10,
               ),
@@ -85,7 +80,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ],
           ),
         ),
-        user.userRoles![0]=="Dealer"?Column(
+        role=="Dealer"?Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -98,11 +93,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 NavigationServices.goNextAndDoNotKeepHistory(
                     context: context,
                     widget: DashBoardScreen(
-                        tenatId:
-                        Provider.of<UserDataProvider>(context, listen: false)
-                            .user!
-                            .user!
-                            .tenantId!));
+                        tenatId:userResponseModel!.user!.tenantId!));
                 setState(() {});
               },
             ),
@@ -130,12 +121,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
               icon: Icons.account_balance_wallet_outlined,
               text: "Send Cash",
               onTap: () {
-                if(user.userRoles![0]=="Dealer"){
                   Navigator.pop(context);
                   NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen());
-                }else{
-                  print("noithing");
-                }
               },
             ),
           ],
@@ -189,30 +176,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
           },
         ),
       ]),
-
-      // } else {
-      //   return SizedBox(height: 0);
-      // }
-
-      // if (Get.find<SettingsService>().setting.value.enableVersion)
-      //   ListTile(
-      //     dense: true,
-      //     title: Text(
-      //       "Version".tr + " " + Get.find<SettingsService>().setting.value.appVersion,
-      //       style: Get.textTheme.caption,
-      //     ),
-      //     trailing: Icon(
-      //       Icons.remove,
-      //       color: Get.theme.focusColor.withOpacity(0.3),
-      //     ),
-      //   )
     );
   }
   initMethod()async{
-    user=await getUser();
-    print(user.user!.toJson().toString());
-    print(user.user!.imageUrl);
-    url=user.user!.imageUrl??"";
+    userResponseModel=await getUser();
+    user=userResponseModel!.user;
+    // print(user);
+    // print(user!.imageUrl);
+    // print(user!.name);
+    // print(user!.email);
+    // print(userResponseModel!.userRoles![0]);
+    url=user!.imageUrl??"";
+    name=user!.name!;
+    email=user!.email!;
+    role=userResponseModel!.userRoles![0];
     setState(() {});
   }
 }

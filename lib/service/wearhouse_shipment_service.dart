@@ -14,10 +14,31 @@ class WearHouseShipmentService{
       Map _body={"id":wearHouseId};
       var res=await  PostRequestService().httpPostRequest(url: getShipmentUrl, body: _body, context: context);
       if(res!=null){
+        List<WearHouseShipment> shipment=[];
+
+
         WearHouseShipmentModel wearHouseShipment=WearHouseShipmentModel.fromJson(res);
+        if(wearHouseShipment.result!.isNotEmpty){
+          shipment.add(WearHouseShipment(
+            cargoId: -1,
+            name: "[-- Please Select --]",
+            createdBy: "",
+            createdDate: "",
+            detail: "",
+            tenantId: 1,
+            updatedBy: "",
+            updatedDate: "",
+            warehouse: null,
+            warehouseId: 1,
+          ));
+        }
+        for (var k in wearHouseShipment.result!) {
+          shipment.add(k);
+        }
         Provider.of<WearHouseShipmentProvider>(context,listen: false).updateShipment(
-          newShipment: wearHouseShipment.result
+          newShipment: shipment
         );
+
         return true;
       }
       else{
