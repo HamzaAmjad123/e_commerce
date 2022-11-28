@@ -51,11 +51,13 @@ class Items {
   Warehouse? warehouse;
   int? tenantId;
   Null? rankingColor;
+  int? qty = 0;
 
   Items({this.itemId, this.name, this.seriesId, this.series, this.unitDiscountPercentage,
   this.unitPrice, this.slogan, this.code, this.availableStock, this.isApproved, this.approvedBy,
   this.image, this.address, this.cityId, this.rankId, this.rank, this.status, this.languageId,
-  this.classId, this.classModel, this.itemTypeId, this.itemType, this.warehouseId, this.warehouse, this.tenantId, this.rankingColor});
+  this.classId, this.classModel, this.itemTypeId, this.itemType, this.warehouseId, this.warehouse, this.tenantId, this.rankingColor,this.qty});
+  static List<Items> d1() => [];
 
   Items.fromJson(Map<String, dynamic> json) {
   itemId = json['itemId'];
@@ -89,39 +91,7 @@ class Items {
   Map<String, dynamic> toJson() {
   final Map<String, dynamic> data = new Map<String, dynamic>();
   data['itemId'] = this.itemId;
-  data['name'] = this.name;
-  data['seriesId'] = this.seriesId;
-  if (this.series != null) {
-  data['series'] = this.series!.toJson();
-  }
-  data['unitDiscountPercentage'] = this.unitDiscountPercentage;
-  data['unitPrice'] = this.unitPrice;
-  data['slogan'] = this.slogan;
-  data['code'] = this.code;
-  data['availableStock'] = this.availableStock;
-  data['isApproved'] = this.isApproved;
-  data['approvedBy'] = this.approvedBy;
-  data['image'] = this.image;
-  data['address'] = this.address;
-  data['cityId'] = this.cityId;
-  data['rankId'] = this.rankId;
-  data['rank'] = this.rank;
-  data['status'] = this.status;
-  data['languageId'] = this.languageId;
-  data['classId'] = this.classId;
-  if (this.classModel != null) {
-  data['class'] = this.classModel!.toJson();
-  }
-  data['itemTypeId'] = this.itemTypeId;
-  if (this.itemType != null) {
-  data['itemType'] = this.itemType!.toJson();
-  }
-  data['warehouseId'] = this.warehouseId;
-  if (this.warehouse != null) {
-  data['warehouse'] = this.warehouse!.toJson();
-  }
-  data['tenantId'] = this.tenantId;
-  data['rankingColor'] = this.rankingColor;
+  data['qty'] = this.qty;
   return data;
   }
 }

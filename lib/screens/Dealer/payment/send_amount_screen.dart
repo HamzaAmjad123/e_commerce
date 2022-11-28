@@ -2,12 +2,15 @@ import 'dart:io';
 import 'package:e_commerce/configs/color.dart';
 import 'package:e_commerce/helper_services/custom_loader.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
+import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/provider/cash_book_provider.dart';
 import 'package:e_commerce/provider/home_dashboard_provider.dart';
 import 'package:e_commerce/provider/select_amount_provider.dart';
+import 'package:e_commerce/screens/Dealer/home/dashboard_screen.dart';
 import 'package:e_commerce/service/cash_book_service.dart';
 import 'package:e_commerce/service/select_amount_service.dart';
 import 'package:e_commerce/service/send_payment_service.dart';
+import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -68,9 +71,8 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
 
   _sendPaymentHandler()async{
     CustomLoader.showLoader(context: context);
-    await SendPaymentService().sendPayment(context: context, total: _amountCont.text, receivedType: selectedAmount!, details: _detailsCont.text, image: Bytes, receiverName: _nameCont.text);
+   var res= await SendPaymentService().sendPayment(context: context, total: _amountCont.text, receivedType: selectedAmount!, details: _detailsCont.text, image: Bytes, receiverName: _nameCont.text);
     CustomLoader.hideLoader(context);
-
   }
   @override
   Widget build(BuildContext context) {
@@ -261,11 +263,16 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
           width:double.infinity,
           horizontalMargin: 25.0,
           onTap: () async{
-            setState(() {});
+
             if(validation()){
+              setState(() {});
               await _convertImageIntoBytes();
               await _sendPaymentHandler();
-              Navigator.pop(context);
+              // Navigator.pop(context);
+              int i=await getUserId();
+              NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: DashBoardScreen(tenatId: i));
+
+
             }
           },
         ),
@@ -417,6 +424,9 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
       return true;
     }
   }
+
+
+
 
 
 }

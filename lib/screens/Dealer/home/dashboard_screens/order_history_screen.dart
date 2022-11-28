@@ -60,7 +60,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                     .of(context)
                     .size
                     .height * 0.13,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: bgColor,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(40),
@@ -146,27 +146,29 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           ),
           Consumer<DealerHistoryProvider>(builder: (context, orders, _) {
             return
-              selectedIndex==0?
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: orders.history!.length,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext, index) {
-                  return orders.history![index].status==4?OrderHistoryWidget(
-                    order: orders.history![index],
-                  ):SizedBox();
-                }):
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: orders.history!.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext, index) {
-                    return orders.history![index].status!=4?OrderHistoryWidget(
-                      order: orders.history![index],
-                    ):SizedBox();
-                  });
+             orders.history !=null? selectedIndex==0?
+             ListView.builder(
+                 physics: NeverScrollableScrollPhysics(),
+                 itemCount: orders.history!.length,
+                 scrollDirection: Axis.vertical,
+                 shrinkWrap: true,
+                 itemBuilder: (BuildContext, index) {
+                   return orders.history![index].status==4?OrderHistoryWidget(
+                     order: orders.history![index],
+                   ):SizedBox();
+                 }):
+             ListView.builder(
+                 physics: NeverScrollableScrollPhysics(),
+                 itemCount: orders.history!.length,
+                 scrollDirection: Axis.vertical,
+                 shrinkWrap: true,
+                 itemBuilder: (BuildContext, index) {
+                   return orders.history![index].status!=4?OrderHistoryWidget(
+                     order: orders.history![index],
+                   ):SizedBox();
+                 }):Container(
+               child: Text("No Record"),
+             );
 
           }),
 
@@ -211,7 +213,7 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("PKR" + "${widget.order.totalAmount}", style: TextStyle(
+              Text("PKR" + "${widget.order.totalAmount}", style: const TextStyle(
                   color: bgColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 14.0),),
@@ -373,10 +375,7 @@ class _OrderHistoryWidgetState extends State<OrderHistoryWidget> {
                 NavigationServices.goNextAndKeepHistory(
                     context: context,
                     widget: ObjectionScreen(
-
                       orderId: widget.order.orderId!,
-
-
                     ));
               }, child: Text("Create Objection")),
 

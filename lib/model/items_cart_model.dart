@@ -5,16 +5,18 @@ class CartModel {
   String? image;
   String? serires;
   int id;
+  int availeableStock;
   int qty = 0;
   CartModel(
       this.image,
-      this.discount, this.unitprice, this.name, this.id, this.qty,this.serires);
+      this.discount, this.unitprice, this.name, this.id, this.qty,this.serires,this.availeableStock);
   static List<CartModel> d1() => [];
 
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
       json['image'],
       json['price'],
+      json['availeableStock'],
       json['name'],
       json['serires'],
       json['id'],

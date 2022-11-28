@@ -1,5 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:e_commerce/configs/text_style.dart';
+import 'package:e_commerce/helper_services/custom_snackbar.dart';
+import 'package:e_commerce/helper_widgets/custom_button.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:e_commerce/provider/items_provider.dart';
 import 'package:e_commerce/screens/Dealer/generate_order/widget/cart_widget.dart';
@@ -49,36 +51,21 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   bool seriesSelected = false;
   int? selectedCat;
   int selectedClass=-1;
-
-  @override
-  void updateCat(int value) {
-    setState(() {
-      selectedCat = value;
-    });
-  }
-
-  int? selectedLevel;
-
-  @override
-  void updateLevel(int value) {
-    setState(() {
-      selectedLevel = value;
-    });
-  }
-
+  int selectedClassColor=-1;
   int? selectSeries;
-
   @override
   void updateSeries(int value) {
     selectSeries = value;
-    print("series value");
-    print(selectSeries);
+    selectedClass=-1;
+    selectedClassColor=-1;
     setState(() {});
   }
   int? selectedWearHouse;
   @override
   void updateWearHouse(int value) {
     setState(() {
+      selectedClass=-1;
+      selectedClassColor=-1;
       selectedWearHouse = value;
     });
   }
@@ -141,11 +128,6 @@ getShipment(int wearHouseId)async{
     });
     super.initState();
   }
-
-
-
-int selectedClassColor=-1;
-
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -358,7 +340,6 @@ int selectedClassColor=-1;
                                   return InkWell(
                                     onTap: ()async{
                                       items_list=[];
-
                                       _getAllItems(selectedWearHouse!,classes.myClass![index].levelId!);
                                       selectedClassColor=index;
                                       selectedClass=classes.myClass![index].levelId!;
@@ -451,7 +432,8 @@ int selectedClassColor=-1;
               items.name!,
               items.itemId!,
               1,
-            items.series!.name!
+            items.series!.name!,
+            items.availableStock!
           ));
         }
       }
@@ -467,7 +449,8 @@ int selectedClassColor=-1;
           items.name!,
           items.itemId!,
           1,
-          items.series!.name!
+          items.series!.name!,
+          items.availableStock!
       ));
     }
     cart.addAll(temporary_list);
@@ -588,16 +571,16 @@ int selectedClassColor=-1;
                             visibility[index]=true;
                             setState(() {});
                           },
-                          onChange: (value){
-                            // cont[index].text=value;
-                          },
-                          onSubmit: (value){
-                            cont[index].text=value;
-                          },
                           iconTap: (){
-                            cart[index].qty=int.parse(cont[index].text);
-                            visibility[index]=false;
-                            cartTotal = getItemTotal(cart);
+                            if(int.parse(cont[index].text)<cart[index].availeableStock){
+                              cart[index].qty=int.parse(cont[index].text);
+                              visibility[index]=false;
+                              cartTotal = getItemTotal(cart);
+                            }else{
+                              buildStockLimitDialog(context,cart[index].availeableStock);
+                             CustomSnackBar.failedSnackBar(context: context, message: "Added Qty is Greater then Stock Limit");
+
+                            }
                             setState(() {});
                           },
                           deleteTap: (){
@@ -640,18 +623,18 @@ int selectedClassColor=-1;
 
   _saveOrder() async {
     print(cargoSelect);
-    bool res =
-        await SaveOrderServices().SaveOrder(context: context, list: cart,wearHouseId: selectedWearHouse!,cargoId: selectedShipment??0,value: cargoSelect);
-    if (res == true) {
-      clearCart();
-      NavigationServices.goNextAndDoNotKeepHistory(
-          context: context,
-          widget: BookSuccess(
-              message: Provider.of<SaveOrderProvider>(context, listen: false)
-                  .message,
-              orderId: Provider.of<SaveOrderProvider>(context, listen: false)
-                  .orderId));
-    }
+    // bool res =
+    //     await SaveOrderServices().SaveOrder(context: context, list: cart,wearHouseId: selectedWearHouse!,cargoId: selectedShipment??0,value: cargoSelect);
+    // if (res == true) {
+    //   clearCart();
+    //   NavigationServices.goNextAndDoNotKeepHistory(
+    //       context: context,
+    //       widget: BookSuccess(
+    //           message: Provider.of<SaveOrderProvider>(context, listen: false)
+    //               .message,
+    //           orderId: Provider.of<SaveOrderProvider>(context, listen: false)
+    //               .orderId));
+    // }
   }
 
 
@@ -670,5 +653,78 @@ int selectedClassColor=-1;
     sum = 0;
     cart.clear();
     dt.clear();
+  }
+  buildStockLimitDialog(BuildContext context,int qnt) async {
+    return showDialog(context: context, builder: (context) {
+      return Dialog(
+
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0)
+        ),
+        child: SizedBox(
+          height: 120,
+          width: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+
+                alignment: Alignment.center
+                ,
+              decoration: BoxDecoration(
+                  color: redColor,
+             borderRadius: BorderRadius.only(topRight: Radius.circular(10.0),
+
+               topLeft: Radius.circular(10.0)
+             )
+              ),
+                height: 30.0,
+
+
+                child: Text("Error !",style: barStyle,),
+              ),
+           Container(
+             alignment: Alignment.center,
+             padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 8.0),
+             child: Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+                 Text("Added Qty is greater than Stock Limit",style: titleStyle,textAlign: TextAlign.center,
+                 ),
+                 // Text("Available Qty is ",style: lightBlackStyle,textAlign: TextAlign.center,
+                 // ),
+                 RichText(text: TextSpan(
+                   text: "Available Qty is:  ",style: lightBlackStyle,
+                   children: [
+                     TextSpan(
+                       text: "$qnt",style: rsStyle
+                     )
+                   ]
+                 ))
+               ],
+             ),
+           ),
+
+             Align(
+                 alignment: Alignment.bottomRight,
+                 child: InkWell(
+                     onTap: (){
+                       Navigator.pop(context);
+                       setState(() {
+
+                       });
+                     },
+                     child: Padding(
+                       padding: const EdgeInsets.symmetric(horizontal:13.0),
+                       child: Text("Ok",style: TextStyle(color: Colors.green,fontSize: 18.0,fontWeight: FontWeight.bold),),
+                     ))),
+
+            ],
+          ),
+        )
+      );
+    });
   }
 }

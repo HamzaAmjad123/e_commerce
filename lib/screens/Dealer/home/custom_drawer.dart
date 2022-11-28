@@ -121,7 +121,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               icon: Icons.account_balance_wallet_outlined,
               text: "Send Cash",
               onTap: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
                   NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen());
               },
             ),
