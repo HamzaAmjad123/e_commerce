@@ -1,4 +1,3 @@
-
 const String baseUrl="https://pos.impliessolutions.com/";
 // const String baseUrl="https://cantabdealersautomation.com/";
 const String loginUrl=baseUrl + "api/Authenticate/login";

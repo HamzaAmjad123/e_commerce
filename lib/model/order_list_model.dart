@@ -38,6 +38,7 @@ class OrderList {
   Null? warehouse;
   int? tenantId;
   Null? orderLines;
+  String? cargoReciptImage;
 
   OrderList(
       {this.orderId,
@@ -52,7 +53,9 @@ class OrderList {
         this.warehouseId,
         this.warehouse,
         this.tenantId,
-        this.orderLines});
+        this.orderLines,
+        this.cargoReciptImage,
+      });
 
   OrderList.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -69,6 +72,7 @@ class OrderList {
     warehouse = json['warehouse'];
     tenantId = json['tenantId'];
     orderLines = json['orderLines'];
+    cargoReciptImage = json['cargoReciptImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,6 +92,7 @@ class OrderList {
     data['warehouse'] = this.warehouse;
     data['tenantId'] = this.tenantId;
     data['orderLines'] = this.orderLines;
+    data['cargoReciptImage'] = this.cargoReciptImage;
     return data;
   }
 }

@@ -10,8 +10,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:provider/provider.dart';
 import '../../model/user_model.dart';
 import 'package:open_file/open_file.dart';
+
+import '../provider/home_dashboard_provider.dart';
 
 class CustomRow {
   final String date;
@@ -26,11 +29,12 @@ class PdfInvoiceService {
   final box = GetStorage();
   UserModel? usermodels;
 
+
   PdfInvoiceService() {
     usermodels = UserModel.fromJson(box.read('user'));
   }
 
-  Future<Uint8List> createInvoice(List<LedgerDetails>? ledgerDetails) async {
+  Future<Uint8List> createInvoice(List<LedgerDetails>? ledgerDetails,String? fromDate, String? toDate,BuildContext ctx) async {
     final pdf = pw.Document();
 
     final List<CustomRow> elements = [
@@ -73,7 +77,7 @@ class PdfInvoiceService {
                       pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.start,
                         children: [
-                          pw.Text("16th-july-22",
+                          pw.Text(Methods().invoiceDate(fromDate),
                               style: pw.TextStyle(
                                 fontSize: 12,
                                 fontWeight: pw.FontWeight.normal,
@@ -87,7 +91,7 @@ class PdfInvoiceService {
                                 color: PdfColor.fromInt(0x000000),
                               )),
                           pw.SizedBox(width: 5),
-                          pw.Text("3rd-Oct-22",
+                          pw.Text(Methods().invoiceDate(toDate),
                               style: pw.TextStyle(
                                 fontSize: 12,
                                 fontWeight: pw.FontWeight.normal,
@@ -115,7 +119,7 @@ class PdfInvoiceService {
                                   fontWeight: pw.FontWeight.normal,
                                   color: PdfColor.fromInt(0x000000),
                                 )),
-                            pw.Text("RS 422,500",
+                            pw.Text(Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalAmount.toString(),
                                 style: pw.TextStyle(
                                   fontSize: 12,
                                   fontWeight: pw.FontWeight.normal,
@@ -137,7 +141,7 @@ class PdfInvoiceService {
                                   fontWeight: pw.FontWeight.normal,
                                   color: PdfColor.fromInt(0x000000),
                                 )),
-                            pw.Text("RS 342,628",
+                            pw.Text(Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalPaid.toString(),
                                 style: pw.TextStyle(
                                   fontSize: 12,
                                   fontWeight: pw.FontWeight.normal,
@@ -159,7 +163,7 @@ class PdfInvoiceService {
                                   fontWeight: pw.FontWeight.normal,
                                   color: PdfColor.fromInt(0x000000),
                                 )),
-                            pw.Text("RS 59,872",
+                            pw.Text(Provider.of<HomeDashboardProvider>(ctx,listen: false).dashboard!.revenueData!.totalRemaining.toString(),
                                 style: pw.TextStyle(
                                   fontSize: 12,
                                   fontWeight: pw.FontWeight.normal,

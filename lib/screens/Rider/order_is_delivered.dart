@@ -137,7 +137,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Order No :", style:creditStyle),
+                        Text("Order No :", style:ordersStyle),
                         SizedBox(width: 12.0,),
                         Text(widget.orderNo,style: cashStyle,),
                       ],
@@ -160,7 +160,7 @@ class _OrderIsDeliveredState extends State<OrderIsDelivered> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("No Of Bags :", style:creditStyle),
+                        Text("No Of Bags :", style:ordersStyle),
                         SizedBox(width: 12.0,),
                         Text(widget.noOfBags.toString(),style: cashStyle,),
                       ],

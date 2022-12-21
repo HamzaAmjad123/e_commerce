@@ -15,21 +15,17 @@ class PostRequestService{
     try {
       late var headers;
       if (url == "$baseUrl"+"api/Authenticate/login") {
+
         headers = {
           "Content-Type": "application/json; charset=utf-8",
         };
       } else {
         String token = await LocalStorageServices().getToken()??"";
-        print("token  $token");
         headers = {
           "Content-Type": "application/json; charset=utf-8",
           "authorization": "Bearer $token"
         };
       }
-      print("headerss");
-      print(headers);
-      print("bbbbbbbbby");
-      print(json.encode(body));
       http.Response response = await http.post(Uri.parse(url),
           body: json.encode(body), headers: headers);
 
@@ -37,13 +33,12 @@ class PostRequestService{
       log("post request body ${response.body}");
       var jsonDecoded = json.decode(response.body);
       // if(jsonDecoded ==null || jsonDecoded['status'] != 200){
-      if (jsonDecoded == null) {
-        // CustomSnackBar.failedSnackBar(
-        //     context: context, message: jsonDecoded['Message']);
+      if (jsonDecoded == null ) {
+        CustomSnackBar.failedSnackBar(
+            context: context, message: jsonDecoded['message']);
         return null;
       } else {
-        // CustomSnackBar.showSnackBar(
-        //     context: context, message: jsonDecoded['Message']);
+
         return jsonDecoded;
       }
     } catch (err) {
@@ -74,8 +69,6 @@ class PostRequestService1{
           "authorization": "Bearer $token"
         };
       }
-      print("bbbbbbbbbbbbbbbbbbb111111111111111111111111111");
-      print(json.encode(body));
       http.Response response = await http.post(Uri.parse(url),
           body: json.encode(body), headers: headers);
 

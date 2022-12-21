@@ -25,15 +25,27 @@ class Methods{
     return "${DateFormat.yMMMd().format(dates)}"+" ${DateFormat.jm().format(dates)}";
     // "   ${DateFormat.jm().format()}";
   }
+
+  String invoiceDate(var abc) {
+    var cdate=abc;
+    String month=cdate.toString().substring(0,2);
+    String date=cdate.toString().substring(3,5);
+    String year=cdate.toString().substring(6,10);
+    var temp="$year-$month-$date";
+    print("temppp $temp");
+
+    var inputFormat = DateFormat('yyyy-MM-dd');
+    var inputDate = inputFormat.parse(temp);
+    DateTime dates = DateTime.parse(temp);
+    return "${DateFormat.yMMMd().format(dates)}";
+    // "   ${DateFormat.jm().format()}";
+  }
     incrementDate(date) {
     var inputFormat = DateFormat('yyyy-MM-dd');
     var inputDate = inputFormat.parse(date+5);
     DateTime dates = DateTime.parse(date);
     int day=dates.day;
     String month = DateFormat('MMMM').format(dates);
-    print(day);
-    print(month);
-
     // "   ${DateFormat.jm().format()}";
   }
   String getTime({String separator = ":"}) {
@@ -46,49 +58,14 @@ class Methods{
     String month = DateFormat('MMMM').format(now);
     return month + " " + day.toString();
   }
-
-  // Future<bool?> popDialog() async {
-  //   return await showCupertinoModalPopup(
-  //       context: context,
-  //       builder: (context) => Padding(
-  //         padding:
-  //         const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-  //         child: Card(
-  //           shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.circular(10)),
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(8.0),
-  //             child: Column(mainAxisSize: MainAxisSize.min, children: [
-  //               SizedBox(
-  //                 height: 10,
-  //               ),
-  //               Text(
-  //                 'Do you want to close your application?',
-  //                 style:
-  //                 TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-  //               ),
-  //               Divider(),
-  //               Row(
-  //                 children: [
-  //                   TextButton(
-  //                       onPressed: () {
-  //                         Navigator.pop(context);
-  //                       },
-  //                       child: Text('No')),
-  //                   Spacer(),
-  //                   TextButton(
-  //                       onPressed: () {
-  //                         Navigator.of(context).pop(true);
-  //                       },
-  //                       child: Text('Yes')),
-  //                 ],
-  //               )
-  //             ]),
-  //           ),
-  //         ),
-  //       ));
-  // }
-
+}
+showImageDialog({required BuildContext context,required String url}){
+  print("cllllalsask  $url");
+  return showDialog(context: context, builder: (context){
+    return Dialog(
+      child: url.isEmpty?Image.asset("assets/image/book_placholder.jpg"):Image.network(url,fit: BoxFit.fill,),
+    );
+  });
 }
 
 getUser()async{

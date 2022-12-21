@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
-import 'package:e_commerce/helper_widgets/custom_button.dart';
+import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
 import 'package:e_commerce/model/items_cart_model.dart';
 import 'package:e_commerce/provider/items_provider.dart';
 import 'package:e_commerce/screens/Dealer/generate_order/widget/cart_widget.dart';
@@ -14,6 +14,7 @@ import '../../../configs/color.dart';
 import '../../../helper_services/custom_loader.dart';
 import '../../../helper_services/navigation_services.dart';
 import '../../../model/items_model.dart';
+import '../../../model/wearhouse_shippment_model.dart';
 import '../../../provider/class_provider.dart';
 import '../../../provider/save_order_provider.dart';
 import '../../../provider/series_provider.dart';
@@ -38,6 +39,7 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   bool show=false;
   bool cargoSelect=false;
   List<Items>? items_list=[];
+  List<WearHouseShipment>? shippedList=[];
   int sum = 0;
   GlobalKey<ScaffoldState> key = GlobalKey();
   final cart = CartModel.d1();
@@ -53,14 +55,17 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
   int selectedClass=-1;
   int selectedClassColor=-1;
   int? selectSeries;
+  int? selectedWearHouse;
   @override
   void updateSeries(int value) {
     selectSeries = value;
     selectedClass=-1;
     selectedClassColor=-1;
+    print("series select");
+      _getAllItems(0);
     setState(() {});
   }
-  int? selectedWearHouse;
+
   @override
   void updateWearHouse(int value) {
     setState(() {
@@ -76,36 +81,41 @@ class _GenerateOrderScreenState extends State<GenerateOrderScreen> {
     if(value!=-1){
       selectedShipment=value;
     }
-
     print("Value $value");
   }
   bool shipment=false;
   getWearHouse() async {
     CustomLoader.showLoader(context: context);
     await WearHouseService().getWearHouse(context: context);
-
     CustomLoader.hideLoader(context);
   }
 getShipment(int wearHouseId)async{
     CustomLoader.showLoader(context: context);
     await WearHouseShipmentService().getShipment(context: context, wearHouseId: wearHouseId);
-    print("WearHouse $wearHouseId");
+    shippedList=Provider.of<WearHouseShipmentProvider>(context,listen: false).shipment;
     CustomLoader.hideLoader(context);
-}
-  _getAllItems(int wearHouseId,int classId) async {
-    CustomLoader.showLoader(context: context);
-    await ItemsService().getAllItems(
-      context: context,
-      take: 1000,
-      skip: 0,
-        itemTypeId: 0,
-        seriesId:selectSeries??0,
-        warehouseId: wearHouseId,
-        classId: classId
-    );
-    items_list=Provider.of<ItemsProvider>(context,listen: false).itemsList;
     setState(() {});
-    CustomLoader.hideLoader(context);
+}
+  _getAllItems(int classId) async {
+    if(selectedWearHouse!=null){
+      CustomLoader.showLoader(context: context);
+      await ItemsService().getAllItems(
+          context: context,
+          take: 1000,
+          skip: 0,
+          itemTypeId: 0,
+          seriesId:selectSeries??0,
+          warehouseId: selectedWearHouse!,
+          searchText: _searchTextCont.text,
+          classId: classId
+      );
+      items_list=Provider.of<ItemsProvider>(context,listen: false).itemsList;
+      setState(() {});
+      CustomLoader.hideLoader(context);
+    }else{
+      CustomSnackBar.failedSnackBar(context: context, message: "please select WearHouse First");
+    }
+
   }
   getItems(int wearHouseId)async{
     CustomLoader.showLoader(context: context);
@@ -118,6 +128,7 @@ getShipment(int wearHouseId)async{
     await GetClassesService().getClasses(context: context);
     CustomLoader.hideLoader(context);
   }
+  TextEditingController _searchTextCont=TextEditingController();
 
   @override
   void initState() {
@@ -186,6 +197,19 @@ getShipment(int wearHouseId)async{
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              selectedWearHouse==null?SizedBox():Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: CustomTextField(
+                  shape: true,
+                  headerText: "Search Book",
+                  controller: _searchTextCont,
+                  hintText: "Search Book By Name",
+                  suffixIcon: Icons.search,
+                  sufixOnTap: (){
+                    _getAllItems(0);
+                  },
+                ),
+              ),
               Consumer<WearHouseProvider>(builder: (context,wearHouse,_){
                 return wearHouse.wearHouseList!=null? Container(
                     margin: EdgeInsets.symmetric(
@@ -255,7 +279,7 @@ getShipment(int wearHouseId)async{
                         // clearCart();
                         if(selectedClass>-1){
                           items_list=[];
-                          _getAllItems(selectedWearHouse!,selectedClass);
+                          _getAllItems(selectedClass);
                         }
 
                         // wearHouse.wearHouseList!.map((item) {
@@ -278,8 +302,7 @@ getShipment(int wearHouseId)async{
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Consumer<WearHouseShipmentProvider>(builder: (context,ship,_){
-                  return   Container(
+                  Container(
                     margin: EdgeInsets.symmetric(
                         vertical: height * .005, horizontal: 14.0),
                     height: height * .065,
@@ -292,7 +315,7 @@ getShipment(int wearHouseId)async{
                         isExpanded: true,
                         underline: SizedBox(),
                         hint: Text("Select Shipment"),
-                        items: ship.shipment!.map((item) {
+                        items:shippedList!.map((item) {
                           return DropdownMenuItem(
                             child: Text(item.name!),
                             value: item.cargoId,
@@ -306,8 +329,8 @@ getShipment(int wearHouseId)async{
                           setState((){});
                         }
                     ),
-                  );
-                }),
+                  ),
+
                 if(show==true)
                 Container(
                     height: 100,
@@ -340,7 +363,7 @@ getShipment(int wearHouseId)async{
                                   return InkWell(
                                     onTap: ()async{
                                       items_list=[];
-                                      _getAllItems(selectedWearHouse!,classes.myClass![index].levelId!);
+                                        _getAllItems(classes.myClass![index].levelId!);
                                       selectedClassColor=index;
                                       selectedClass=classes.myClass![index].levelId!;
                                       setState(() {});
@@ -372,8 +395,7 @@ getShipment(int wearHouseId)async{
 
               ],
             ),
-              if(show==true)
-                selectedClassColor<0?Center(child: Text("Select Class for Items")):items_list!.length==0?Center(child: Text("No Items Availible")):
+            items_list!.length==0?Center(child: Text("No Items Availible")):
                 Expanded(
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 18.0),
@@ -622,19 +644,18 @@ getShipment(int wearHouseId)async{
   }
 
   _saveOrder() async {
-    print(cargoSelect);
-    // bool res =
-    //     await SaveOrderServices().SaveOrder(context: context, list: cart,wearHouseId: selectedWearHouse!,cargoId: selectedShipment??0,value: cargoSelect);
-    // if (res == true) {
-    //   clearCart();
-    //   NavigationServices.goNextAndDoNotKeepHistory(
-    //       context: context,
-    //       widget: BookSuccess(
-    //           message: Provider.of<SaveOrderProvider>(context, listen: false)
-    //               .message,
-    //           orderId: Provider.of<SaveOrderProvider>(context, listen: false)
-    //               .orderId));
-    // }
+    bool res =
+        await SaveOrderServices().SaveOrder(context: context, list: cart,wearHouseId: selectedWearHouse!,cargoId: selectedShipment??0,value: cargoSelect);
+    if (res == true) {
+      clearCart();
+      NavigationServices.goNextAndDoNotKeepHistory(
+          context: context,
+          widget: BookSuccess(
+              message: Provider.of<SaveOrderProvider>(context, listen: false)
+                  .message,
+              orderId: Provider.of<SaveOrderProvider>(context, listen: false)
+                  .orderId));
+    }
   }
 
 

@@ -39,6 +39,7 @@ class OrderHistory {
   int? tenantId;
   Null? orderLines;
   bool? isVerifiedByGatePassUser;
+  String? cargoReciptImage;
 
   OrderHistory(
       {this.orderId,
@@ -54,7 +55,9 @@ class OrderHistory {
         this.warehouse,
         this.tenantId,
         this.orderLines,
-        this.isVerifiedByGatePassUser});
+        this.isVerifiedByGatePassUser,
+        this.cargoReciptImage
+      });
 
   OrderHistory.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -72,6 +75,7 @@ class OrderHistory {
     tenantId = json['tenantId'];
     orderLines = json['orderLines'];
     isVerifiedByGatePassUser = json['isVerifiedByGatePassUser'];
+    cargoReciptImage = json['cargoReciptImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -92,6 +96,8 @@ class OrderHistory {
     data['tenantId'] = this.tenantId;
     data['orderLines'] = this.orderLines;
     data['isVerifiedByGatePassUser'] = this.isVerifiedByGatePassUser;
+    data['cargoReciptImage'] = this.cargoReciptImage;
+
     return data;
   }
 }

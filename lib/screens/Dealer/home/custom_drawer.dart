@@ -131,7 +131,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DrawerLinkWidget(
-              icon: Icons.fastfood_rounded,
+              icon: Icons.fact_check,
               text: "Approved Order",
               onTap: () {
                 Navigator.pop(context);
@@ -143,7 +143,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               },
             ),
             DrawerLinkWidget(
-              icon: Icons.fastfood_rounded,
+              icon: Icons.history,
               text: "Order History",
               onTap: () {
                 Navigator.pop(context);

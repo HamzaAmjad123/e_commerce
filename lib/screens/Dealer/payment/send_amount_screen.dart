@@ -131,7 +131,7 @@ class _SendPaymentScreenState extends State<SendPaymentScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Total Credit", style:creditStyle),
+                              Text("Total Credit", style:ordersStyle),
                               SizedBox(width: 12.0,),
                               // Text(Provider.of<CashBookProvider>(context,listen: false).cashBook!.result!.totalAmount!.toString(),style: cashStyle,),
                               Text(Provider.of<HomeDashboardProvider>(context,listen: false).dashboard!.revenueData!.totalAmount.toString(),style: cashStyle,),

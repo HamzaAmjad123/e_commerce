@@ -13,6 +13,7 @@ class ItemsService {
       required int take,
       required int skip,
         required int classId,
+        required String searchText,
       required int seriesId, required int warehouseId,
       required int itemTypeId}) async {
     try {
@@ -23,9 +24,9 @@ class ItemsService {
         "itemTypeId": itemTypeId,
         "warehouseId": warehouseId,
         "classId":classId,
+        "searchtext":searchText,
         "isApproved":2
       };
-
       var res = await PostRequestService()
           .httpPostRequest(url: getItemsUrl, body: _body, context: context);
       if (res != null) {

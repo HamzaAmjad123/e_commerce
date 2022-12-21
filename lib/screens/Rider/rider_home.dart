@@ -54,7 +54,7 @@ class _RiderHomeState extends State<RiderHome> {
           bottomNavigationBar: BottomNavigationBar(
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.fastfood_rounded),
+                icon: Icon(Icons.fact_check),
                 label: "Approved Order",
               ),
               BottomNavigationBarItem(
@@ -70,17 +70,24 @@ class _RiderHomeState extends State<RiderHome> {
             selectedItemColor: whiteColor,
             unselectedItemColor: whiteColor,
           ),
-          appBar: AppBar(
+          appBar:selectedIndex==0? AppBar(
             backgroundColor: bgColor,
             title: Text(
-              "Rider screen",
+              "Approved Order",
               style: TextStyle(color: Colors.white),
             ),
             leading: Builder(builder: (context)=>IconButton(onPressed: (){
               Scaffold.of(context).openDrawer();
-
-            },
-                icon: Icon(Icons.menu))),
+            }, icon: Icon(Icons.menu))),
+          ):AppBar(
+            backgroundColor: bgColor,
+            title: Text(
+              "Order History",
+              style: TextStyle(color: Colors.white),
+            ),
+            leading: Builder(builder: (context)=>IconButton(onPressed: (){
+              Scaffold.of(context).openDrawer();
+            }, icon: Icon(Icons.menu))),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),

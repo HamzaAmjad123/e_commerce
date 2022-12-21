@@ -27,7 +27,7 @@ class _RiderApprovedOrderScreenState extends State<RiderApprovedOrderScreen> {
         appBar: AppBar(
           backgroundColor: bgColor,
           title: Text(
-            "Rider screen",
+            "Approved Order",
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -53,7 +53,9 @@ class _RiderApprovedOrderState extends State<RiderApprovedOrder> {
       child: Consumer<RiderApprovesOrdersProvider>(
           builder: (context, approvedOrders, _) {
             return approvedOrders.riderApprovedorders!=null
-                ? ListView.builder(
+                ?approvedOrders.riderApprovedorders!.isEmpty?Center(
+                   child: Text("No Order Available"),
+                ) :ListView.builder(
                 physics:AlwaysScrollableScrollPhysics(),
                 itemCount: approvedOrders.riderApprovedorders!.length,
                 scrollDirection: Axis.vertical,
@@ -64,7 +66,6 @@ class _RiderApprovedOrderState extends State<RiderApprovedOrder> {
                   );
                 })
                 : Container(
-              child: Text("No Order Available"),
             );
           }),
     );
@@ -144,18 +145,18 @@ class RiderOrderWidget extends StatelessWidget {
                   //     ),
                   //     onPressed: (){}, icon: Icon(Icons.edit,size: 20.0,), label: Text("Edit"))
                   //     :
-                  ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          primary: bgColor
-                      ),
-                      onPressed: (){
-                        NavigationServices.goNextAndKeepHistory(
-                            context: context,
-                            widget: OrderDetailsScreen(id: order.orderId!));
-                      }, icon: Icon(Icons.remove_red_eye,size: 20.0,), label: Text("View")),
+                  // ElevatedButton.icon(
+                  //     style: ElevatedButton.styleFrom(
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(12.0),
+                  //         ),
+                  //         primary: bgColor
+                  //     ),
+                  //     onPressed: (){
+                  //       NavigationServices.goNextAndKeepHistory(
+                  //           context: context,
+                  //           widget: OrderDetailsScreen(id: order.orderId!));
+                  //     }, icon: Icon(Icons.remove_red_eye,size: 20.0,), label: Text("View")),
                  order.isVerifiedByGatePassUser==false?Text("Not Approved"): ElevatedButton.icon(
                      style: ElevatedButton.styleFrom(
                          shape: RoundedRectangleBorder(
@@ -174,7 +175,7 @@ class RiderOrderWidget extends StatelessWidget {
                        Icons.check_circle_rounded,
                        size: 20.0,
                      ),
-                     label: Text("Delivry"))
+                     label: Text("Delivered"))
                 ]),
           ],
         ),

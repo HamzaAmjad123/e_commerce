@@ -45,16 +45,36 @@ class GenerateOrderWidget extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    ClipRRect(
-                         // child: Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
+                   Stack(children: [
+                     ClipRRect(
+                       // child: Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
 
-                      // child: Image.network(item.image!=null?"https://pos.impliessolutions.com/${item.image}":"assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
-                   child: item.image!=null?Image.network("$baseUrl"+"${item.image}",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill):Image.asset("assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill),
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(8.0),
-                      topLeft: Radius.circular(8.0)
-                    ),
-                    ),
+                       // child: Image.network(item.image!=null?"https://pos.impliessolutions.com/${item.image}":"assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
+                       child: item.image!=null?Image.network("$baseUrl"+"${item.image}",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill):Image.asset("assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill),
+                       borderRadius: BorderRadius.only(
+                           topRight: Radius.circular(8.0),
+                           topLeft: Radius.circular(8.0)
+                       ),
+                     ),
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                       mainAxisSize: MainAxisSize.max,
+                       children: [
+                         Container(
+                           padding: EdgeInsets.symmetric(horizontal: 8,vertical: 4),
+                           decoration: BoxDecoration(
+                             borderRadius: BorderRadius.only(
+                               bottomLeft: Radius.circular(6.0),
+                               topRight: Radius.circular(6.0),
+                             ),
+                             color: bgColor
+                           ),
+                           child: Text(item.classModel!.name??"",
+                           style: subtitleWhite),
+                         )
+                       ],
+                     )
+                   ],),
                     Container(
                       height: 2,
                       width: double.infinity,

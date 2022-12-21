@@ -1,3 +1,4 @@
+import 'package:e_commerce/configs/api_urls.dart';
 import 'package:e_commerce/provider/Rider_providers/rider_history_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _RiderHistoryScreenState extends State<RiderHistoryScreen> {
         appBar: AppBar(
           backgroundColor: bgColor,
           title: Text(
-            "Rider screen",
+            "Order History",
             style: TextStyle(color: Colors.white),
           ),
 
@@ -86,9 +87,16 @@ class RiderHistoryWidget extends StatelessWidget {
               color: Colors.black38,
             ),
             ListTile(
-              leading:orderHistory.cargoReciptImage==null?Container(
-                height: 45.0,width: 45.0,
-                child: Image.asset("assets/images/book.jpg"),
+              leading:InkWell(
+                  onTap: (){
+                    showImageDialog(
+                        context: context,
+                        url: orderHistory.cargoReciptImage==null?"":"$baseUrl${orderHistory.cargoReciptImage}"
+                    );
+                  },
+                child: orderHistory.cargoReciptImage==null?Container(
+                  height: 45.0,width: 45.0,
+                  child: Image.asset("assets/images/book.jpg"),
 
               ):Container(
                 height: 45.0,
@@ -103,7 +111,7 @@ class RiderHistoryWidget extends StatelessWidget {
                   )
                 ),
                // child: Image.network("https://pos.impliessolutions.com/${orderHistory.cargoReciptImage}"),
-              ),
+              ) ),
               title: Text(
                 "Date: ${Methods().getFormatedDate(orderHistory.date)}",
                 style: TextStyle(height: 1.4),
@@ -178,7 +186,7 @@ class RiderHistoryWidget extends StatelessWidget {
     print(cargoReciptImage);
     String str = cargoReciptImage;
     print(str);
-    String string= "https://pos.impliessolutions.com/"+str.replaceAll("\\", "/");
+    String string= "$baseUrl"+str.replaceAll("\\", "/");
      return string;
   }
 

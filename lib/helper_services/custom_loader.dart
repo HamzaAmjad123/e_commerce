@@ -1,20 +1,57 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../configs/color.dart';
+
+// class CustomLoader {
+//   static void showLoader(
+//       {required BuildContext context, String message = 'Please wait'}) {
+//     AlertDialog androidDialog = AlertDialog(
+//         content: LoaderContentWidget(
+//       message: message,
+//     ));
+//     print('loader started ..');
+//
+//     showDialog(
+//         barrierDismissible: false,
+//         context: context,
+//         builder: (BuildContext context) {
+//           return androidDialog;
+//         });
+//   }
+//
+//   static void hideLoader(BuildContext context) {
+//     print('hiding loader..');
+//     // Navigator.pop(context);
+//     Navigator.of(context, rootNavigator: true).pop();
+//     // Navigator.of(context).pop();
+//   }
+// }
 
 class CustomLoader {
   static void showLoader(
       {required BuildContext context, String message = 'Please wait'}) {
-    AlertDialog androidDialog = AlertDialog(
-        content: LoaderContentWidget(
-      message: message,
-    ));
+    // AlertDialog androidDialog = AlertDialog(
+    //     content: LoaderContentWidget(
+    //   message: message,
+    // ));
+    final spinkit = SpinKitCircle(
+      itemBuilder: (BuildContext context, int index) {
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: index.isEven ? bgColor : whiteColor,
+          ),
+        );
+      },
+    );;
     print('loader started ..');
 
     showDialog(
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return androidDialog;
+          return spinkit;
         });
   }
 
@@ -25,8 +62,6 @@ class CustomLoader {
     // Navigator.of(context).pop();
   }
 }
-
-
 
 
 
