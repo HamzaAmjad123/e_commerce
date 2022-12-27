@@ -9,6 +9,7 @@ import 'package:e_commerce/service/login_api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../Admin_Module/screens/dashboard/dashboard_screen.dart';
 import '../Dealer/home/dashboard_screen.dart';
 import '../Rider/rider_home.dart';
 
@@ -57,19 +58,37 @@ class _SigInWidgetState extends State<SigInWidget> {
 
   _loginHandler() async {
     CustomLoader.showLoader(context: context);
-    bool res = await LoginApiService().getLogin(
+    List<String> res = await LoginApiService().getLogin(
         context: context,
         userName: _userCont.text,
         password: _passwordCont.text);
      CustomLoader.hideLoader(context);
-    if (res) {
-      Provider.of<UserDataProvider>(context,listen: false).user!.userRoles![0] !="Dealer"?
-      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: RiderHome(
-      )):
-      NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: DashBoardScreen(
-        tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.user!.tenantId!,
-      ));
+    if (res.isEmpty){
+      CustomSnackBar.failedSnackBar(context: context, message: "Try Again");
     }
+    else{
+      if(  res[0].contains("Dealer")){
+        NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: DashBoardScreen(
+          tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.user!.tenantId!,
+        ));
+      }
+      else if(  res[0].contains("Rider")){
+        NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: RiderHome(
+              ));
+      }
+      else if(  res[0].contains("Admin")){
+        NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AdminDashboardScreen(
+        ));
+      }
+    }
+    // {
+    //   Provider.of<UserDataProvider>(context,listen: false).user!.userRoles![0] !="Dealer"?
+    //   NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: RiderHome(
+    //   )):
+    //   NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: DashBoardScreen(
+    //     tenatId:Provider.of<UserDataProvider>(context,listen: false).user!.user!.tenantId!,
+    //   ));
+    // }
   }
   bool isObscure=true;
 

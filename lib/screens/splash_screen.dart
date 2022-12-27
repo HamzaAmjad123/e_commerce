@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:e_commerce/Admin_Module/screens/dashboard/dashboard_screen.dart';
 import 'package:e_commerce/model/user_model.dart';
 import 'package:e_commerce/screens/Dealer/home/dashboard_screen.dart';
 import 'package:e_commerce/screens/Dealer/home/dashboard_screens/home_screen_widget.dart';
@@ -53,8 +54,15 @@ class _SplashScreenState extends State<SplashScreen> {
      Timer(Duration(seconds: 3), () =>
          NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: DashBoardScreen(tenatId: user.user!.tenantId!))
 
-     ): Timer(Duration(seconds: 3), () =>
+     ):
+      user.userRoles![0]=="Rider"?
+      // print("Tenat Id ${user.user!.tenantId!}");
+      // print("Name ${user.user!.userName}");
+      Timer(Duration(seconds: 3), () =>
           NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: RiderHome())
+
+      ): Timer(Duration(seconds: 3), () =>
+          NavigationServices.goNextAndDoNotKeepHistory(context: context, widget: AdminDashboardScreen())
 
       );
    }

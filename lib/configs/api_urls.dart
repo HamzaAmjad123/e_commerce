@@ -1,6 +1,5 @@
 const String baseUrl="https://pos.impliessolutions.com/";
 // const String baseUrl="https://cantabdealersautomation.com/";
-//dsmkchsdfsejdlfkjsdjfsdfmfjsdk
 const String loginUrl=baseUrl + "api/Authenticate/login";
 const String getCatUrl=baseUrl+ "api/ItemType/getList";
 const String getWareHouseUrl=baseUrl+ "api/WareHouse/getListByActiveUser";
@@ -25,3 +24,7 @@ const String markAsDeliveredUrl=baseUrl+ "api/DealerOrders/orderIsApprovedByDeal
 const String riderApprovedOrdersurl=baseUrl + "api/RiderOrders/getApprovedOrdersListForRider";
 const String riderHistoryOrdersurl=baseUrl + "api/RiderOrders/getApprovedOrdersHistoryListForRider";
 const String deliveredOrderUrl=baseUrl + "api/RiderOrders/orderIsShipped";
+
+//Urls for Admin
+
+const String getStockListUrl=baseUrl + "api/item/getList";

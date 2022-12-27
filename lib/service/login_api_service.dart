@@ -33,15 +33,14 @@ class LoginApiService {
         final box = GetStorage();
         box.write('user', user.user!.toJson());
 
-        return true;
+        return user.userRoles;
       } else {
-        print("this is response");
-        print(res);
-        return false;
+
+        return [];
       }
     } catch (err) {
       print("exception in loginApiService $err");
-      return false;
+      return [];
     }
   }
 }
