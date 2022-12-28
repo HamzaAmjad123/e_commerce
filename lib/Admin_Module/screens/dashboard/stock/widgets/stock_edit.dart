@@ -6,7 +6,8 @@ import '../../../../helper_widget/custom_dropdown_button.dart';
 import '../../../../helper_widget/custom_text_form_field.dart';
 
 class StockEdit extends StatefulWidget {
-  const StockEdit({super.key});
+  final bool isEdit;
+   StockEdit({this.isEdit=false});
 
   @override
   State<StockEdit> createState() => _StockEditState();
@@ -61,156 +62,148 @@ class _StockEditState extends State<StockEdit> {
   List<Step> getSteps() => [
         Step(
             title: const Text("One"),
-            content: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  CustomDropdownButton(
-                      buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                      buttonHeight: 50,
-                      dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                      hint: 'Series',
-                      value: selectedValue,
-                      dropdownItems: seriesItem,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValue = value;
-                        });
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomDropdownButton(
-                      buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                      buttonHeight: 50,
-                      dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                      hint: 'Warehouse',
-                      value: selectedValue,
-                      dropdownItems: warehouseItem,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValue = value;
-                        });
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const CustomTextFormField(
-                    hinttext: 'Enter Item name',
-                    labeltext: 'Item Name*',
-                  ),
-                  const CustomTextFormField(
-                      hinttext: 'Enter Slogan', labeltext: 'Slogan*'),
-                  const CustomTextFormField(
-                      hinttext: 'Enter Item Code', labeltext: 'Code*'),
-                  CustomDropdownButton(
-                      buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                      buttonHeight: 50,
-                      dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                      hint: '--Select--',
-                      value: selectedValue2,
-                      dropdownItems: itemType,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValue2 = value;
-                        });
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const CustomTextFormField(
-                    hinttext: 'Enter Unit Price',
-                    labeltext: 'Unit Price*',
-                  ),
-                  const CustomTextFormField(
-                      hinttext: 'Enter Unit Discount Percentage',
-                      labeltext: 'Unit Discount Percentage*'),
-                ],
-              ),
+            content: Column(
+              children: [
+                CustomDropdownButton(
+                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                    buttonHeight: 50,
+                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                    hint: 'Series',
+                    value: selectedValue,
+                    dropdownItems: seriesItem,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value;
+                      });
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomDropdownButton(
+                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                    buttonHeight: 50,
+                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                    hint: 'Warehouse',
+                    value: selectedValue,
+                    dropdownItems: warehouseItem,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value;
+                      });
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                const CustomTextFormField(
+                  hinttext: 'Enter Item name',
+                  labeltext: 'Item Name*',
+                ),
+                const CustomTextFormField(
+                    hinttext: 'Enter Slogan', labeltext: 'Slogan*'),
+                const CustomTextFormField(
+                    hinttext: 'Enter Item Code', labeltext: 'Code*'),
+                CustomDropdownButton(
+                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                    buttonHeight: 50,
+                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                    hint: '--Select--',
+                    value: selectedValue2,
+                    dropdownItems: itemType,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue2 = value;
+                      });
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                const CustomTextFormField(
+                  hinttext: 'Enter Unit Price',
+                  labeltext: 'Unit Price*',
+                ),
+                const CustomTextFormField(
+                    hinttext: 'Enter Unit Discount Percentage',
+                    labeltext: 'Unit Discount Percentage*'),
+              ],
             ),
             isActive: currentStep >= 0),
         Step(
             title: const Text("Two"),
-            content: SizedBox(
-              height: MediaQuery.of(context).size.height - 200,
-              child: Column(
-                children: [
-                  CustomDropdownButton(
-                      buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                      buttonHeight: 50,
-                      dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                      hint: '--Select--',
-                      value: selectedValue2,
-                      dropdownItems: itemType,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValue2 = value;
-                        });
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const CustomTextFormField(
-                    hinttext: 'Enter Unit Price',
-                    labeltext: 'Unit Price*',
-                  ),
-                  const CustomTextFormField(
-                      hinttext: 'Enter Unit Discount Percentage',
-                      labeltext: 'Unit Discount Percentage*'),
-                  const CustomTextFormField(
-                      hinttext: 'Enter Available Stock',
-                      labeltext: 'Available Stock*'),
-                  const CustomTextFormField(
-                      hinttext: '--Select--', labeltext: 'Status*')
-                ],
-              ),
+            content: Column(
+              children: [
+                CustomDropdownButton(
+                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                    buttonHeight: 50,
+                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                    hint: '--Select--',
+                    value: selectedValue2,
+                    dropdownItems: itemType,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue2 = value;
+                      });
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                const CustomTextFormField(
+                  hinttext: 'Enter Unit Price',
+                  labeltext: 'Unit Price*',
+                ),
+                const CustomTextFormField(
+                    hinttext: 'Enter Unit Discount Percentage',
+                    labeltext: 'Unit Discount Percentage*'),
+                const CustomTextFormField(
+                    hinttext: 'Enter Available Stock',
+                    labeltext: 'Available Stock*'),
+                const CustomTextFormField(
+                    hinttext: '--Select--', labeltext: 'Status*'),
+                const CustomTextFormField(
+                    hinttext: '--Select--', labeltext: 'Rank*'),
+                CustomDropdownButton(
+                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                    buttonHeight: 50,
+                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                    hint: '--Select--',
+                    value: selectedValue3,
+                    dropdownItems: itemType,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue3 = value;
+                      });
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: bgColor),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => bottomSheet(),
+                          );
+                        },
+                        icon: const Icon(Icons.camera),
+                        label: const Text('Choose File'))
+                  ],
+                )
+              ],
             ),
             isActive: currentStep >= 1),
-        Step(
-            title: const Text("Three"),
-            content: SizedBox(
-              height: MediaQuery.of(context).size.height - 200,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const CustomTextFormField(
-                      hinttext: '--Select--', labeltext: 'Rank*'),
-                  CustomDropdownButton(
-                      buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                      buttonHeight: 50,
-                      dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                      hint: '--Select--',
-                      value: selectedValue3,
-                      dropdownItems: itemType,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValue3 = value;
-                        });
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: bgColor),
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => bottomSheet(),
-                            );
-                          },
-                          icon: const Icon(Icons.camera),
-                          label: const Text('Choose File'))
-                    ],
-                  )
-                ],
-              ),
-            ),
-            isActive: currentStep >= 2),
+        // Step(
+        //     title: const Text("Three"),
+        //     content: Column(
+        //       children: [
+        //         const SizedBox(
+        //           height: 10,
+        //         ),
+        //
+        //       ],
+        //     ),
+        //     isActive: currentStep >= 2),
       ];
 
   @override
@@ -219,6 +212,14 @@ class _StockEditState extends State<StockEdit> {
       appBar: AppBar(
         title: const Text('Stock Edit'),
         backgroundColor: bgColor,
+        leading: IconButton(icon:Icon(Icons.arrow_back_sharp),onPressed: (){
+          if(currentStep<1){
+            Navigator.pop(context);
+          }else{
+            setState(() => currentStep -= 1);
+          }
+          print("currentStep  $currentStep");
+        },),
       ),
       bottomNavigationBar: InkWell(
         onTap: () {
@@ -244,31 +245,42 @@ class _StockEditState extends State<StockEdit> {
           ),
         ),
       ),
-      body: Stepper(
-        controlsBuilder: (context, controller) => Row(children: []),
+      body: Theme(
+        data: ThemeData(
+          // canvasColor: Colors.yellow,
+          colorScheme: Theme.of(context).colorScheme.copyWith(
+            primary: bgColor,
+            // background: Colors.red,
+            // secondary: Colors.green,
+          ),
+        ),
 
-        steps: getSteps(),
-        currentStep: currentStep,
-        type: StepperType.horizontal,
-        onStepTapped: (step) {
-          setState(() {
-            currentStep = step;
-            print(step);
-          });
-        },
-        // onStepCancel: () {
-        //   setState(() {
-        //     currentStep > 0 ? currentStep -= 1 : currentStep = 0;
-        //   });
-        // },
-        // onStepContinue: () {
-        //   final isLastStep = currentStep == getSteps().length - 1;
-        //   if (isLastStep) {
-        //     print('Complete');
-        //   } else {
-        //     setState(() => currentStep += 1);
-        //   }
-        // },
+        child: Stepper(
+          controlsBuilder: (context, controller) => Row(children: []),
+
+          steps: getSteps(),
+          currentStep: currentStep,
+          type: StepperType.horizontal,
+          onStepTapped: (step) {
+            setState(() {
+              currentStep = step;
+              print(step);
+            });
+          },
+          // onStepCancel: () {
+          //   setState(() {
+          //     currentStep > 0 ? currentStep -= 1 : currentStep = 0;
+          //   });
+          // },
+          // onStepContinue: () {
+          //   final isLastStep = currentStep == getSteps().length - 1;
+          //   if (isLastStep) {
+          //     print('Complete');
+          //   } else {
+          //     setState(() => currentStep += 1);
+          //   }
+          // },
+        ),
       ),
     );
   }

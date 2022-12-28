@@ -1,9 +1,11 @@
+import 'package:e_commerce/Admin_Module/screens/dashboard/stock/widgets/stock_edit.dart';
 import 'package:e_commerce/screens/Dealer/home/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import '../../../configs/color.dart';
 import '../../helper_widget/custom_app_bar.dart';
 import 'account/account_screen.dart';
-import 'orders/order_list.dart';
+
+import 'orders/admin_orders_screen.dart';
 import 'orders/widgets/orders_widget.dart';
 import 'orders/widgets/pending_orders.dart';
 import 'stock/stock_screen.dart';
@@ -21,7 +23,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   int _selectedIndex = 0;
   List<Widget> widgets = [
     const StockScreen(),
-    const OrdersList(),
+     OrdersList(),
     const Ledger(),
   ];
   @override
@@ -34,6 +36,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      floatingActionButton: _selectedIndex == 0? FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => StockEdit()),
+          );
+    },
+    label: const Text('Create'),
+    icon: const Icon(Icons.add),
+    backgroundColor: bgColor,
+    ):SizedBox(),
      drawer: CustomDrawer(),
       extendBodyBehindAppBar: true,
       appBar: _selectedIndex == 0
@@ -51,35 +65,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       ))),
             )
           : _selectedIndex == 1
-              ? PreferredSize(
-                  preferredSize:
-                      const Size.fromHeight(100.0), // here the desired height
-                  child: AppBar(
-                    centerTitle: true,
-                    title: const Text('Orders'),
-                    bottom: TabBar(
-                      indicatorColor: bgColor,
-                      controller: _tabController,
-                      tabs: const <Widget>[
-                        Tab(
-                          icon: Text('Orders'),
-                        ),
-                        Tab(
-                          icon: Text('Pending Orders'),
-                        ),
-                      ],
-                    ),
-                    leading: IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AdminDashboardScreen()),
-                          );
-                        },
-                        icon: Icon(Icons.arrow_back)),
-                  ),
-                )
+              ? AppBar(title: Text("Orders List"),)
               : _selectedIndex == 2
                   ? CustomAppBar(
                       title: 'Accounts',
@@ -96,49 +82,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           )),
                     )
                   : AppBar(),
-      body: _selectedIndex == 0
-          ? SizedBox(
-              height: size.height,
-              width: size.width,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    widgets.elementAt(_selectedIndex),
-                  ],
-                ),
-              ),
-            )
-          : _selectedIndex == 1
-              ? TabBarView(
-                  controller: _tabController,
-                  children: const <Widget>[
-                    Center(
-                      child: OrderWidget(),
-                    ),
-                    Center(
-                      child: PendingOrders(),
-                    ),
-                  ],
-                )
-              : _selectedIndex == 2
-                  ? SizedBox(
-                      height: size.height,
-                      width: size.width,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            widgets.elementAt(_selectedIndex),
-                          ],
-                        ),
-                      ),
-                    )
-                  : const SizedBox(),
+
+      body:SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SafeArea(child: widgets.elementAt(_selectedIndex)),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: whiteColor,

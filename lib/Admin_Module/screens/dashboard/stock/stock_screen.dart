@@ -1,14 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../configs/color.dart';
 import '../../../../helper_services/custom_loader.dart';
 import '../../../../provider/admin_provider/stock_list_provider.dart';
 import '../../../../service/Admin_Sercvice/stock_list_service.dart';
 import '../../../helper_widget/custom_button.dart';
 import '../../../../model/admin_models/stock_model.dart';
-import '../../../respiratory/stock_repo.dart';
 import 'widgets/stock_edit.dart';
 
 class StockScreen extends StatefulWidget {
@@ -67,7 +64,6 @@ class _StockWidgetState extends State<StockWidget> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
@@ -109,7 +105,7 @@ class _StockWidgetState extends State<StockWidget> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const StockEdit()),
+                                builder: (context) => StockEdit()),
                           );
                         },
                         onTapView: () {},

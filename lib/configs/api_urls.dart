@@ -28,3 +28,4 @@ const String deliveredOrderUrl=baseUrl + "api/RiderOrders/orderIsShipped";
 //Urls for Admin
 
 const String getStockListUrl=baseUrl + "api/item/getList";
+const String admiPenOrderUrl=baseUrl+"api/AdminOrders/getUnApprovedOrdersList";
