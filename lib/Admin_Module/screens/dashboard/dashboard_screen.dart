@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../configs/color.dart';
 import '../../helper_widget/custom_app_bar.dart';
 import 'account/account_screen.dart';
-
 import 'orders/admin_orders_screen.dart';
-import 'orders/widgets/orders_widget.dart';
-import 'orders/widgets/pending_orders.dart';
 import 'stock/stock_screen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {

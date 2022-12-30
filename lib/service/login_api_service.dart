@@ -11,6 +11,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 class LoginApiService {
+  List<String> role=[];
   Future getLogin(
       {required String userName,
       required String password,
@@ -32,16 +33,14 @@ class LoginApiService {
 
         final box = GetStorage();
         box.write('user', user.user!.toJson());
-
-        return user.userRoles;
+        role=user.userRoles!;
+        return role;
       } else {
-
-        return [];
+        return role;
       }
     } catch (err) {
       print("exception in loginApiService $err");
-      return [];
+      return role;
     }
   }
 }
-

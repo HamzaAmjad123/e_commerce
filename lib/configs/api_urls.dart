@@ -29,3 +29,6 @@ const String deliveredOrderUrl=baseUrl + "api/RiderOrders/orderIsShipped";
 
 const String getStockListUrl=baseUrl + "api/item/getList";
 const String admiPenOrderUrl=baseUrl+"api/AdminOrders/getUnApprovedOrdersList";
+const String admiApprovOrderUrl=baseUrl+"api/AdminOrders/getApprovedOrdersList";
+const String approvalOrCancelUrl=baseUrl+"api/AdminOrders/ApproveOrder";
+const String adminLedgerUrl=baseUrl  + "api/voucher/Admin/getList";

@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class DrawerScreen extends StatefulWidget {
-  const DrawerScreen({super.key});
+import '../../../helper_services/navigation_services.dart';
+import '../../../helper_widgets/drawer_item_card.dart';
+import '../../../screens/Auth/login_screen.dart';
+
+class AdminDrawer extends StatefulWidget {
+  const AdminDrawer({super.key});
 
   @override
-  _DrawerScreenState createState() => _DrawerScreenState();
+  _AdminDrawerState createState() => _AdminDrawerState();
 }
 
-class _DrawerScreenState extends State<DrawerScreen> {
+class _AdminDrawerState extends State<AdminDrawer> {
   String text = "Initial Text";
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: <Widget>[
         DrawerHeader(child: Container()),
         Column(children: <Widget>[
@@ -36,6 +41,24 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   text = "Account";
                 });
               }),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Divider(
+              color: Colors.grey,
+            ),
+          ),
+          DrawerLinkWidget(
+            icon: Icons.logout,
+            isLogout: true,
+            text: "Logout",
+            onTap: () async {
+              SharedPreferences pref=await SharedPreferences.getInstance();
+              pref.clear();
+              // await LocalStorageServices().saveUser(false);
+              NavigationServices.goNextAndDoNotKeepHistory(
+                  context: context, widget: LoginScreen());
+            },
+          ),
         ])
       ],
     );

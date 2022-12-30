@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../helper_services/custom_loader.dart';
+import '../service/Admin_Sercvice/pending_order_service.dart';
 import '../service/approved_oder_service.dart';
 import '../service/dealer_history_service.dart';
 import '../service/rider_services/rider_history_service.dart';
@@ -28,5 +29,10 @@ getDealerApprovedOrderHandler(BuildContext context,String searchText,String toDa
 orderSearchHistoryHandler(BuildContext context,String searchText)async{
   CustomLoader.showLoader(context: context);
   await DealerHistoryService().getDelaerHistory(skip: 0, take: 1000,searchText: searchText,toDate: "",formDate: "", context: context);
+  CustomLoader.hideLoader(context);
+}
+AdminPendingOrderHandler(BuildContext context)async{
+  CustomLoader.showLoader(context: context);
+  await PendingOrdersService().getPendingOrders(context: context, dealerId: 0, fromDate: "", toDate: "", skip: 0, take: 1000);
   CustomLoader.hideLoader(context);
 }

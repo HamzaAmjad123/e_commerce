@@ -1,15 +1,15 @@
-class PendingOrdersListModel {
+class ApprovedOrderModel {
   int? totalCount;
-  List<PendingOrdersList>? result;
+  List<ApprovedOrders>? approvedOrders;
 
-  PendingOrdersListModel({this.totalCount, this.result});
+  ApprovedOrderModel({this.totalCount, this.approvedOrders});
 
-  PendingOrdersListModel.fromJson(Map<String, dynamic> json) {
+  ApprovedOrderModel.fromJson(Map<String, dynamic> json) {
     totalCount = json['totalCount'];
     if (json['result'] != null) {
-      result = <PendingOrdersList>[];
+      approvedOrders = <ApprovedOrders>[];
       json['result'].forEach((v) {
-        result!.add(new PendingOrdersList.fromJson(v));
+        approvedOrders!.add(new ApprovedOrders.fromJson(v));
       });
     }
   }
@@ -17,14 +17,14 @@ class PendingOrdersListModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['totalCount'] = this.totalCount;
-    if (this.result != null) {
-      data['result'] = this.result!.map((v) => v.toJson()).toList();
+    if (this.approvedOrders != null) {
+      data['result'] = this.approvedOrders!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class PendingOrdersList {
+class ApprovedOrders {
   int? orderId;
   String? orderNo;
   String? date;
@@ -37,7 +37,7 @@ class PendingOrdersList {
   int? warehouseId;
   Warehouse? warehouse;
   int? tenantId;
-  Voucher? voucher;
+  int? voucher;
   bool? isVerifiedByGatePassUser;
   int? numberOfBags;
   String? cargoReciptImage;
@@ -47,7 +47,8 @@ class PendingOrdersList {
   int? objectionResult;
   int? cargoId;
 
-  PendingOrdersList(
+
+  ApprovedOrders(
       {this.orderId,
         this.orderNo,
         this.date,
@@ -70,7 +71,7 @@ class PendingOrdersList {
         this.objectionResult,
         this.cargoId});
 
-  PendingOrdersList.fromJson(Map<String, dynamic> json) {
+  ApprovedOrders.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
     orderNo = json['orderNo'];
     date = json['date'];
@@ -84,8 +85,7 @@ class PendingOrdersList {
     warehouseId = json['warehouseId'];
     warehouse = json['warehouse'];
     tenantId = json['tenantId'];
-    voucher =
-    json['voucher'] != null ? new Voucher.fromJson(json['voucher']) : null;
+    voucher = json['voucher'];
     isVerifiedByGatePassUser = json['isVerifiedByGatePassUser'];
     numberOfBags = json['numberOfBags'];
     cargoReciptImage = json['cargoReciptImage'];
@@ -112,9 +112,7 @@ class PendingOrdersList {
     data['warehouseId'] = this.warehouseId;
     data['warehouse'] = this.warehouse;
     data['tenantId'] = this.tenantId;
-    if (this.voucher != null) {
-      data['voucher'] = this.voucher!.toJson();
-    }
+    data['voucher'] = this.voucher;
     data['isVerifiedByGatePassUser'] = this.isVerifiedByGatePassUser;
     data['numberOfBags'] = this.numberOfBags;
     data['cargoReciptImage'] = this.cargoReciptImage;
@@ -210,60 +208,8 @@ class Dealer {
     data['meId'] = this.meId;
     data['isAsignAllWarehouse'] = this.isAsignAllWarehouse;
     if (this.warehouses != null) {
-      data['warehouses'] = this.warehouses!.map((v) => v.toJson()).toList();
+      data['warehouses'] = this.warehouses!.map((v) => v!.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class Voucher {
-  int? voucherId;
-  double? totalReceived;
-  double? totalAmount;
-  int? dealerId;
-  int? tenantId;
-  // List<Null>? voucherLines;
-  int? totalCount;
-  int? pendingVoucherLines;
-
-  Voucher(
-      {this.voucherId,
-        this.totalReceived,
-        this.totalAmount,
-        this.dealerId,
-        this.tenantId,
-        // this.voucherLines,
-        this.totalCount,
-        this.pendingVoucherLines});
-
-  Voucher.fromJson(Map<String, dynamic> json) {
-    voucherId = json['voucherId'];
-    totalReceived = json['totalReceived'];
-    totalAmount = json['totalAmount'];
-    dealerId = json['dealerId'];
-    tenantId = json['tenantId'];
-    // if (json['voucherLines'] != null) {
-    //   voucherLines = <Null>[];
-    //   json['voucherLines'].forEach((v) {
-    //     // voucherLines!.add(new Null.fromJson(v));
-    //   });
-    // }
-    totalCount = json['totalCount'];
-    pendingVoucherLines = json['pendingVoucherLines'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['voucherId'] = this.voucherId;
-    data['totalReceived'] = this.totalReceived;
-    data['totalAmount'] = this.totalAmount;
-    data['dealerId'] = this.dealerId;
-    data['tenantId'] = this.tenantId;
-    // if (this.voucherLines != null) {
-    //   data['voucherLines'] = this.voucherLines!.map((v) => v.toJson()).toList();
-    // }
-    data['totalCount'] = this.totalCount;
-    data['pendingVoucherLines'] = this.pendingVoucherLines;
     return data;
   }
 }
@@ -273,8 +219,8 @@ class Warehouse {
   String? address;
   int? cityId;
   int? tenantId;
-  Null? updatedBy;
-  Null? createdBy;
+  String? updatedBy;
+  String? createdBy;
 
   Warehouse({this.warehouseId, this.name, this.address, this.cityId, this.tenantId, this.updatedBy, this.createdBy});
 

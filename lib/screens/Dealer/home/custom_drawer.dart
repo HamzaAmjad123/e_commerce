@@ -9,6 +9,7 @@ import 'package:e_commerce/utils/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../Admin_Module/screens/drawer/drawer_screen.dart';
 import '../../../helper_widgets/drawer_item_card.dart';
 import '../../../model/user_model.dart';
 import '../../Rider/widget/approved_widget.dart';
@@ -126,7 +127,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
               },
             ),
           ],
-        ):Column(
+        ):role=="Admin"?AdminDrawer():
+        Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
