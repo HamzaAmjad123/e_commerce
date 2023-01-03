@@ -1,3 +1,4 @@
+import 'package:e_commerce/helper_services/navigation_services.dart';
 import 'package:e_commerce/provider/home_dashboard_provider.dart';
 import 'package:e_commerce/screens/Dealer/payment/widget/payment_record.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,12 @@ import '../../../../helper_services/custom_snackbar.dart';
 import '../../../../helper_widgets/custom_button.dart';
 import '../../../../model/admin_models/admin_ledger_model.dart';
 import '../../../../provider/admin_provider/admin_ledger_provider.dart';
+import '../../../../provider/admin_provider/dealer_statement_by_admin_provider.dart';
 import '../../../../provider/cash_book_provider.dart';
 import '../../../../service/Admin_Sercvice/admin_ledger_service.dart';
 import '../../../../utils/functions.dart';
+import '../../../admin_pdf_service.dart';
+import 'leadger_details_screen.dart';
 
 
 class Ledger extends StatefulWidget {
@@ -26,11 +30,10 @@ class Ledger extends StatefulWidget {
 }
 
 class _LedgerState extends State<Ledger> {
-  PdfInvoiceService service=PdfInvoiceService();
+
   bool isFirst=false;
-  int number = 0;
-  String startDate="";
-  String endDate="";
+
+
   _getAdminLedgerStatement() async {
     CustomLoader.showLoader(context: context);
     await AdminLedgerService().getLedgerStatement(context: context, skip: 0, take: 1000);
@@ -41,6 +44,9 @@ class _LedgerState extends State<Ledger> {
   @override
   void initState() {
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _getAdminLedgerStatement();
+    });
     // print("Service $service");
 
 
@@ -49,144 +55,16 @@ class _LedgerState extends State<Ledger> {
   @override
   Widget build(BuildContext context) {
     return
-      // Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //     "Payment Records",
-      //     style: barStyle,
-      //   ),
-      //   backgroundColor: bgColor,
-      //   centerTitle: true,
-      // ),
-      // bottomNavigationBar: isFirst?Container(
-      //   height: 50,
-      //   color: Colors.grey[100],
-      //   child: Center(
-      //       child: CustomButton(
-      //         width: MediaQuery.of(context).size.width*0.7,
-      //         text: "Create Invoice",
-      //         onTap: ()async{
-      //           if(startDate==""||endDate==""){
-      //             CustomSnackBar.failedSnackBar(context: context, message: "Select Date First");
-      //           }
-      //           else if(Provider.of<CashBookProvider>(context,listen: false).cashBook!=null){
-      //             final data = await service.createInvoice(Provider.of<CashBookProvider>(context,listen: false).cashBook!.result!.ledgerDetails,startDate,endDate,context);
-      //
-      //             service.savePdfFile("invoice_$number", data);
-      //             number++;
-      //           }else{
-      //             CustomSnackBar.failedSnackBar(context: context, message: "No Record Found");
-      //           }
-      //         },
-      //       )
-      //   ),
-      // ):SizedBox(),
-      // body:
-      // // RefreshIndicator(
-      //   // onRefresh: () {
-      //   //   // return  _getDelearStatment();
-      //   //
-      //   // },
-      //   // child:
-      //   SingleChildScrollView(
-      //     physics:AlwaysScrollableScrollPhysics(),
-      //     child:
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 30),
+            margin: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  isFirst?Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-                      decoration: Ui.getBoxDecoration(),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(Methods().getDate(DateTime.now().toString()),style: normalStyle,),
-                          SizedBox(height: 10,),
-                          Center(child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("Total Credit",style: orderStyle,),
-                              SizedBox(width: 10),
-                              Text("78888",style: rsStyle,)
-                            ],
-                          ),
-                          )
-                        ],
-                      )
-                  ):SizedBox(height: isFirst?0.0:20,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: ()async{
-                            DateTime? newDate=await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2020), lastDate: DateTime(2023));
-                            if(newDate==null) return;
-                            setState(() {
-                              print(newDate);
-                              startDate=getDate(newDate);
-                              if(endDate!=""){
-                                isFirst=true;
-                              _getAdminLedgerStatement();
-                                setState(() {
-                                });
-                              }
-                            });
-                          },
-                          child: Container(
-                              height: 45,
-                              decoration:Ui.getBoxDecoration(),
-                              child: Center(child: startDate==""?Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text("To Date"),
-                                  Icon(Icons.arrow_drop_down),
-                                ],
-                              ):Text(startDate),)
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: ()async{
-                            DateTime? newDate=await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2020), lastDate: DateTime(2023));
-                            if(newDate==null) return;
-                            endDate=getDate(newDate);
-                            print(endDate);
-                            if(startDate!=""){
-                              _getAdminLedgerStatement();
-                              isFirst=true;
-                            }
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: 45,
-                            margin: EdgeInsets.only(left:10),
-                            decoration: Ui.getBoxDecoration(),
-                            child: Center(child: endDate==""?Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("From Date"),
-                                Icon(Icons.arrow_drop_down),
-                              ],
-                            ):Text(endDate)),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  isFirst?Text("Leadger",style: titleStyle,):SizedBox(),
+
+
+                  Text("Leadger Details",style: leadgerStyle,),
                   SizedBox(height: 10.0,),
-                  isFirst?
+                  // isFirst?
                   Column(
                     children: [
                       Row(
@@ -199,7 +77,7 @@ class _LedgerState extends State<Ledger> {
                           // Expanded(child: SizedBox(width: MediaQuery.of(context).size.width,)),
                           Text("Rec.",style: titleStyle,),
                           // Expanded(child: SizedBox(width: MediaQuery.of(context).size.width,)),
-                          Text("Rem.",style: titleStyle,),
+                          Text("View.",style: titleStyle,),
 
                         ],
                       ),
@@ -222,11 +100,13 @@ class _LedgerState extends State<Ledger> {
                             })
                             : Container();
                       }),
+
                     ],
-                  ):Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.3),
-                      child:Text(" Select To Date and From Date",style:oderNoStyle,)),
+                  )
+                      // :Container(
+                      // alignment: Alignment.center,
+                      // margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.3),
+                      // child:Text(" Select To Date and From Date",style:oderNoStyle,)),
                 ]
             ),
           );
@@ -243,64 +123,89 @@ class _LedgerState extends State<Ledger> {
   }
 }
 class LedgerWidget extends StatelessWidget {
-  LedgerList ledgerDetails;
+  AdminLedgerList ledgerDetails;
   int? index;
 
   LedgerWidget({required this.ledgerDetails,this.index});
+  AdminPdfInvoiceService service=AdminPdfInvoiceService();
+  int number = 0;
 
   @override
   Widget build(BuildContext context) {
     // String date = ledgerDetails.date!;
     // String  debitText=ledgerDetails.debit.toString();
     // String creditText=ledgerDetails.credit.toString();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+    return Center(
+      child: Container(
 
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 5.0),
-          width: MediaQuery.of(context).size.width/2.6,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("${ledgerDetails.dealer!.name??""}",
-                style: TextStyle(height: 1.4,color: Colors.black),),
-              Text("${ledgerDetails.totalAmount}",
-                style: TextStyle(height: 1.4,color: Colors.black),),
+        padding: EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
+        margin: EdgeInsets.symmetric(vertical: 5.0),
+        decoration: Ui.getBoxDecoration(),
 
-            ],
-          ),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width/2.8,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("${ledgerDetails.totalReceived}",
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            Expanded(
+              child: Text("${ledgerDetails.dealer!.name??""}",
+                style: TextStyle(height: 1.4,color: Colors.black),maxLines: 1,),
+
+            ),
+            Expanded(
+              child: Text("${ledgerDetails.totalAmount}",
+                style: TextStyle(height: 1.4,color: Colors.black),maxLines: 1,),
+
+            ),
+            Expanded(
+              child: Text("${ledgerDetails.totalReceived}",
                 style: TextStyle(height: 1.8,color: Colors.green),maxLines: 1,overflow: TextOverflow.ellipsis,),
 
-              Text("Pending",
-                style: TextStyle(height: 1.8,color: Colors.green),overflow: TextOverflow.ellipsis,maxLines:1,),
-            ],
-          ),
-        ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: index==1?[
-        //     Icon(Icons.arrow_downward_sharp,color: Colors.green,size: 18,),
-        //     Icon(Icons.arrow_upward,color: Colors.red,size: 18,),
-        //   ]:index!%2==0?[
-        //     Icon(Icons.arrow_downward_sharp,color: Colors.green,size: 18,),
-        //   ]:[
-        //     Icon(Icons.arrow_upward,color: Colors.red,size: 18,),
-        //   ],
-        // ),
+            ),
 
-      ],
+            // Expanded(
+            //   child: Text(
+            //     "${(ledgerDetails.totalAmount!-ledgerDetails.totalReceived!).toString()}",
+            //     style: TextStyle(height: 1.8,color: Colors.green),overflow: TextOverflow.ellipsis,maxLines:1,),
+            //
+            // ),
+            InkWell(
+
+
+                  onTap: ()async{
+                    NavigationServices.goNextAndKeepHistory(context: context, widget: LedgerDetailsScreen(
+                      voucherId:ledgerDetails.voucherId??0 ,
+                    ));
+
+                  //   if(Provider.of<DealerStatementByAdminProvider>(context,listen: false).dealerStat!=null){
+                  //     final data = await service.createInvoice(Provider.of<DealerStatementByAdminProvider>(context,listen: false).dealerStat!,"","",context);
+                  //
+                  //     service.savePdfFile("invoice_$number", data);
+                  //     number++;
+                  //   }else{
+                  //     CustomSnackBar.failedSnackBar(context: context, message: "No Record Found");
+                  //   }
+                  },
+
+                child: Icon(Icons.visibility,size: 20.0,))
+
+
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: index==1?[
+            //     Icon(Icons.arrow_downward_sharp,color: Colors.green,size: 18,),
+            //     Icon(Icons.arrow_upward,color: Colors.red,size: 18,),
+            //   ]:index!%2==0?[
+            //     Icon(Icons.arrow_downward_sharp,color: Colors.green,size: 18,),
+            //   ]:[
+            //     Icon(Icons.arrow_upward,color: Colors.red,size: 18,),
+            //   ],
+            // ),
+
+          ],
+        ),
+      ),
     );
   }
 

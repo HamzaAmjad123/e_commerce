@@ -1,14 +1,14 @@
 class AdminLedgerModel {
-  List<LedgerList>? result;
+  List<AdminLedgerList>? result;
   String? message;
 
   AdminLedgerModel({this.result, this.message});
 
   AdminLedgerModel.fromJson(Map<String, dynamic> json) {
     if (json['result'] != null) {
-      result = <LedgerList>[];
+      result = <AdminLedgerList>[];
       json['result'].forEach((v) {
-        result!.add(new LedgerList.fromJson(v));
+        result!.add(new AdminLedgerList.fromJson(v));
       });
     }
     message = json['message'];
@@ -24,7 +24,7 @@ class AdminLedgerModel {
   }
 }
 
-class LedgerList {
+class AdminLedgerList {
   int? voucherId;
   double? totalReceived;
   double? totalAmount;
@@ -35,7 +35,7 @@ class LedgerList {
   int? totalCount;
   int? pendingVoucherLines;
 
-  LedgerList(
+  AdminLedgerList(
       {this.voucherId,
         this.totalReceived,
         this.totalAmount,
@@ -46,7 +46,7 @@ class LedgerList {
         this.totalCount,
         this.pendingVoucherLines});
 
-  LedgerList.fromJson(Map<String, dynamic> json) {
+  AdminLedgerList.fromJson(Map<String, dynamic> json) {
     voucherId = json['voucherId'];
     totalReceived = json['totalReceived'];
     totalAmount = json['totalAmount'];
