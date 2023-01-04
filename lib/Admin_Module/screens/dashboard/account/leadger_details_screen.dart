@@ -181,7 +181,7 @@ class _LeadgerDesignState extends State<LeadgerDesign> {
             ],
           ),
           SizedBox(
-            width: widget.order.status == 4 ? 5.0 : 25.0,
+            width:  20.0,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
