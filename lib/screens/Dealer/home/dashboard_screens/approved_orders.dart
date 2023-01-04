@@ -161,7 +161,7 @@ class ApprovedOrderWidget extends StatelessWidget {
                          );
                        },
                        child:order.cargoReciptImage!=null?Image.network("$baseUrl${order.cargoReciptImage}",height: 40.0,width: 40.0,fit: BoxFit.fill,):
-                       Image.asset("assets/image/book_placholder.jpg",height: 40.0,width: 40.0,fit: BoxFit.fill,)
+                       Image.asset("assets/image/placeholder.png",height: 40.0,width: 40.0,fit: BoxFit.fill,)
 
                    ),
                    InkWell(

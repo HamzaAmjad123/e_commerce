@@ -50,7 +50,7 @@ class GenerateOrderWidget extends StatelessWidget {
                        // child: Image.asset("assets/images/book.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
 
                        // child: Image.network(item.image!=null?"https://pos.impliessolutions.com/${item.image}":"assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill,),
-                       child: item.image!=null?Image.network("$baseUrl"+"${item.image}",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill):Image.asset("assets/image/book_placholder.jpg",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill),
+                       child: item.image!=null?Image.network("$baseUrl"+"${item.image}",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill):Image.asset("assets/image/placeholder.png",height: MediaQuery.of(context).size.height/6,width: double.infinity,fit: BoxFit.fill),
                        borderRadius: BorderRadius.only(
                            topRight: Radius.circular(8.0),
                            topLeft: Radius.circular(8.0)

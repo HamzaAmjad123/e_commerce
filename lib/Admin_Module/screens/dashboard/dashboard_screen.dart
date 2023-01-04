@@ -2,6 +2,7 @@ import 'package:e_commerce/Admin_Module/screens/dashboard/stock/widgets/stock_ed
 import 'package:e_commerce/screens/Dealer/home/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import '../../../configs/color.dart';
+import '../../../configs/text_style.dart';
 import '../../helper_widget/custom_app_bar.dart';
 import 'account/account_screen.dart';
 import 'orders/admin_orders_screen.dart';
@@ -19,9 +20,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   late TabController _tabController;
   int _selectedIndex = 0;
   List<Widget> widgets = [
-    const StockScreen(),
+     StockScreen(),
      OrdersList(),
-    const Ledger(),
+     AccountsScreen(),
   ];
   @override
   void initState() {
@@ -48,36 +49,21 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
      drawer: CustomDrawer(),
       extendBodyBehindAppBar: true,
       appBar: _selectedIndex == 0
-          ? CustomAppBar(
-              title: 'Stock',
-              textStyle: const TextStyle(fontWeight: FontWeight.bold),
-              leading: Builder(
-                  builder: (context) => IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: const Icon(
-                        Icons.menu,
-                        size: 20,
-                      ))),
-            )
+          ?AppBar(
+        elevation: 0.0,
+        backgroundColor: bgColor,
+        title: Text("Stock List",style: barStyle,),
+        centerTitle: true,
+      )
           : _selectedIndex == 1
               ? AppBar(title: Text("Orders List"),)
               : _selectedIndex == 2
-                  ? CustomAppBar(
-                      title: 'Accounts',
-                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
-                      leading: IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-
-                            setState(() {});
-                          },
-                          icon: const Icon(
-                            Icons.menu,
-                            size: 20,
-                          )),
-                    )
+                  ? AppBar(
+        elevation: 0.0,
+        title: Text("Accounts",style: barStyle,),
+        centerTitle: true,
+        backgroundColor: bgColor,
+      )
                   : AppBar(),
 
       body:SingleChildScrollView(

@@ -60,10 +60,9 @@ class Methods{
   }
 }
 showImageDialog({required BuildContext context,required String url}){
-  print("cllllalsask  $url");
   return showDialog(context: context, builder: (context){
     return Dialog(
-      child: url.isEmpty?Image.asset("assets/image/book_placholder.jpg"):Image.network(url,fit: BoxFit.fill,),
+      child: url.isEmpty?Image.asset("assets/image/placeholder.png"):Image.network(url,fit: BoxFit.fill,),
     );
   });
 }

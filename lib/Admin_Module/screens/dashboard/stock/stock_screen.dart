@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../configs/color.dart';
 import '../../../../helper_services/custom_loader.dart';
+import '../../../../helper_widgets/custom_bar_widget.dart';
 import '../../../../provider/admin_provider/stock_list_provider.dart';
 import '../../../../service/Admin_Sercvice/stock_list_service.dart';
 import '../../../helper_widget/custom_button.dart';
@@ -23,6 +24,7 @@ class _StockScreenState extends State<StockScreen> {
   }
 
 
+  TextEditingController _searchCont=TextEditingController();
   // late List<StockModel> stockList = [];
 
   @override
@@ -38,15 +40,24 @@ class _StockScreenState extends State<StockScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Consumer<StockListProvider>(builder: (context,stock,_){
-        return ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          primary: false,
-          itemCount: stock.stockList!.length,
-          itemBuilder: (context, index) {
-            return StockWidget(
-                stock:stock.stockList![index] );
-          },
+        return Column(
+          children: [
+            CustomBarWidget(
+              controller: _searchCont,
+              icon: Icons.search,
+              onSubmit: (value){},
+            ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              primary: false,
+              itemCount: stock.stockList!.length,
+              itemBuilder: (context, index) {
+                return StockWidget(
+                    stock:stock.stockList![index] );
+              },
+            ),
+          ],
         );
       },),
     );

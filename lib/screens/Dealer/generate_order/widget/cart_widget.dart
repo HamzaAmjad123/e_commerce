@@ -43,7 +43,7 @@ class CartDrawerWidget extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: cartModel!.image!.isEmpty?Image.asset("assets/image/book_placholder.jpg",fit: BoxFit.fill, height: 60, width: 60)
+                child: cartModel!.image!.isEmpty?Image.asset("assets/image/placeholder.png",fit: BoxFit.fill, height: 60, width: 60)
                     :Image.network("${baseUrl}${cartModel!.image}",fit: BoxFit.fill, height: 60, width: 60),
         // :Image.network('https://pos.impliessolutions.com/${cartModel!.image}',fit: BoxFit.fill, height: 60, width: 60)
                 ),

@@ -458,8 +458,7 @@ getShipment(int wearHouseId)async{
             items.availableStock!
           ));
         }
-      }
-      ;
+      };
     } else {
       sum = sum + 1;
       temporary_list.add(CartModel(

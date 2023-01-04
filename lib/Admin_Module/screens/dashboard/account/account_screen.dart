@@ -1,42 +1,34 @@
 import 'package:e_commerce/helper_services/navigation_services.dart';
-import 'package:e_commerce/provider/home_dashboard_provider.dart';
-import 'package:e_commerce/screens/Dealer/payment/widget/payment_record.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../configs/color.dart';
 import '../../../../configs/text_style.dart';
 import '../../../../configs/ui.dart';
-import '../../../../helper_classes/pdf_service.dart';
 import '../../../../helper_services/custom_loader.dart';
-import '../../../../helper_services/custom_snackbar.dart';
-import '../../../../helper_widgets/custom_button.dart';
+import '../../../../helper_widgets/custom_bar_widget.dart';
 import '../../../../model/admin_models/admin_ledger_model.dart';
 import '../../../../provider/admin_provider/admin_ledger_provider.dart';
-import '../../../../provider/admin_provider/dealer_statement_by_admin_provider.dart';
-import '../../../../provider/cash_book_provider.dart';
 import '../../../../service/Admin_Sercvice/admin_ledger_service.dart';
-import '../../../../utils/functions.dart';
 import '../../../admin_pdf_service.dart';
 import 'leadger_details_screen.dart';
 
 
-class Ledger extends StatefulWidget {
-  const Ledger({Key? key}) : super(key: key);
+class AccountsScreen extends StatefulWidget {
+  const AccountsScreen({Key? key}) : super(key: key);
 
   @override
-  State<Ledger> createState() => _LedgerState();
+  State<AccountsScreen> createState() => _AccountsScreenState();
 }
 
-class _LedgerState extends State<Ledger> {
+class _AccountsScreenState extends State<AccountsScreen> {
 
   bool isFirst=false;
+  bool isIcon=false;
 
 
   _getAdminLedgerStatement() async {
     CustomLoader.showLoader(context: context);
-    await AdminLedgerService().getLedgerStatement(context: context, skip: 0, take: 1000);
+    await AdminLedgerService().getLedgerStatement(context: context, skip: 0, take: 1000,searchText:isIcon?_searchCont.text:"");
     CustomLoader.hideLoader(context);
     setState(() {});
   }
@@ -52,17 +44,43 @@ class _LedgerState extends State<Ledger> {
 
     super.initState();
   }
+  TextEditingController  _searchCont=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            // margin: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
+                  CustomBarWidget(
+                    controller: _searchCont,
+                    onSubmit: (value){
 
-                  Text("Leadger Details",style: leadgerStyle,),
+                      if(isIcon==true){
+                        _searchCont.clear();
+                      }
+                      isIcon=!isIcon;
+                      _getAdminLedgerStatement();
+                      setState(() {
+
+                      });
+                    },
+                    icon: isIcon==false? Icons.search:Icons.clear,
+                    iconOnTap: (){
+                      if(isIcon==true){
+                        _searchCont.clear();
+                      }
+                      isIcon=!isIcon;
+                      _getAdminLedgerStatement();
+
+
+                    },
+                  ),
+
+
+                  Text("Accounts",style: leadgerStyle,),
                   SizedBox(height: 10.0,),
                   // isFirst?
                   Column(

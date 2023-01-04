@@ -8,9 +8,9 @@ import '../../model/admin_models/admin_ledger_model.dart';
 import '../../provider/admin_provider/admin_ledger_provider.dart';
 
 class AdminLedgerService{
-  Future  getLedgerStatement({required BuildContext context, required int skip,required int take})async{
+  Future  getLedgerStatement({required BuildContext context, required int skip,required int take,required String searchText})async{
     try{
-      Map _body={"skip":skip,"take":take};
+      Map _body={"skip":skip,"take":take,"searchText":searchText};
       var res=await PostRequestService().httpPostRequest(url: adminLedgerUrl, body: _body, context: context);
       if(res!=null){
         AdminLedgerModel ledgerModel=AdminLedgerModel.fromJson(res);
