@@ -1,7 +1,11 @@
 
+import 'package:e_commerce/service/Admin_Sercvice/admin_series_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../configs/color.dart';
+import '../../../../../helper_services/custom_loader.dart';
+import '../../../../../provider/admin_provider/admin_series_provider.dart';
 import '../../../../helper_widget/custom_dropdown_button.dart';
 import '../../../../helper_widget/custom_text_form_field.dart';
 
@@ -14,6 +18,24 @@ class StockEdit extends StatefulWidget {
 }
 
 class _StockEditState extends State<StockEdit> {
+  int currentStep = 0;
+  int? selectSeries;
+  _getAdminSiresList()async{
+    CustomLoader.showLoader(context: context);
+    await GetAdminSeriesService().getAdminSeries(context: context, skip: 0, take: 1000);
+    CustomLoader.hideLoader(context);
+  }
+  @override
+  void initState() {
+   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+     _getAdminSiresList();
+   });
+    // TODO: implement initState
+    super.initState();
+  }
+
+
+
   final List<String> seriesItem = [
     'Series1',
     'Series2',
@@ -38,173 +60,9 @@ class _StockEditState extends State<StockEdit> {
   String? selectedValue2;
   String? selectedValue3;
   String? selectedValue4;
-  // PickedFile _imageFile;
-  // final ImagePicker _picker = ImagePicker();
 
-  // Future getImage() async {
-  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-  //   setState(() {
-  //     _image = File(image!.path);
-  //   });
-  // }
-  stepContinue() {
-    final isLastStep = currentStep == getSteps().length - 1;
-    if (isLastStep) {
-      print('Complete');
-    } else {
-      setState(() => currentStep += 1);
-    }
-  }
 
-  int currentStep = 0;
-
-  List<Step> getSteps() => [
-        Step(
-            title: const Text("One"),
-            content: Column(
-              children: [
-                CustomDropdownButton(
-                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                    buttonHeight: 50,
-                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                    hint: 'Series',
-                    value: selectedValue,
-                    dropdownItems: seriesItem,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value;
-                      });
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                CustomDropdownButton(
-                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                    buttonHeight: 50,
-                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                    hint: 'Warehouse',
-                    value: selectedValue,
-                    dropdownItems: warehouseItem,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value;
-                      });
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CustomTextFormField(
-                  hinttext: 'Enter Item name',
-                  labeltext: 'Item Name*',
-                ),
-                const CustomTextFormField(
-                    hinttext: 'Enter Slogan', labeltext: 'Slogan*'),
-                const CustomTextFormField(
-                    hinttext: 'Enter Item Code', labeltext: 'Code*'),
-                CustomDropdownButton(
-                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                    buttonHeight: 50,
-                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                    hint: '--Select--',
-                    value: selectedValue2,
-                    dropdownItems: itemType,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue2 = value;
-                      });
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CustomTextFormField(
-                  hinttext: 'Enter Unit Price',
-                  labeltext: 'Unit Price*',
-                ),
-                const CustomTextFormField(
-                    hinttext: 'Enter Unit Discount Percentage',
-                    labeltext: 'Unit Discount Percentage*'),
-              ],
-            ),
-            isActive: currentStep >= 0),
-        Step(
-            title: const Text("Two"),
-            content: Column(
-              children: [
-                CustomDropdownButton(
-                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                    buttonHeight: 50,
-                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                    hint: '--Select--',
-                    value: selectedValue2,
-                    dropdownItems: itemType,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue2 = value;
-                      });
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CustomTextFormField(
-                  hinttext: 'Enter Unit Price',
-                  labeltext: 'Unit Price*',
-                ),
-                const CustomTextFormField(
-                    hinttext: 'Enter Unit Discount Percentage',
-                    labeltext: 'Unit Discount Percentage*'),
-                const CustomTextFormField(
-                    hinttext: 'Enter Available Stock',
-                    labeltext: 'Available Stock*'),
-                const CustomTextFormField(
-                    hinttext: '--Select--', labeltext: 'Status*'),
-                const CustomTextFormField(
-                    hinttext: '--Select--', labeltext: 'Rank*'),
-                CustomDropdownButton(
-                    buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                    buttonHeight: 50,
-                    dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                    hint: '--Select--',
-                    value: selectedValue3,
-                    dropdownItems: itemType,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue3 = value;
-                      });
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: [
-                    ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: bgColor),
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) => bottomSheet(),
-                          );
-                        },
-                        icon: const Icon(Icons.camera),
-                        label: const Text('Choose File'))
-                  ],
-                )
-              ],
-            ),
-            isActive: currentStep >= 1),
-        // Step(
-        //     title: const Text("Three"),
-        //     content: Column(
-        //       children: [
-        //         const SizedBox(
-        //           height: 10,
-        //         ),
-        //
-        //       ],
-        //     ),
-        //     isActive: currentStep >= 2),
-      ];
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +81,12 @@ class _StockEditState extends State<StockEdit> {
       ),
       bottomNavigationBar: InkWell(
         onTap: () {
-          stepContinue();
+          final isLastStep = currentStep == getSteps().length - 1;
+          if (isLastStep) {
+            print('Complete');
+          } else {
+            setState(() => currentStep += 1);
+          }
         },
         child: SizedBox(
           height: 40,
@@ -320,4 +183,164 @@ class _StockEditState extends State<StockEdit> {
       ),
     );
   }
+  List<Step> getSteps() => [
+    Step(
+        title: const Text("One"),
+        content: Column(
+          children: [
+            Consumer<AdminSeriesProvider>(builder: (context,series,_){
+              return series.seriesList!=null? Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: 10, horizontal: 14.0),
+                height: 60,
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                decoration: BoxDecoration(
+                    color: lightBlackColor,
+                    borderRadius: BorderRadius.circular(12.0)),
+                child: DropdownButton(
+                    isExpanded: true,
+                    underline: SizedBox(),
+                    hint: Text("Select Series"),
+                    value: selectSeries,
+                    items:series.seriesList!.map((item) {
+                      return DropdownMenuItem(
+                        value: item.seriesId,
+                        child: Text(item.name!),
+                      );
+                    }).toList(),
+                    onChanged: (int? newValue){
+                        selectSeries = newValue;
+                      setState((){});
+                    }),
+              ):Container();
+            }),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomDropdownButton(
+                buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                buttonHeight: 50,
+                dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                hint: 'Warehouse',
+                value: selectedValue,
+                dropdownItems: warehouseItem,
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue = value;
+                  });
+                }),
+            const SizedBox(
+              height: 20,
+            ),
+            const CustomTextFormField(
+              hinttext: 'Enter Item name',
+              labeltext: 'Item Name*',
+            ),
+            const CustomTextFormField(
+                hinttext: 'Enter Slogan', labeltext: 'Slogan*'),
+            const CustomTextFormField(
+                hinttext: 'Enter Item Code', labeltext: 'Code*'),
+            CustomDropdownButton(
+                buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                buttonHeight: 50,
+                dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                hint: '--Select--',
+                value: selectedValue2,
+                dropdownItems: itemType,
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue2 = value;
+                  });
+                }),
+            const SizedBox(
+              height: 20,
+            ),
+            const CustomTextFormField(
+              hinttext: 'Enter Unit Price',
+              labeltext: 'Unit Price*',
+            ),
+            const CustomTextFormField(
+                hinttext: 'Enter Unit Discount Percentage',
+                labeltext: 'Unit Discount Percentage*'),
+          ],
+        ),
+        isActive: currentStep >= 0),
+    Step(
+        title: const Text("Two"),
+        content: Column(
+          children: [
+            CustomDropdownButton(
+                buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                buttonHeight: 50,
+                dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                hint: '--Select--',
+                value: selectedValue2,
+                dropdownItems: itemType,
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue2 = value;
+                  });
+                }),
+            const SizedBox(
+              height: 20,
+            ),
+            const CustomTextFormField(
+              hinttext: 'Enter Unit Price',
+              labeltext: 'Unit Price*',
+            ),
+            const CustomTextFormField(
+                hinttext: 'Enter Unit Discount Percentage',
+                labeltext: 'Unit Discount Percentage*'),
+            const CustomTextFormField(
+                hinttext: 'Enter Available Stock',
+                labeltext: 'Available Stock*'),
+            const CustomTextFormField(
+                hinttext: '--Select--', labeltext: 'Status*'),
+            const CustomTextFormField(
+                hinttext: '--Select--', labeltext: 'Rank*'),
+            CustomDropdownButton(
+                buttonWidth: MediaQuery.of(context).size.width * 0.87,
+                buttonHeight: 50,
+                dropdownWidth: MediaQuery.of(context).size.width * 0.87,
+                hint: '--Select--',
+                value: selectedValue3,
+                dropdownItems: itemType,
+                onChanged: (value) {
+                  setState(() {
+                    selectedValue3 = value;
+                  });
+                }),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: bgColor),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => bottomSheet(),
+                      );
+                    },
+                    icon: const Icon(Icons.camera),
+                    label: const Text('Choose File'))
+              ],
+            )
+          ],
+        ),
+        isActive: currentStep >= 1),
+    // Step(
+    //     title: const Text("Three"),
+    //     content: Column(
+    //       children: [
+    //         const SizedBox(
+    //           height: 10,
+    //         ),
+    //
+    //       ],
+    //     ),
+    //     isActive: currentStep >= 2),
+  ];
 }

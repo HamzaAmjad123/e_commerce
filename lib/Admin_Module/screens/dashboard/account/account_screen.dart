@@ -53,7 +53,6 @@ class _AccountsScreenState extends State<AccountsScreen> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   CustomBarWidget(
                     controller: _searchCont,
                     onSubmit: (value){

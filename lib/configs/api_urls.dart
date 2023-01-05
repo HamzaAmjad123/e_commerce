@@ -33,3 +33,6 @@ const String admiApprovOrderUrl=baseUrl+"api/AdminOrders/getApprovedOrdersList";
 const String approvalOrCancelUrl=baseUrl+"api/AdminOrders/ApproveOrder";
 const String adminLedgerUrl=baseUrl  + "api/voucher/Admin/getList";
 const String dealerStatByAdminUrl=baseUrl + "api/voucher/getDealerStatementByVoucherId";
+const String adminSeriesList=baseUrl + "api/Series/getList";
+const String adminClassList=baseUrl + "api/Series/getList";
+const String adminWearHouseList=baseUrl + "api/WareHouse/getListByActiveUser";
