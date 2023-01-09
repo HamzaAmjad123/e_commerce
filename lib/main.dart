@@ -1,6 +1,9 @@
 import 'package:e_commerce/provider/Rider_providers/rider_history_provider.dart';
 import 'package:e_commerce/provider/Rider_providers/rider_orders_provider.dart';
+import 'package:e_commerce/provider/admin_provider/adimn_class_provider.dart';
 import 'package:e_commerce/provider/admin_provider/admin_ledger_provider.dart';
+import 'package:e_commerce/provider/admin_provider/admin_series_provider.dart';
+import 'package:e_commerce/provider/admin_provider/admin_wearhouse_provider.dart';
 import 'package:e_commerce/provider/admin_provider/approved_order_provider.dart';
 import 'package:e_commerce/provider/admin_provider/dealer_statement_by_admin_provider.dart';
 import 'package:e_commerce/provider/admin_provider/pending_orders_provider.dart';
@@ -67,7 +70,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>AdminPendingOrdersProvider()),
         ChangeNotifierProvider(create: (context)=>AdminApprovedOrdersProvider()),
         ChangeNotifierProvider(create: (context)=>AdminLedgerProvider()),
-        ChangeNotifierProvider(create: (context)=>DealerStatementByAdminProvider())
+        ChangeNotifierProvider(create: (context)=>DealerStatementByAdminProvider()),
+        ChangeNotifierProvider(create: (context)=>AdminSeriesProvider()),
+        ChangeNotifierProvider(create: (context)=>AdminWearHouseProvider()),
+        ChangeNotifierProvider(create: (context)=>AdminClassProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

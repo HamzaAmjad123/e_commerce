@@ -1,18 +1,20 @@
-
 import 'package:e_commerce/service/Admin_Sercvice/admin_series_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../../configs/color.dart';
 import '../../../../../helper_services/custom_loader.dart';
+import '../../../../../helper_widgets/custom_dropdown_button1.dart';
+import '../../../../../provider/admin_provider/adimn_class_provider.dart';
 import '../../../../../provider/admin_provider/admin_series_provider.dart';
+import '../../../../../provider/admin_provider/admin_wearhouse_provider.dart';
+import '../../../../../service/Admin_Sercvice/admin_class_service.dart';
+import '../../../../../service/Admin_Sercvice/admin_wearhouse_service.dart';
 import '../../../../helper_widget/custom_dropdown_button.dart';
 import '../../../../helper_widget/custom_text_form_field.dart';
 
 class StockEdit extends StatefulWidget {
   final bool isEdit;
    StockEdit({this.isEdit=false});
-
   @override
   State<StockEdit> createState() => _StockEditState();
 }
@@ -20,9 +22,13 @@ class StockEdit extends StatefulWidget {
 class _StockEditState extends State<StockEdit> {
   int currentStep = 0;
   int? selectSeries;
+  int? selectedWearHouse;
+  int? selectedClass;
   _getAdminSiresList()async{
     CustomLoader.showLoader(context: context);
     await GetAdminSeriesService().getAdminSeries(context: context, skip: 0, take: 1000);
+    await AdminWearHouseService().getWearHouse(context: context);
+    await AdminClasssService().getAllClasses(context: context);
     CustomLoader.hideLoader(context);
   }
   @override
@@ -36,10 +42,7 @@ class _StockEditState extends State<StockEdit> {
 
 
 
-  final List<String> seriesItem = [
-    'Series1',
-    'Series2',
-  ];
+
   final List<String> warehouseItem = [
     'Batgram Shop',
     'Lahore',
@@ -120,7 +123,6 @@ class _StockEditState extends State<StockEdit> {
 
         child: Stepper(
           controlsBuilder: (context, controller) => Row(children: []),
-
           steps: getSteps(),
           currentStep: currentStep,
           type: StepperType.horizontal,
@@ -189,14 +191,8 @@ class _StockEditState extends State<StockEdit> {
         content: Column(
           children: [
             Consumer<AdminSeriesProvider>(builder: (context,series,_){
-              return series.seriesList!=null? Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: 10, horizontal: 14.0),
-                height: 60,
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
-                decoration: BoxDecoration(
-                    color: lightBlackColor,
-                    borderRadius: BorderRadius.circular(12.0)),
+              return series.seriesList!=null?
+              CustomDropDownButton1(
                 child: DropdownButton(
                     isExpanded: true,
                     underline: SizedBox(),
@@ -209,27 +205,35 @@ class _StockEditState extends State<StockEdit> {
                       );
                     }).toList(),
                     onChanged: (int? newValue){
-                        selectSeries = newValue;
+                      selectSeries = newValue;
                       setState((){});
                     }),
-              ):Container();
+              )
+                  :Container();
             }),
-            const SizedBox(
-              height: 20,
-            ),
-            CustomDropdownButton(
-                buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                buttonHeight: 50,
-                dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                hint: 'Warehouse',
-                value: selectedValue,
-                dropdownItems: warehouseItem,
-                onChanged: (value) {
-                  setState(() {
-                    selectedValue = value;
-                  });
-                }),
-            const SizedBox(
+
+         Consumer<AdminWearHouseProvider>(builder: (context,wear,_){
+           return CustomDropDownButton1(
+             child: DropdownButton(
+               isExpanded: true,
+               value: selectedWearHouse,
+               hint: Text("Select WearHouse"),
+               items:wear.adminWearHouse!.map((item)  {
+                 return DropdownMenuItem(
+                   value: item.warehouseId,
+                   child: Text(item.name??""),
+                 );
+               }).toList(),
+               onChanged: (int? value){
+                 selectedWearHouse=value!;
+                 setState(() {
+
+                 });
+               },
+             ),
+           );
+         }),
+             SizedBox(
               height: 20,
             ),
             const CustomTextFormField(
@@ -240,18 +244,27 @@ class _StockEditState extends State<StockEdit> {
                 hinttext: 'Enter Slogan', labeltext: 'Slogan*'),
             const CustomTextFormField(
                 hinttext: 'Enter Item Code', labeltext: 'Code*'),
-            CustomDropdownButton(
-                buttonWidth: MediaQuery.of(context).size.width * 0.87,
-                buttonHeight: 50,
-                dropdownWidth: MediaQuery.of(context).size.width * 0.87,
-                hint: '--Select--',
-                value: selectedValue2,
-                dropdownItems: itemType,
-                onChanged: (value) {
-                  setState(() {
-                    selectedValue2 = value;
-                  });
-                }),
+            Consumer<AdminClassProvider>(builder: (context,cls,_){
+              return CustomDropDownButton1(
+                child: DropdownButton(
+                  isExpanded: true,
+                  value: selectedClass,
+                  hint: Text("Select class"),
+                  items:cls.classList!.map((item)  {
+                    return DropdownMenuItem(
+                      value: item.levelId,
+                      child: Text(item.name??""),
+                    );
+                  }).toList(),
+                  onChanged: (int? value){
+                    selectedClass=value!;
+                    setState(() {
+
+                    });
+                  },
+                ),
+              );
+            }),
             const SizedBox(
               height: 20,
             ),

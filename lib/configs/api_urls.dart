@@ -35,4 +35,5 @@ const String adminLedgerUrl=baseUrl  + "api/voucher/Admin/getList";
 const String dealerStatByAdminUrl=baseUrl + "api/voucher/getDealerStatementByVoucherId";
 const String adminSeriesList=baseUrl + "api/Series/getList";
 const String adminClassList=baseUrl + "api/Series/getList";
-const String adminWearHouseList=baseUrl + "api/WareHouse/getListByActiveUser";
+const String adminWearHouseUrl=baseUrl + "api/WareHouse/getListByActiveUser";
+const String adminClassUrl=baseUrl + "/api/Level/getList";
