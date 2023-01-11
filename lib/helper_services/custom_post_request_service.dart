@@ -30,7 +30,7 @@ class PostRequestService{
           body: json.encode(body), headers: headers);
 
       print("post request status code ${response.statusCode}");
-      log("post request body ${response.body}");
+      print("post request body ${response.body}");
       var jsonDecoded = json.decode(response.body);
       // if(jsonDecoded ==null || jsonDecoded['status'] != 200){
       if (jsonDecoded == null ) {

@@ -9,10 +9,11 @@ import '../../provider/admin_provider/adimn_class_provider.dart';
 class AdminClasssService{
    Future getAllClasses({required BuildContext context})async{
      try{
-        Map body={};
-       var res=await PostRequestService().httpPostRequest(url: adminClassUrl, body: body, context: context);
-       print(res);
+        Map _body={};
+       var res=await PostRequestService().httpPostRequest(url: adminClassUrl, body: _body, context: context);
+print("Response $res");
        if(res!=null){
+         print("Gujjar Toor");
          AdminClassModel classModel=AdminClassModel.fromJson(res);
          Provider.of<AdminClassProvider>(context,listen: false).updateClasses(
              newList: classModel.result
@@ -22,7 +23,8 @@ class AdminClasssService{
          return null;
        }
    }catch(e){
-     CustomSnackBar.failedSnackBar(context: context, message: "Exception in GetClass $e");
+       print("Exception in Admin get classes service $e");
+     // CustomSnackBar.failedSnackBar(context: context, message: "Exception in GetClass $e");
      return null;
      }
    }

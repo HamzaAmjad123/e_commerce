@@ -28,6 +28,11 @@ class _StockEditState extends State<StockEdit> {
     CustomLoader.showLoader(context: context);
     await GetAdminSeriesService().getAdminSeries(context: context, skip: 0, take: 1000);
     await AdminWearHouseService().getWearHouse(context: context);
+      CustomLoader.hideLoader(context);
+  }
+  getAdminClassesHandler()async{
+    CustomLoader.showLoader(context: context);
+    print("HERE");
     await AdminClasssService().getAllClasses(context: context);
     CustomLoader.hideLoader(context);
   }
@@ -35,6 +40,7 @@ class _StockEditState extends State<StockEdit> {
   void initState() {
    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
      _getAdminSiresList();
+     getAdminClassesHandler();
    });
     // TODO: implement initState
     super.initState();
