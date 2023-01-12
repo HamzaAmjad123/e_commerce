@@ -1,12 +1,12 @@
 class CashBookModel {
-  Result? result;
+  AdminItemsList? result;
   String? message;
 
   CashBookModel({this.result, this.message});
 
   CashBookModel.fromJson(Map<String, dynamic> json) {
     result =
-    json['result'] != null ? new Result.fromJson(json['result']) : null;
+    json['result'] != null ? new AdminItemsList.fromJson(json['result']) : null;
     message = json['message'];
   }
 
@@ -20,7 +20,7 @@ class CashBookModel {
   }
 }
 
-class Result {
+class AdminItemsList {
   List<LedgerDetails>? ledgerDetails;
   int? dealerId;
   int? voucherId;
@@ -28,7 +28,7 @@ class Result {
   double? totalAmount;
   double? totalReceived;
 
-  Result(
+  AdminItemsList(
       {this.ledgerDetails,
         this.dealerId,
         this.voucherId,
@@ -36,7 +36,7 @@ class Result {
         this.totalAmount,
         this.totalReceived});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  AdminItemsList.fromJson(Map<String, dynamic> json) {
     if (json['ledgerDetails'] != null) {
       ledgerDetails = <LedgerDetails>[];
       json['ledgerDetails'].forEach((v) {
