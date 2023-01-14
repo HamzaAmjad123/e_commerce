@@ -39,3 +39,4 @@ const String adminWearHouseUrl=baseUrl + "api/WareHouse/getListByActiveUser";
 const String adminClassUrl=baseUrl + "api/Level/getList";
 const String adminItemsListUrl=baseUrl + "api/ItemType/getList";
 const String adminRanksUrl=baseUrl + "api/Ranking/getList";
+const String adminCreateStockUrl=baseUrl+"api/item/save";

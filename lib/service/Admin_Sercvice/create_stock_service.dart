@@ -1,4 +1,7 @@
+import 'package:e_commerce/helper_services/custom_post_request_service.dart';
 import 'package:flutter/cupertino.dart';
+
+import '../../configs/api_urls.dart';
 
 class CreateStockService {
   Future createStock({required BuildContext context,
@@ -34,6 +37,15 @@ class CreateStockService {
         "unitPrice": unitPrice,
         "warehouseId": wearhouseId
       };
+      var res=await PostRequestService().httpPostRequest(url: adminCreateStockUrl, body: _body, context: context);
+      if(res!=null){
+        print("Inside Stock");
+        return true;
+      }
+      else{
+        return null;
+      }
+
     }
     catch (err) {
       print("Exception in Edit Stock Service $err");

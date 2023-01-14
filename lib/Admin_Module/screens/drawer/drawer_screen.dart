@@ -18,9 +18,10 @@ class _AdminDrawerState extends State<AdminDrawer> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        DrawerHeader(child: Container()),
+
         Column(children: <Widget>[
           ListTile(
+            title:Text("Stock") ,
               leading: Icon(Icons.home),
               onTap: () {
                 setState(() {
@@ -28,6 +29,7 @@ class _AdminDrawerState extends State<AdminDrawer> {
                 });
               }),
           ListTile(
+            title: Text("Orders"),
               leading: Icon(Icons.save),
               onTap: () {
                 setState(() {
@@ -35,30 +37,15 @@ class _AdminDrawerState extends State<AdminDrawer> {
                 });
               }),
           ListTile(
+            title: Text('Account'),
               leading: Icon(Icons.star),
               onTap: () {
                 setState(() {
                   text = "Account";
                 });
               }),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Divider(
-              color: Colors.grey,
-            ),
-          ),
-          DrawerLinkWidget(
-            icon: Icons.logout,
-            isLogout: true,
-            text: "Logout",
-            onTap: () async {
-              SharedPreferences pref=await SharedPreferences.getInstance();
-              pref.clear();
-              // await LocalStorageServices().saveUser(false);
-              NavigationServices.goNextAndDoNotKeepHistory(
-                  context: context, widget: LoginScreen());
-            },
-          ),
+
+
         ])
       ],
     );

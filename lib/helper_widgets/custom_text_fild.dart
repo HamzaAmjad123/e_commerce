@@ -47,7 +47,7 @@ class CustomTextField extends StatelessWidget {
       children: [
         headerText == null ? SizedBox() : Padding(
           padding:  EdgeInsets.symmetric(
-            horizontal: headerText==null?0.0:10.0,
+            horizontal: headerText==null?0.0:8.0,
             vertical: headerText==null?0.0:0.0,
           ),
           child: Text(headerText!,style: subtitleStyle,),
