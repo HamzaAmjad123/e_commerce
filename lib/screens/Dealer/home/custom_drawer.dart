@@ -14,6 +14,7 @@ import '../../../helper_widgets/drawer_item_card.dart';
 import '../../../model/user_model.dart';
 import '../../Rider/widget/approved_widget.dart';
 import '../../Rider/widget/history_widget.dart';
+import '../../help_center.dart';
 import '../generate_order/generate_order_screen.dart';
 import '../order_details/pending_orders_screen.dart';
 
@@ -126,6 +127,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   NavigationServices.goNextAndKeepHistory(context: context, widget: SendPaymentScreen());
               },
             ),
+            DrawerLinkWidget(
+              icon: Icons.help_center,
+              text: "contact Us",
+              onTap: () {
+                Navigator.pop(context);
+                NavigationServices.goNextAndKeepHistory(
+                    context: context, widget: HelpCenter());
+                setState(() {});
+              },
+            ),
           ],
         ):role=="Admin"?AdminDrawer():
         Column(
@@ -153,6 +164,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     context: context, widget: RiderHistoryScreen(
                   isShow: false,
                 ));
+                setState(() {});
+              },
+            ),
+            DrawerLinkWidget(
+              icon: Icons.help_center,
+              text: "contact Us",
+              onTap: () {
+                Navigator.pop(context);
+                NavigationServices.goNextAndKeepHistory(
+                    context: context, widget: HelpCenter());
                 setState(() {});
               },
             ),

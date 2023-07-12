@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 import 'package:e_commerce/configs/text_style.dart';
 import 'package:e_commerce/helper_services/custom_snackbar.dart';
 import 'package:e_commerce/helper_widgets/custom_text_fild.dart';
@@ -167,24 +167,24 @@ getShipment(int wearHouseId)async{
             },
           ),
           actions: [
-            Badge(
-                position: BadgePosition.topEnd(top: 1, end: 25),
-                animationDuration: Duration(milliseconds: 300),
-                animationType: BadgeAnimationType.scale,
-                badgeContent: Text(
-                  sum.toString(),
-                  style: TextStyle(color: Colors.white),
-                ),
-                child: Builder(
-                  builder: (context) => IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openEndDrawer();
-                      },
-                      icon: Icon(
-                        Icons.add_shopping_cart_sharp,
-                        color: Colors.white60,
-                      )),
-                )),
+            // Badge(
+            //     position: BadgePosition.topEnd(top: 1, end: 25),
+            //     animationDuration: Duration(milliseconds: 300),
+            //     animationType: BadgeAnimationType.scale,
+            //     badgeContent: Text(
+            //       sum.toString(),
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //     child: Builder(
+            //       builder: (context) => IconButton(
+            //           onPressed: () {
+            //             Scaffold.of(context).openEndDrawer();
+            //           },
+            //           icon: Icon(
+            //             Icons.add_shopping_cart_sharp,
+            //             color: Colors.white60,
+            //           )),
+            //     )),
           ],
           title: Text(
             "Generate Order",
